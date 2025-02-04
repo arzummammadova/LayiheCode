@@ -23,7 +23,11 @@ const authSlice = createSlice({
     user: null,
     error: null,
   },
-  reducers: {}, // Burada digər manuel action-lar ola bilər (məsələn, logout)
+  reducers: {
+    setUser: (state, action) => { 
+      state.user = action.payload;
+    },
+  }, // Burada digər manuel action-lar ola bilər (məsələn, logout)
   extraReducers: (builder) => {
     builder
       .addCase(registerUser.pending, (state) => {
@@ -41,4 +45,6 @@ const authSlice = createSlice({
   },
 });
 
+
+export const { setUser } = authSlice.actions;
 export default authSlice.reducer;

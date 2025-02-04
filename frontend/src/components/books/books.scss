@@ -1,0 +1,108 @@
+.box{
+    background-image: linear-gradient(45deg, #c8e9d8, #FCE7C8);
+    border-radius: 30px;
+    padding: 3rem;
+    margin-top: 8rem;
+}
+
+
+
+
+
+.box-bottom button{
+    // padding: 1rem 2rem;
+    border-radius: 30px;
+    padding: 0.4rem 0rem ;
+    width: 100%;
+    border: none;
+    text-align: center;
+    background-image: linear-gradient(45deg, #9AE1BC, #00DC64);
+ 
+
+font-family: 'Roboto';
+font-style: normal;
+font-weight: 400;
+font-size: 20px;
+line-height: 28px;
+/* or 175% */
+
+color: #FFFFFF;
+
+
+}
+
+.box-left{
+    img{
+        width: 200px;
+        height: 300px;
+        border-radius: 20px;
+        top: -130px;
+        left: 20px;
+        position: absolute;
+        &:hover{
+            transition: all 0.3s ease-in-out;
+            transform: scale(1.1);}
+    }
+}
+.box-top{
+    position: relative;
+}
+
+.green{
+    color: #00DC64;
+}
+
+.box-gallery img {
+    width: 250px; // Normal şəklin ölçüsü
+    height: 350px;
+    transition: all 0.3s ease-in-out; // Smooth transition
+  }
+  
+  .box-gallery.active img {
+    width: 300px; // Aktiv şəklin ölçüsü
+    height: 400px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3); // Shadow əlavə et
+  }
+  
+  .box-galleries {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+    cursor: grab;
+    user-select: none;
+    width: 100%;
+  }
+  
+  .caraousel {
+    padding: 7rem 0rem;
+    display: flex;
+    gap: 2rem;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    position: relative;
+  }
+  
+  .left-arrow,
+  .right-arrow {
+    cursor: pointer;
+    font-size: 2rem;
+    z-index: 1;
+  }
+  
+  .left-arrow {
+    position: absolute;
+    left: 10px;
+  }
+  
+  .right-arrow {
+    position: absolute;
+    right: 10px;
+  }
+  
+  .box-gallery {
+    flex: 0 0 25%; // Hər şəkil 25% yer tutsun (4 şəkil üçün)
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: all 0.3s ease-in-out; // Smooth transition
+  }

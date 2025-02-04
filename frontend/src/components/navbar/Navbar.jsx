@@ -7,12 +7,14 @@ import { CiSearch } from "react-icons/ci";
 import light from "../../assets/icons/light.svg";
 import bookicon from "../../assets/icons/bookicon.svg";
 import basketicon from "../../assets/icons/basket.svg";
+import person from "../../assets/icons/profile.svg";
 import { RxHamburgerMenu } from "react-icons/rx";
-
 const Navbar = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const basket = useSelector((state) => state.basket.basket);
+  const user=useSelector((state)=>state.auth.auth);
   const count = basket.reduce((sum, i) => sum + i.count, 0);
+  console.log(user)
 
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
@@ -101,6 +103,19 @@ const Navbar = () => {
                 </li>
               </ul>
             </div>
+
+         <div className="profile">
+              <Link to="/profile">
+                <img
+                  src={user?.image || person}
+                  alt="profile"
+                  className="profile-img"
+                />
+
+              </Link>
+              {/* <p>Welcome ,{user.firstName}</p> */}
+         </div>
+
 
             <div className="burger" onClick={toggleDropdown}>
               <RxHamburgerMenu color="black" />
