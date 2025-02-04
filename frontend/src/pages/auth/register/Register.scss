@@ -1,0 +1,136 @@
+.register-container {
+    display: flex;
+    gap: 4rem;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    // background-color: #f8f8f8;
+  }
+  
+  .register-card {
+    // background: #fff;
+    padding: 2rem;
+    border-radius: 10px;
+    // box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 500px;
+    width: 100%;
+  }
+  
+  .title {
+    font-size:2rem;
+    font-weight:400;
+    text-align: center;
+    margin-bottom: 3rem;
+  }
+  
+  .brand {
+    font-weight: bold;
+  }
+  
+  .highlight {
+    color: #27ae60;
+  }
+  
+ 
+  .content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+  }
+  
+  .image-section {
+    text-align: center;
+  }
+  
+  .register-image {
+    width: 150px;
+    height: auto;
+  }
+  
+  .form-section {
+    width: 100%;
+  }
+  
+  .social-buttons {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: 1rem;
+  }
+  
+  .google-signin {
+    background: #fff;
+    border: 1px solid #ddd;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .register-form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+  
+  .input-field {
+    padding: 0.75rem;
+    margin-bottom: 0.5rem;
+    border: 1px solid #ddd;
+    border-radius: 20px;
+  }
+  
+  .signup-button {
+    background: linear-gradient(90deg, #00DC64,#9AE1BC);
+    color: #fff;
+    padding: 0.75rem;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 1.2rem;
+  }
+  
+  .login-link {
+    text-align: center;
+    margin-top: 0.5rem;
+  }
+  
+  .login-link span {
+    color: #27ae60;
+    cursor: pointer;
+  }
+  
+
+  .error {
+    color: #d32f2f; /* Daha diqqətçəkən qırmızı */
+    background-color: #ffebee; /* Açıq qırmızı fon */
+    padding: 2px 12px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border-left: 4px solid #d32f2f; /* Sol tərəfə vurğulu xətt */
+    margin-top: 5px;
+    animation: fadeIn 0.3s ease-in-out;
+  }
+  
+  .error-icon {
+    font-size: 18px;
+  }
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  

@@ -1,0 +1,43 @@
+#customers {
+  padding: 5rem 0rem;
+}
+
+.c-cards {
+  margin-top: 4rem;
+  display: flex;
+  gap: 10px;
+}
+.c-cards .c-card {
+  width: calc(33.3333333333% - 10px);
+}
+
+.c-card {
+  background-color: white;
+  border-radius: 10px;
+  width: calc(33.3333333333% - 20px);
+  padding: 2rem;
+}
+.c-card p {
+  color: grey;
+}
+.c-card .bottom {
+  display: flex;
+  gap: 10px;
+}
+.c-card .bottom figure {
+  width: 60px;
+  height: 60px;
+  border-radius: 100%;
+  overflow: hidden;
+}
+.c-card .bottom .texts .name {
+  color: orange;
+}
+
+.c-card:nth-child(2) {
+  background-color: orange;
+}
+
+body {
+  background-color: rgb(244, 243, 240);
+}/*# sourceMappingURL=customers.css.map */

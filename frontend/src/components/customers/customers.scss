@@ -1,0 +1,48 @@
+#customers{
+    padding: 5rem 0rem ;
+
+}
+
+.c-cards{
+    margin-top: 4rem;
+    display: flex;
+    gap: 10px;
+    .c-card{
+        width: calc(100%/3 - 10px );
+    }
+
+}
+
+.c-card{
+    background-color: white;
+    border-radius: 10px;
+    width: calc(100%/3 - 20px );
+    padding: 2rem ;
+ p{
+    color: grey;
+ }
+    .bottom{
+        display:flex;
+        gap: 10px;
+        figure{
+            width: 60px;
+            height: 60px;
+            border-radius: 100%;
+            overflow: hidden;
+        }
+        .texts{
+            .name{
+                color: orange;
+            }
+        }
+    }
+}
+
+.c-card:nth-child(2){
+    background-color: orange;
+}
+
+
+body{
+    background-color: rgb(244, 243, 240);
+}

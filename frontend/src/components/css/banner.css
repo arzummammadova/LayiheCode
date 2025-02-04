@@ -1,0 +1,45 @@
+.b-cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  padding: 1rem 1rem;
+}
+
+.b-card {
+  width: calc(25% - 7px);
+  padding: 3rem;
+}
+.b-card .icons {
+  padding-left: 13px;
+  padding-top: 0.5rem;
+  font-size: 1.4rem;
+  width: 60px;
+  height: 60px;
+  color: white;
+  border-radius: 100%;
+  background-color: rgb(128, 96, 102);
+  border: 2px solid white;
+}
+.b-card h5 {
+  color: #052c43;
+  margin-top: 10px;
+}
+.b-card p {
+  color: grey;
+}
+
+.b-card:nth-child(1) {
+  background-color: rgb(245, 230, 233);
+}
+
+.b-card:nth-child(2) {
+  background-color: rgb(221, 238, 226);
+}
+
+.b-card:nth-child(3) {
+  background-color: rgb(245, 243, 208);
+}
+
+.b-card:nth-child(4) {
+  background-color: rgb(241, 208, 183);
+}/*# sourceMappingURL=banner.css.map */

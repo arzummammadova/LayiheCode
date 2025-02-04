@@ -1,0 +1,35 @@
+.about{
+    background-image: url(https://preview.colorlib.com/theme/furnish/images/bg_4.jpg.webp);
+    background-size: cover;
+    
+    padding: 12rem 0rem;
+}
+
+.rightabout{
+    padding: 0rem 3rem;
+    .desc{
+        color: grey;
+    }
+    h2{
+        color: rgb(22, 22, 88);
+    }
+    p{
+        color: grey;
+    }
+    button{
+        border-radius: 100%;
+        padding: 16px 20px;
+        color:white;
+        border: orange;
+        margin-right: 10px;
+        background-color: orange;
+    }
+}
+
+.btnbasket{
+    width: 100%;
+    background-color: burlywood;
+    border: none;
+    cursor: pointer;
+    color: white;
+}

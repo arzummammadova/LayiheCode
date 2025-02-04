@@ -1,0 +1,90 @@
+.nav {
+    display: flex;
+    
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem;
+  
+    .nav-links ul {
+      display: flex;
+      gap: 1rem;
+  
+      li a {
+        color: black;
+      }
+    }
+  
+    .logo a {
+      color: black;
+      font-weight: 600;
+      font-family: "Irish Grover", serif;
+      font-size: 1.9rem;
+    }
+    .logo  {
+      color: black;
+      font-weight: 600;
+      font-family: "Irish Grover", serif;
+      font-size: 1.9rem;
+    }
+    .logospan {
+      color: var(--main-color);
+    }
+  }
+  
+  #nav {
+    padding-top: 1rem;
+  }
+  
+  .burger {
+    display: none;
+    cursor: pointer;
+  }
+  
+  .nav-link-d,
+  .action-d {
+    display: flex;
+  
+    &.open {
+      display: block; // For mobile dropdown visibility
+    }
+  }
+  
+  @media (max-width: 756px) {
+    .burger {
+      display: block;
+    }
+    .nav-link-d,
+    .action-d {
+      display: none;
+      flex-direction: column;
+      background-color: var(--bg-color);
+    margin-top: 1rem;
+      position: absolute;
+      top: 70px;
+      left: 0;
+      width: 100%;
+      z-index: 10;
+      padding: 1rem;
+  
+      ul {
+        flex-direction: column;
+        gap: 1rem;
+      }
+    }
+  }
+  
+
+
+
+  .logo a {
+    color: black;
+    font-weight: 600;
+    font-family: "Irish Grover", serif;
+    font-size: 1.9rem;
+  }
+  .logo  {
+    color: black;
+    font-weight: 600;
+    font-family: "Irish Grover", serif;
+    font-size: 1.9rem;
+  }
