@@ -10,6 +10,7 @@ import { useFormik } from 'formik';
 import schema from '../components/schema/productSchema';
 import { useState } from 'react';
 import { Formik } from 'formik';
+import { Link } from 'react-router-dom';
 const style = {
     position: 'absolute',
     top: '50%',
@@ -113,7 +114,8 @@ const Addpage = () => {
         <div>
             <div class="container">
 
-                <h1>Basket</h1>
+                <h1>Admin Page</h1>
+             <Link to='/user'className='mainbtn'>User</Link>
                 <button className='btn btn-primary mx-2' onClick={() => { sortlh() }}>High to low</button>
                 <button className='btn btn-primary ml-3' onClick={() => { sorthl() }}>  low to high</button>
                 <button className='btn btn-warning' onClick={handleOpen}>create </button>

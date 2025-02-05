@@ -8,6 +8,7 @@ import Addpage from './pages/Addpage';
 import Details from './pages/Details';
 import Register from './pages/auth/register/Register';
 import Login from './pages/auth/login/Login';
+import AdminUser from './pages/admin/AdminUser';
 const router = createBrowserRouter([
   {
     path: '/',
@@ -31,6 +32,10 @@ const router = createBrowserRouter([
         element:<Details/>
       }
       ,
+      {
+        path:"/user",
+        element:<AdminUser/>
+      }
      
     ],
   },
