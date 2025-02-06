@@ -7,6 +7,8 @@ import user from "../models/userModel.js";
 import { generateToken } from "../utils/generateToken.js";
 import { recieveMail } from "../middleware/mailer/mailer.js";
 import userLoginValidationSchema from "../middleware/validation/userLoginValidation.js";
+import ForgotValidationSchema from "../middleware/validation/ForgotValidationSchema.js";
+import ResetValidationSchema from "../middleware/validation/ResetValidation.js";
 
 export const getUser=async(req,res)=>{
   try {
@@ -76,6 +78,7 @@ export const getUser=async(req,res)=>{
 export const verifyEmail = async (req, res) => {
     try {
       const { token } = req.params;
+      console.log("Token:", token);
   
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
   
@@ -92,7 +95,24 @@ export const verifyEmail = async (req, res) => {
       return res.status(400).json({ message: "Token not valid or expired" });
     }
   };
+// export const verifyEmail = async (req, res) => {
+//   try {
+//     const token = req.cookies.token;
+    
+//     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
+//     const updatedVerify = await user.findByIdAndUpdate(
+//       { _id: decoded.id },
+//       { isVerified: true }
+//     );
+
+//     if (updatedVerify) {
+//       return res.redirect(`${process.env.CLIENT_LINK}/login`);
+//     }
+//   } catch (error) {
+//     return res.status(400).json({ message: "Token not valid or expaired in" });
+//   }
+// };
   // export const login = async (req, res) => {
   //   const { username,password } = req.body;
   
@@ -161,13 +181,19 @@ export const verifyEmail = async (req, res) => {
     try {
       const { email } = req.body;
   
+      const { error } = ForgotValidationSchema.validate(req.body);
+  
+      if (error) {
+        return res.status(400).json({ message: error.details[0].message });
+      }
+  
       const existUser = await user.findOne({ email });
   
       if (!existUser) return res.status(404).json({ message: "User not found" });
   
-      const resetToken = generateToken(existUser._id, res);
+      generateToken(existUser._id, res, "resetToken");
   
-      const resetLink = `${process.env.CLIENT_LINK}/resetpassword/${resetToken}`;
+      const resetLink = `${process.env.CLIENT_LINK}/resetpassword`;
   
       recieveMail(existUser, resetLink);
   
@@ -176,7 +202,7 @@ export const verifyEmail = async (req, res) => {
       return res.status(500).json({ message: error.message });
     }
   };
-
+  
 
 
   export const register = async (req, res) => {
@@ -227,7 +253,7 @@ export const verifyEmail = async (req, res) => {
       const isMatch = await bcrypt.compare(password, existUser.password);
       if (!isMatch) return res.status(400).json({ message: "Username or Password wrong" });
   
-      await user.findByIdAndUpdate(existUser._id, { isLogin: true }); // isLogin = true edirik
+      await user.findByIdAndUpdate(existUser._id, { isLogin: true });
       generateToken(existUser._id, res);
   
       return res.status(200).json({ message: "User logged in successfully", existUser });
@@ -238,7 +264,50 @@ export const verifyEmail = async (req, res) => {
   
 
 
-
+  export const resetPassword = async (req, res) => {
+    console.log();
+    console.log(req.body);
+  
+    try {
+      const { password } = req.body;
+  
+      const { error } = ResetValidationSchema.validate({
+        password,
+      });
+  
+      if (error) {
+        return res.status(400).json({ message: error.details[0].message });
+      }
+  
+      const resetToken = req.cookies.resetToken;
+  
+      if (!resetToken) {
+        return res
+          .status(400)
+          .json({ message: "No token found, request new one" });
+      }
+  
+      const decoded = jwt.verify(resetToken, process.env.JWT_SECRET);
+  
+      const existUser = await user.findById(decoded.id);
+  
+      if (!existUser) {
+        return res.status(400).json({ message: "Token not valid or expaired" });
+      }
+      const hashedPassword = await bcrypt.hash(password, 10);
+  
+      existUser.password = hashedPassword;
+  
+      await existUser.save();
+  
+      res.clearCookie("resetToken");
+  
+      return res.status(200).json({ message: "Password reset successfully" });
+    } catch (error) {
+      return res.status(500).json({ message: error.message });
+    }
+  };
+  
 
 
 

@@ -9,6 +9,8 @@ import Details from './pages/Details';
 import Register from './pages/auth/register/Register';
 import Login from './pages/auth/login/Login';
 import AdminUser from './pages/admin/AdminUser';
+import ForgotPassword from './pages/auth/forgotpassword/ForgotPassword';
+import Resetpassword from './pages/auth/resetpassword/Resetpassword';
 const router = createBrowserRouter([
   {
     path: '/',
@@ -51,6 +53,15 @@ const router = createBrowserRouter([
     path:'/login',
     element:<Login/>
   }
+  ,
+  {
+    path: "/forgotpassword",
+    element: <ForgotPassword />,
+  },
+  {
+    path: "/resetpassword",
+    element: <Resetpassword />,
+  },
 ]);
 const App = () => {
   return <RouterProvider router={router} />;
