@@ -1,7 +1,9 @@
 import * as Yup from "yup";
 
-export const userRegisterValidationSchema = Yup.object({
+export const editSchema = Yup.object({
   // image: Yup.mixed(), 
+  
+  bio:Yup.string().max(50),
   name: Yup.string()
     .min(3, "Name must be at least 3 characters.")
     .max(30, "Name must be at most 30 characters.")

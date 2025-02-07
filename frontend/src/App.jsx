@@ -11,6 +11,7 @@ import Login from './pages/auth/login/Login';
 import AdminUser from './pages/admin/AdminUser';
 import ForgotPassword from './pages/auth/forgotpassword/ForgotPassword';
 import Resetpassword from './pages/auth/resetpassword/Resetpassword';
+import UserSettings from './pages/settings/UserSettings';
 const router = createBrowserRouter([
   {
     path: '/',
@@ -37,6 +38,10 @@ const router = createBrowserRouter([
       {
         path:"/user",
         element:<AdminUser/>
+      }
+      ,{
+        path:'/settings',
+        element:<UserSettings/>
       }
      
     ],

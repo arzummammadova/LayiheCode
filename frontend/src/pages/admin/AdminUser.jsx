@@ -16,6 +16,14 @@ const AdminUser = () => {
         return new Date(dateString).toLocaleDateString(undefined, options);
     };
 
+    const formatData = (dateString) => {
+        const date = new Date(dateString);
+        const day = String(date.getDate()).padStart(2, '0');
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const year = date.getFullYear();
+        return `${day}.${month}.${year}`;
+      };
+    
     // const removeUser = (userId) => {
     //     console.log("Deleting user with ID:", userId);
     //     // Burada user silmək üçün action çağırılmalıdır
@@ -32,6 +40,8 @@ const AdminUser = () => {
                     <div className="header__item">Last Name</div>
                     <div className="header__item">Image</div>
                     <div className="header__item">Email</div>
+                    <div className="header__item">Date</div>
+                    <div className="header__item">Bio</div>
                     <div className="header__item">isVerified
                     </div>
                     <div className="header__item">
@@ -57,10 +67,16 @@ const AdminUser = () => {
                                     <img src={user.image ? user.image : "https://picsum.photos/200"} alt="user" style={{ width: "50px", height: "50px", borderRadius: "50%" }} />
                                 </div>
                                 <div className="table-data">{user.email}</div>
+
+                              <span className="table-data">{formatData(user.birthDate)}</span>
+                              <div className="table-data">{user.bio?user.bio:'No thing'}</div>
+
+
                                 <div className="table-data">{user.isVerified ? '✅ Yes' : '❌ No'}</div>
                                 <div className="table-data">{user.isAdmin ? '✅ Yes' : '❌ No'}</div>
                                 <div className="table-data">{user.isLogin ? '✅ Yes' : '❌ No'}</div>
                                 <div className="table-data">{formatDate(user.updatedAt)}</div>
+
                              
                             </div>
                         ))

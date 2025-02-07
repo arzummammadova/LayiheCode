@@ -2,6 +2,7 @@ import Joi from "joi";
 
 const userRegisterValidationSchema = Joi.object({
    image: Joi.string(),
+   bio:Joi.string().max(50),
   name: Joi.string().min(3).max(30).required(),
   lastname: Joi.string().min(3).max(30).required(),
   username: Joi.string().min(3).max(30).required(),
@@ -14,7 +15,10 @@ const userRegisterValidationSchema = Joi.object({
     "string.min": "Password must be at least 8 characters long.",
     "string.pattern.base": "Password must contain at least one uppercase letter, one lowercase letter, and one number.",
   }),
-
+  birthDate: Joi.date().less('now').iso().messages({ // Validation əlavə edildi
+    "date.less": "Birth date cannot be in the future.",
+    "date.format": "Birth date must be in ISO format (YYYY-MM-DD)."
+  }),
 
   // image: Joi.string().uri().required(),
   // name: Joi.string().min(3).max(30).required(),

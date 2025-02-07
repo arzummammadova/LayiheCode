@@ -20,6 +20,9 @@ const Register = () => {
       formData.append("username", values.username);
       formData.append("email", values.email);
       formData.append("password", values.password);
+      formData.append("birthDate",values.birthDate)
+      
+
 
       await axios.post(`${baseUrl}/register`, formData);
 
@@ -30,6 +33,7 @@ const Register = () => {
       toast.error("Registration failed:", error);
     }
   };
+  
 
   const { values, handleChange, handleSubmit, setFieldValue, errors } =
     useFormik({
@@ -39,7 +43,8 @@ const Register = () => {
         username: "",
         email: "",
         password: "",
-        // confirmpassword: "",
+        birthDate: "",
+
       },
       onSubmit: submitForm,
       validationSchema: userRegisterValidationSchema,
@@ -105,7 +110,7 @@ const Register = () => {
               onChange={handleChange}
               value={values.lastname}
             />
-                {errors.lastname && (
+            {errors.lastname && (
               <div className="error">
                 <span className="error-icon">❌</span> {errors.lastname}
               </div>
@@ -123,7 +128,7 @@ const Register = () => {
               onChange={handleChange}
               value={values.username}
             />
-                {errors.username && (
+            {errors.username && (
               <div className="error">
                 <span className="error-icon">❌</span> {errors.username}
               </div>
@@ -141,12 +146,29 @@ const Register = () => {
               onChange={handleChange}
               value={values.email}
             />
-              {errors.email && (
+            {errors.email && (
               <div className="error">
                 <span className="error-icon">❌</span> {errors.email}
               </div>
             )}
           </div>
+          <div className="form-group">
+            <input
+              type="date" // Tarix üçün input tipi
+              id="birthDate"
+              name="birthDate"
+              placeholder="Add birth date"
+              className="input-field"
+              onChange={handleChange}
+              value={values.birthDate}
+            />
+            {errors.birthDate && (
+              <div className="error">
+                <span className="error-icon">❌</span> {errors.birthDate}
+              </div>
+            )}
+          </div>
+
 
           <div className="form-group">
 
@@ -159,24 +181,14 @@ const Register = () => {
               onChange={handleChange}
               value={values.password}
             />
-              {errors.password && (
+            {errors.password && (
               <div className="error">
                 <span className="error-icon">❌</span> {errors.password}
               </div>
             )}
           </div>
 
-          {/* <div className="form-group">
-          <div className="text-danger">{errors.confirmpassword}</div>
-          <input
-            type="password"
-            id="confirmpassword"
-            name="confirmpassword"
-           placeholder="confirm password" className="input-field"
-            onChange={handleChange}
-            value={values.confirmpassword}
-          />
-        </div> */}
+
           <span>
             Already have an account? <a style={{ color: "#00DC64" }} href="/login" >Login</a>
           </span>

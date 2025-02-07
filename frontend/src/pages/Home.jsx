@@ -9,6 +9,8 @@ import Caraousel from '../components/caraousel/Caraousel'
 import Recomendation from '../components/recomendation/Recomendation'
 import Legendary from '../components/legendary/Legendary'
 import Delivery from '../components/delivery/Delivery'
+import WhyChooseUs from '../components/whychoose/WhyChooseUs'
+import CallToAction from '../components/calltoaction/CallToAction'
 
 const Home = () => {
   return (
@@ -18,9 +20,12 @@ const Home = () => {
       {/* <About/> */}
       <Books/>
       <Caraousel/>
+      
       {/* <Recomendation/> */}
       <Legendary/>
+      <WhyChooseUs/>
       {/* <Products/> */}
+      <CallToAction/>
       <Delivery/>
       {/* <Customers/> */}
     </>

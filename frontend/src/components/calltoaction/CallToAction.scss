@@ -1,0 +1,57 @@
+.cta-section {
+    background: linear-gradient(135deg, #6a82fb, #00DC64);
+    padding: 5rem 3rem;
+    text-align: center;
+    border-radius: 12px;
+    color: #fff;
+    margin: 3rem 0;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  
+    .cta-content {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+  
+    .cta-title {
+      font-size: 3rem;
+      font-weight: bold;
+      margin-bottom: 1rem;
+      font-family: Irish Glover;
+      letter-spacing: 1px;
+    }
+  
+    .cta-description {
+      font-size: 1.2rem;
+      line-height: 1.6;
+      margin-bottom: 2rem;
+      color: rgba(255, 255, 255, 0.85);
+      max-width: 700px;
+      margin: 0 auto;
+    }
+  
+    .cta-button {
+      background-color: #ff4081;
+      border: none;
+      padding: 1rem 2.5rem;
+      font-size: 1.1rem;
+      color: #fff;
+      font-weight: 600;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.3s ease;
+      letter-spacing: 0.5px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  
+      &:hover {
+        background-color: #ff3366;
+        transform: translateY(-2px);
+      }
+  
+      &:active {
+        background-color: #e0305d;
+        transform: translateY(1px);
+      }
+    }
+  }
+  

@@ -9,7 +9,45 @@ import { recieveMail } from "../middleware/mailer/mailer.js";
 import userLoginValidationSchema from "../middleware/validation/userLoginValidation.js";
 import ForgotValidationSchema from "../middleware/validation/ForgotValidationSchema.js";
 import ResetValidationSchema from "../middleware/validation/ResetValidation.js";
+import { fileURLToPath } from 'url';
+import path from 'path';
+import fs from 'fs'; // Fayl sistemini idarə etmək üçün
+// import path from 'path';
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+export const deleteProfileImage = async (req, res) => {
+  try {
+    const userId = req.params.id;
+
+    const existingUser = await user.findById(userId);
+    if (!existingUser) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    if (!existingUser.image) {
+      return res.status(400).json({ message: "No profile image to delete" });
+    }
+
+    
+   
+    const imagePath = path.join(__dirname, '..', '..', existingUser.image);
+    fs.unlink(imagePath, (err) => {
+      if (err) {
+        console.error("Error deleting image:", err);
+        return res.status(500).json({ message: "Failed to delete image" });
+      }
+
+      existingUser.image = null;
+      existingUser.save();
+
+      return res.status(200).json({ message: "Profile image deleted successfully" });
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: error.message });
+  }
+};
 export const getUser=async(req,res)=>{
   try {
     const users=await user.find()
@@ -207,9 +245,9 @@ export const verifyEmail = async (req, res) => {
 
   export const register = async (req, res) => {
     try {
-      const { image, name, username, email, password, lastname } = req.body;
+      const { image, name, username, email, password, lastname , birthDate,bio} = req.body;
   
-      const { error } = userRegisterValidationSchema.validate({ image, name, username, email, password, lastname });
+      const { error } = userRegisterValidationSchema.validate({ image, name, username, email, password, lastname , birthDate});
       if (error) return res.status(400).json({ message: error.details[0].message });
   
       const existUser = await user.findOne({ email });
@@ -221,10 +259,12 @@ export const verifyEmail = async (req, res) => {
       const newUser = new user({
         image,
         name,
+        bio,
         username,
         email,
         lastname,
         password: hashedPassword,
+        birthDate,
         isAdmin: userCount === 0 ? true : false, // İlk user admin olacaq
       });
   
@@ -239,6 +279,66 @@ export const verifyEmail = async (req, res) => {
       return res.status(500).json({ message: error.message });
     }
   };
+  
+  export const updateProfile = async (req, res) => {
+    try {
+      const userId = req.params.id;
+      const { name, username, email, password, lastname, birthDate, bio } = req.body;
+      const image = req.file ? `/uploads/${req.file.filename}` : null;
+  
+      const existingUser = await user.findById(userId);
+      if (!existingUser) {
+        return res.status(404).json({ message: "User not found" });
+      }
+  
+      let updatedPassword = existingUser.password;
+      if (password && password !== existingUser.password) {
+        updatedPassword = await bcrypt.hash(password, 10);
+      }
+  
+      const updatedUser = await user.findByIdAndUpdate(
+        userId,
+        {
+          image: image || existingUser.image,
+          name: name || existingUser.name,
+          username: username || existingUser.username,
+          email: email || existingUser.email,
+          lastname: lastname || existingUser.lastname,
+          birthDate: birthDate || existingUser.birthDate,
+          bio: bio || existingUser.bio,
+          password: updatedPassword,
+        },
+        { new: true }
+      );
+  
+      return res.status(200).json({ updatedUser });
+    } catch (error) {
+      console.error(error);
+      return res.status(500).json({ message: error.message });
+    }
+  };
+  export const uploadImage = async (req, res) => {
+    try {
+        if (!req.file) {
+            return res.status(400).json({ message: 'No file uploaded' });
+        }
+  
+        // Faylın URL-i
+        const imageUrl = `/uploads/${req.file.filename}`;
+        console.log('Uploaded file:', req.file);
+  
+        // res.status(200).json({ message: 'Uploaded successfully', imageUrl: imageUrl });
+        res.status(200).json({ 
+          message: 'Uploaded successfully', 
+          imageUrl: `http://localhost:5000/uploads/${req.file.filename}` 
+        });
+    } catch (error) {
+        console.error("Error in uploadImage:", error);  // Ətraflı xətanı loglayın
+        res.status(500).json({ message: 'Failed to upload file', error: error.message });
+    }
+  };
+  
+ 
   
   export const login = async (req, res) => {
     try {
@@ -436,4 +536,4 @@ export const verifyEmail = async (req, res) => {
   //   }
   // };
   
-  
+ 

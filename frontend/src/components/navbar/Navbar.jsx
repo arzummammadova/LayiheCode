@@ -9,18 +9,29 @@ import bookicon from "../../assets/icons/bookicon.svg";
 import basketicon from "../../assets/icons/basket.svg";
 import person from "../../assets/icons/profile.svg";
 import { RxHamburgerMenu } from "react-icons/rx";
-import {  fetchLoginUser, logoutUser } from "../../redux/features/userSlice";
+import { fetchLoginUser, logoutUser } from "../../redux/features/userSlice";
+import { GiNightSky } from "react-icons/gi";
+
 import axios from 'axios';
+// import { DayAndNightToggle } from 'react-day-and-night-toggle'
+import { PiSunLight } from "react-icons/pi";
+
 import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
   const basket = useSelector((state) => state.basket.basket);
-  const { user, isLoggedIn, isAdmin, isLogin } = useSelector((state) => state.auth); // Add isLogin here
+  const { user, isLoggedIn, isAdmin, isLogin } = useSelector((state) => state.auth); 
   const count = basket.reduce((sum, i) => sum + i.count, 0);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [darkMode, setDarkMode] = useState(false);
+
+  const toggleMode = () => {
+    setDarkMode(!darkMode);
+    document.body.classList.toggle('dark-mode');
+  };
 
   useEffect(() => {
     dispatch(fetchLoginUser());
@@ -92,9 +103,23 @@ const Navbar = () => {
               <ul>
                 <li>
                   <Link to="/">
-                    <img style={{ width: "20px", height: "25px" }} src={light} alt="Logo" />
+
+
+
+
+                    <div className={`toggle-container ${darkMode ? 'dark' : 'light'}`}>
+                      <button onClick={toggleMode} className="switch-button">
+                        {darkMode ? <GiNightSky className="icon night-icon" /> : <PiSunLight className="icon sun-icon" />}
+                        <span className="mode-text">{darkMode ? 'Night' : 'Day'}</span>
+                      </button>
+                    </div>
+
+
+                    {/* <img style={{ width: "20px", height: "25px" }} src={light} alt="Logo" /> */}
                   </Link>
+
                 </li>
+
                 <li>
                   <Link to="/">
                     <CiSearch size={25} />
@@ -137,11 +162,8 @@ const Navbar = () => {
             ) : (
               <div className="profile" onClick={toggleProfileDropdown}>
                 <button className="profile-btn">
-                  <img
-                    src={user?.image || person}
-                    alt="profile"
-                    className="profile-img"
-                  />
+                <img style={{width:"45px",height:"45px",borderRadius:"50%"
+                 }} src={user?.image ? `http://localhost:5000${user.image}` : person} alt="Profile" className="profile-photo" />
                 </button>
                 Welcome {user?.name} {user?.lastname} ({user?.username})
                 {isProfileDropdownOpen && (
@@ -151,7 +173,7 @@ const Navbar = () => {
                         <Link to="/settings">Settings</Link>
                       </li>
                       <li>
-                        <button style={{border:"none"}} onClick={handleLogout}>Logout</button>
+                        <button style={{ border: "none" }} onClick={handleLogout}>Logout</button>
                       </li>
                     </ul>
                   </div>

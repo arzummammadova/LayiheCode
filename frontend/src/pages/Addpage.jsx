@@ -33,7 +33,7 @@ const Addpage = () => {
 
 
     const [selectedFile, setSelectedFile] = useState(null);
-  const [imagePreview, setImagePreview] = useState('');
+    const [imagePreview, setImagePreview] = useState('');
 
 
 
@@ -48,31 +48,31 @@ const Addpage = () => {
     }
     const handleImageUpload = async () => {
         if (!selectedFile) return;
-    
+
         const formData = new FormData();
         formData.append('image', selectedFile);
-    
+
         try {
-          const response = await fetch('http://localhost:5000/api/books/upload', {
-            method: 'POST',
-            body: formData,
-          });
-          const { imageUrl } = await response.json();
-          formik.setFieldValue('image', imageUrl); // Formik dəyərini təyin et
+            const response = await fetch('http://localhost:5000/api/books/upload', {
+                method: 'POST',
+                body: formData,
+            });
+            const { imageUrl } = await response.json();
+            formik.setFieldValue('image', imageUrl); // Formik dəyərini təyin et
         } catch (error) {
-          console.error('Yükləmə xətası:', error);
+            console.error('Yükləmə xətası:', error);
         }
-      };
-      const handleFileChange = (e) => {
+    };
+    const handleFileChange = (e) => {
         const file = e.target.files[0];
         if (file) {
-          setSelectedFile(file);
-          const reader = new FileReader();
-          reader.onload = () => setImagePreview(reader.result);
-          reader.readAsDataURL(file);
+            setSelectedFile(file);
+            const reader = new FileReader();
+            reader.onload = () => setImagePreview(reader.result);
+            reader.readAsDataURL(file);
         }
-      };
-    
+    };
+
     // const formik = useFormik({
     //     initialValues: {
     //         name: '',
@@ -91,16 +91,16 @@ const Addpage = () => {
         initialValues: { name: '', price: '', image: '', description: '' },
         validationSchema: schema,
         onSubmit: (values) => {
-          if (!values.image) {
-            alert('Şəkil yükləyin!');
-            return;
-          }
-          dispatch(postProduct(values));
-          handleClose();
-          formik.resetForm();
-          setImagePreview('');
+            if (!values.image) {
+                alert('Şəkil yükləyin!');
+                return;
+            }
+            dispatch(postProduct(values));
+            handleClose();
+            formik.resetForm();
+            setImagePreview('');
         },
-      });
+    });
     const sortlh = () => {
         dispatch(sortPriceLow())
 
@@ -115,7 +115,7 @@ const Addpage = () => {
             <div class="container">
 
                 <h1>Admin Page</h1>
-             <Link to='/user'className='mainbtn'>User</Link>
+                <Link to='/user' className='mainbtn'>User</Link>
                 <button className='btn btn-primary mx-2' onClick={() => { sortlh() }}>High to low</button>
                 <button className='btn btn-primary ml-3' onClick={() => { sorthl() }}>  low to high</button>
                 <button className='btn btn-warning' onClick={handleOpen}>create </button>
@@ -151,21 +151,21 @@ const Addpage = () => {
                             />
 
                             {formik.errors.image ? <div style={{ color: "red" }}>{formik.errors.image}</div> : null} */}
-   <input 
-              type="file" 
-              onChange={handleFileChange} 
-              accept="image/*" 
-            />
-            <button 
-              type="button" 
-              onClick={handleImageUpload}
-            >
-              Şəkli Yüklə
-            </button>
+                            <input
+                                type="file"
+                                onChange={handleFileChange}
+                                accept="image/*"
+                            />
+                            <button
+                                type="button"
+                                onClick={handleImageUpload}
+                            >
+                                Şəkli Yüklə
+                            </button>
 
-            {imagePreview && (
-              <img src={imagePreview} alt="Preview" style={{ width: '100px' }} />
-            )}
+                            {imagePreview && (
+                                <img src={imagePreview} alt="Preview" style={{ width: '100px' }} />
+                            )}
                             <input
                                 id="price"
                                 name="price"
