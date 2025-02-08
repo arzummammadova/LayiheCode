@@ -17,7 +17,7 @@ const Recomendation = () => {
   return (
     <div className="recomendation">
            <Title>
-                    <div className="row p-5">
+                    <div className="row p-1">
                         <div className="col-6">
                             <div className="title-l">
                               Our recommendation books

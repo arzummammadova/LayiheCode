@@ -15,10 +15,10 @@ body {
   background-color: var(--bg-color)!important;
   
   /* color: var(--main-color); */
-  font-size: 16px;
+  font-size: 13px;
 }
 a{
-  font-size: 16px;
+  font-size: 13px;
 }
 
 .button {
@@ -86,4 +86,44 @@ img{
   background-color: transparent;
 
 
+}
+
+
+
+
+
+
+
+
+@media (max-width: 567px) {
+ .right-hero{
+  display: none;
+ }
+ .logo a {
+  font-size: 16px!important;
+}
+.profile{
+  font-size: 10px;
+}
+.hero .row .left p{
+  font-size: 16px!important;
+}
+.nav {
+ 
+  padding: 0.4rem;
+}
+
+.title-l {
+  
+  font-size: 14px!important;
+
+}
+.mainbtn {
+  padding: 0.1rem 1rem;
+  height: 20px;
+  font-size: 12px!important;
+  
+  
+ 
+}
 }

@@ -8,10 +8,15 @@ body {
     overflow-x: hidden;
 }
 
+
 .hero {
     .row .left {
-        padding-top: 8rem;
-        padding-left: 8.8rem;
+        padding-top: 4rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: left;
+        gap: 2rem;
+        // padding-left: 8.8rem;
 
         .headermain {
             font-size: 2.3rem;
@@ -382,3 +387,275 @@ body {
       transform: translateY(0);
     }
   }
+
+
+   @import url('https://fonts.googleapis.com/css?family=Lato:100,300,400');
+   @import url('https://fonts.googleapis.com/css?family=Roboto:100');
+   
+   @mixin button($bcolor,
+   $url,
+   $x1,
+   $y1,
+   $bor,
+   $col) {
+    background: $bcolor;
+    -webkit-mask: url($url);
+    mask: url($url);
+    -webkit-mask-size: $x1 $y1;
+    mask-size: $x1 $y1;
+    border: $bor;
+    color: $col;
+   }
+   
+   
+   .button-container-1 {
+    position: relative;
+    width: 100px;
+    height: 50px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 6vh;
+    overflow: hidden;
+    border: 1px solid;
+    font-family: 'Lato', sans-serif;
+    font-weight: 300;
+    font-size: 20px;
+    transition: 0.5s;
+    letter-spacing: 1px;
+     border-radius: 8px;
+   
+    button {
+     width: 101%;
+     height: 100%;
+     font-family: 'Lato', sans-serif;
+     font-weight: 300;
+     font-size: 11px;
+     letter-spacing: 1px;
+     font-weight: bold;
+   
+     @include button(#000,
+     "https://raw.githubusercontent.com/robin-dela/css-mask-animation/master/img/nature-sprite.png",
+     2300%,
+     100%,
+     none,
+     #fff);
+     cursor: pointer;
+     -webkit-animation: ani2 0.7s steps(22) forwards;
+     animation: ani2 0.7s steps(22) forwards;
+   
+     &:hover {
+      -webkit-animation: ani 0.7s steps(22) forwards;
+      animation: ani 0.7s steps(22) forwards;
+     }
+    }
+   }
+   
+   .button-container-2 {
+    position: relative;
+    width: 100px;
+    height: 50px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 7vh;
+    overflow: hidden;
+    border: 1px solid #000;
+    font-family: 'Lato', sans-serif;
+    font-weight: 300;
+    transition: 0.5s;
+    letter-spacing: 1px;
+    border-radius: 8px;
+   
+    button {
+     width: 101%;
+     height: 100%;
+     font-family: 'Lato', sans-serif;
+     font-weight: 300;
+     font-size: 11px;
+     letter-spacing: 1px;
+     font-weight: bold;
+   
+     @include button(#000, "https://raw.githubusercontent.com/robin-dela/css-mask-animation/master/img/urban-sprite.png",
+     3000%,
+     100%,
+     none,
+     #fff);
+     cursor: pointer;
+     -webkit-animation: ani2 0.7s steps(29) forwards;
+     animation: ani2 0.7s steps(29) forwards;
+   
+     &:hover {
+      -webkit-animation: ani 0.7s steps(29) forwards;
+      animation: ani 0.7s steps(29) forwards;
+     }
+    }
+   }
+   
+   
+   .mas {
+       position: absolute;
+       color: #000;
+       text-align: center;
+       width: 101%;
+       font-family: 'Lato', sans-serif;
+       font-weight: 300;
+       position: absolute;
+       font-size: 11px;
+       margin-top: 17px;
+       overflow: hidden;
+       font-weight: bold;
+   
+   }
+   
+   @-webkit-keyframes ani {
+    from {
+     -webkit-mask-position: 0 0;
+     mask-position: 0 0;
+    }
+   
+    to {
+     -webkit-mask-position: 100% 0;
+     mask-position: 100% 0;
+    }
+   }
+   
+   @keyframes ani {
+    from {
+     -webkit-mask-position: 0 0;
+     mask-position: 0 0;
+    }
+   
+    to {
+     -webkit-mask-position: 100% 0;
+     mask-position: 100% 0;
+    }
+   }
+   
+   @-webkit-keyframes ani2 {
+    from {
+     -webkit-mask-position: 100% 0;
+     mask-position: 100% 0;
+    }
+   
+    to {
+     -webkit-mask-position: 0 0;
+     mask-position: 0 0;
+    }
+   }
+   
+   @keyframes ani2 {
+    from {
+     -webkit-mask-position: 100% 0;
+     mask-position: 100% 0;
+    }
+   
+    to {
+     -webkit-mask-position: 0 0;
+     mask-position: 0 0;
+    }
+   }
+   
+   a{
+     color:#00ff95;
+   }
+   
+   .button-container-3 {
+    position: relative;
+    width: 100px;
+    height: 50px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 8vh;
+    overflow: hidden;
+    border: 1px solid #000;
+    font-family: 'Lato', sans-serif;
+    font-weight: 300;
+    transition: 0.5s;
+    letter-spacing: 1px;
+    border-radius: 8px;
+   
+    button {
+     width: 101%;
+     height: 100%;
+     font-family: 'Lato', sans-serif;
+     font-weight: 300;
+     font-size: 11px;
+     letter-spacing: 1px;
+     font-weight: bold;
+   
+   
+     @include button(#000, "https://raw.githubusercontent.com/pizza3/asset/master/natureSmaller.png",
+     7100%,
+     100%,
+     none,
+     #fff);
+     cursor: pointer;
+     -webkit-animation: ani2 0.7s steps(70) forwards;
+     animation: ani2 0.7s steps(70) forwards;
+   
+     &:hover {
+      -webkit-animation: ani 0.7s steps(70) forwards;
+      animation: ani 0.7s steps(70) forwards;
+     }
+    }
+   }
+
+
+
+
+  //  // draw border olan
+  //  @mixin btn-border-drawing($color: #ccc, $hover: black, $width: 2px, $vertical: top, $horizontal: left, $duration: 0.25s) {
+  //   box-shadow: inset 0 0 0 $width $color;
+  //   color: $color;
+  //   // transition: color $duration $duration/3;
+  //   position: relative;
+    
+  //   &::before,
+  //   &::after {
+  //     border: 0 solid transparent;
+  //     box-sizing: border-box;
+  //     content: '';
+  //     pointer-events: none;
+  //     position: absolute;
+  //     width: 0; height: 0;
+      
+  //     #{$vertical}: 0; 
+  //     #{$horizontal}: 0;
+  //   }
+  
+  //   &::before {
+  //     $h-side: if($horizontal == 'left', 'right', 'left');
+      
+  //     border-#{$vertical}-width: $width;
+  //     border-#{$h-side}-width: $width;
+  //   }
+    
+  //   &::after {
+  //     $v-side: if($vertical == 'top', 'bottom', 'top');
+      
+  //     border-#{$v-side}-width: $width;
+  //     border-#{$horizontal}-width: $width;
+  //   }
+    
+  //   &:hover {
+  //     color: $hover;
+      
+  //     &::before,
+  //     &::after {
+  //       border-color: $hover;
+  //       transition: border-color 0s, width $duration, height $duration;
+  //       width: 100%;
+  //       height: 100%;
+  //     }
+      
+  //     &::before { transition-delay: 0s, 0s, $duration; }
+      
+  //     &::after { transition-delay: 0s, $duration, 0s; }
+  //   }
+  // }
+  
+  // .draw-border {
+  //   padding: 0.7rem 1rem ;
+  //   border: none;
+  //   @include btn-border-drawing(#000000, #339207, 2px, bottom, right);
+  // }
+  

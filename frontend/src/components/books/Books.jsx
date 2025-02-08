@@ -8,14 +8,14 @@ const Books = () => {
         <div>
             <div className="container">
                 <Title>
-                    <div className="row p-5">
+                    <div className="row p-1 mt-4">
                         <div className="col-6">
-                            <div className="title-l">
+                            <div className="title-l d-lg-block ">
                                 This week's most popular books
                             </div>
                         </div>
 
-                        <div className="col-6" style={{ justifyContent: 'flex-end', display: 'flex' }}>
+                        <div className="col-6 " style={{ justifyContent: 'flex-end', display: 'flex' }}>
                             <Link to='/' className="mainbtn">
                                 Explore more
                             </Link>

@@ -11,6 +11,9 @@ import person from "../../assets/icons/profile.svg";
 import { RxHamburgerMenu } from "react-icons/rx";
 import { fetchLoginUser, logoutUser } from "../../redux/features/userSlice";
 import { GiNightSky } from "react-icons/gi";
+import { FiHeart } from "react-icons/fi";
+import { PiBooksBold } from "react-icons/pi";
+import { BsBasket2Fill } from "react-icons/bs";
 
 import axios from 'axios';
 // import { DayAndNightToggle } from 'react-day-and-night-toggle'
@@ -93,9 +96,9 @@ const Navbar = () => {
                 <li>
                   <Link to="/">About</Link>
                 </li>
-                <li>
+                {/* <li>
                   <Link to="/">Contact Us</Link>
-                </li>
+                </li> */}
               </ul>
             </div>
 
@@ -120,24 +123,30 @@ const Navbar = () => {
 
                 </li>
 
-                <li>
+                {/* <li>
                   <Link to="/">
                     <CiSearch size={25} />
                   </Link>
-                </li>
+                </li> */}
                 <li>
                   <Link to="/">
-                    <img style={{ width: "20px", height: "20px" }} src={heart} alt="Logo" />
+                  <FiHeart />
+
+                    {/* <img style={{ width: "20px", height: "20px" }} src={heart} alt="Logo" /> */}
                   </Link>
                 </li>
                 <li>
                   <Link to="/">
-                    <img style={{ width: "20px", height: "20px" }} src={bookicon} alt="Logo" />
+                    {/* <img style={{ width: "20px", height: "20px" }} src={bookicon} alt="Logo" /> */}
+                    <PiBooksBold />
+
                   </Link>
                 </li>
                 <li>
                   <Link to="/">
-                    <img style={{ width: "20px", height: "20px" }} src={basketicon} alt="basket" />
+                    {/* <img style={{ width: "20px", height: "20px" }} src={basketicon} alt="basket" /> */}
+                    <BsBasket2Fill />
+
                   </Link>
                   <sup style={{ color: "red" }}>{count}</sup>
                 </li>
@@ -161,11 +170,11 @@ const Navbar = () => {
               </div>
             ) : (
               <div className="profile" onClick={toggleProfileDropdown}>
-                <button className="profile-btn">
-                <img style={{width:"45px",height:"45px",borderRadius:"50%"
+                <button className="profile-btn mx-1" style={{borderRadius:"50%"}}>
+                <img style={{width:"30px",height:"30px",borderRadius:"50%"
                  }} src={user?.image ? `http://localhost:5000${user.image}` : person} alt="Profile" className="profile-photo" />
                 </button>
-                Welcome {user?.name} {user?.lastname} ({user?.username})
+                  Welcome {user?.name}
                 {isProfileDropdownOpen && (
                   <div className="profile-dropdown">
                     <ul>

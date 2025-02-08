@@ -42,6 +42,7 @@ const Addpage = () => {
         dispatch(fetchProduct())
     }, [dispatch]);
 
+    console.log(products)
 
     const removeProduct = (id) => {
         dispatch(deleteProduct(id))

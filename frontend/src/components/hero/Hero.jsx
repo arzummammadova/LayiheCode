@@ -54,19 +54,26 @@ const Hero = () => {
     return (
         <>
 
+
             <section id='hero'>
-                <div className="h">
+                <div className="container">
+                    <div className="h">
                     <div className="hero">
                         <div className="row ">
-                            <div className="col-6 left">
+                            <div className="col-lg-6  left">
                                 <p className='header'>
                                     Your Journey to a World of Stories Starts Here.</p>
                                 {/* <h1 className='headermain'>Furniture Collections</h1> */}
                                 <p className='mt-3'>Browse our vast collection of books, explore new releases, and get your hands on the latest bestsellers. Your next adventure is just a click away!</p>
-                                <button className='btnsh'>Discover</button>
+                                <button className='btnsh btnflex ' >Discover</button>
+                                {/* <button class="draw-border">Draw Border</button> */}
+                                {/* <div class="button-container-3">
+                                    <span class="mas">MASK3</span>
+                                    <button type="button" name="Hover">MASK3</button>
+                                </div> */}
                             </div>
 
-                            <div className="col-6 right">
+                            <div className="col-lg-6 right right-hero">
                                 <Link to='/' className='popular-p'>watch today’s <span className='green'> popular
                                 </span> book
                                     <FaRegArrowAltCircleRight />
@@ -95,32 +102,32 @@ const Hero = () => {
                                             </div>
                                         </div>
 
-                                   
+
 
                                         <div className="chat-content" ref={chatContentRef}>
-                                        <div className="firstcontent">
-                                            <div className="welcome-header">
-                                                👋 Salam! Mən ReadlyChat sənin kitab köməkçin!
+                                            <div className="firstcontent">
+                                                <div className="welcome-header">
+                                                    👋 Salam! Mən ReadlyChat sənin kitab köməkçin!
+                                                </div>
+
+                                                <p className="welcome-text">
+                                                    Burada istədiyin kitab haqqında sual verə bilərsən. 😊
+                                                </p>
+
+                                                <div className="suggestions">
+                                                    ✨ <strong>Məsələn:</strong>
+                                                    <ul>
+                                                        <li>🔥 <span>Bestsellerlər</span> haqqında soruş</li>
+                                                        <li>🧙‍♂️ <span>Fantastik kitablar</span> ilə maraqlan</li>
+                                                        <li>🖋️ <span>Məşhur yazıçılar</span> barədə öyrən</li>
+                                                    </ul>
+                                                </div>
+
+                                                <p className="final-note">
+                                                    Mən sənin kitab dünyanda ən yaxşı yoldaşın olmağa hazıram!
+                                                    elə isə aşağıda suallarını yaz🚀
+                                                </p>
                                             </div>
-
-                                            <p className="welcome-text">
-                                                Burada istədiyin kitab haqqında sual verə bilərsən. 😊
-                                            </p>
-
-                                            <div className="suggestions">
-                                                ✨ <strong>Məsələn:</strong>
-                                                <ul>
-                                                    <li>🔥 <span>Bestsellerlər</span> haqqında soruş</li>
-                                                    <li>🧙‍♂️ <span>Fantastik kitablar</span> ilə maraqlan</li>
-                                                    <li>🖋️ <span>Məşhur yazıçılar</span> barədə öyrən</li>
-                                                </ul>
-                                            </div>
-
-                                            <p className="final-note">
-                                                Mən sənin kitab dünyanda ən yaxşı yoldaşın olmağa hazıram! 
-                                                elə isə aşağıda suallarını yaz🚀
-                                            </p>
-                                        </div>
                                             {messages.map((msg, index) => (
                                                 <p key={index} className={msg.from === 'user' ? 'user-message' : 'bot-message'}>
                                                     {msg.text}
@@ -157,7 +164,9 @@ const Hero = () => {
                             </div>
                         </div>
                     </div>
+                </div>    
                 </div>
+            
             </section>
 
         </>
