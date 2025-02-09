@@ -59,7 +59,7 @@ const Addpage = () => {
                 body: formData,
             });
             const { imageUrl } = await response.json();
-            formik.setFieldValue('image', imageUrl); // Formik dəyərini təyin et
+            formik.setFieldValue('image', imageUrl); 
         } catch (error) {
             console.error('Yükləmə xətası:', error);
         }
@@ -233,13 +233,36 @@ const Addpage = () => {
                 </Modal>
 
                 <div class="table">
-                    <div class="table-header">
-                        <div class="header__item"><a id="name" class="filter__link" href="#">Name</a></div>
-                        <div class="header__item"><a id="wins" class="filter__link filter__link--number" href="#">Image</a></div>
-                        <div class="header__item"><a id="draws" class="filter__link filter__link--number" href="#">description</a></div>
-                        <div class="header__item"><a id="losses" class="filter__link filter__link--number" href="#">price</a></div>
-                        <div class="header__item"><a id="total" class="filter__link filter__link--number" href="#">action</a></div>
+                <div className="table-header">
+                    <div className="header__item"><a id="name" class="filter__link" href="#">Book name</a></div>
+                    <div className="header__item"><a id="name" class="filter__link" href="#">Image</a></div>
+                    <div className="header__item">
+                    <a id="name" class="filter__link" href="#">Description</a>
                     </div>
+                    <div className="header__item">
+                    <a id="name" class="filter__link" href="#">Price</a>
+                    </div>
+                 
+                    <div className="header__item">
+                    <a id="name" class="filter__link" href="#">Category</a>
+                    </div>
+                    <div className="header__item">
+                    <a id="name" class="filter__link" href="#">Genre</a>
+                    </div>
+                    <div className="header__item">
+                    <a id="name" class="filter__link" href="#">Author</a>
+                    </div>
+                    <div className="header__item">
+                    <a id="name" class="filter__link" href="#">Published Date</a>
+                    </div>
+                  
+                    <div className="header__item">
+                    <a id="name" class="filter__link" href="#">Actions</a>
+                    </div>
+                 
+
+             
+                </div>
                     <div class="table-content">
 
 
@@ -248,12 +271,17 @@ const Addpage = () => {
                                 products.map((product) =>
                                     <div class="table-row" key={product._id}>
                                         <div class="table-data">{product.name}</div>
-                                        <div class="table-data" style={{ height: "70px" }}>
+                                        <div class="table-data" style={{ height: "150px" }}>
                                             <img src=
                                                 {product.image} alt="" />
                                         </div>
                                         <div class="table-data">{product.description}</div>
                                         <div class="table-data">${product.price}</div>
+                                        <div class="table-data">${product.category}</div>
+                                        <div class="table-data">${product.genre}</div>
+                                        <div class="table-data">${product.author}</div>
+                                        <div class="table-data">${product.publishedDate}</div>
+                                   
                                         <div class="table-data">
                                             <button class='btn btn-danger' onClick={() => removeProduct(product._id)}>
                                                 delete

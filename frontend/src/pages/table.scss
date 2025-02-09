@@ -14,14 +14,14 @@ $color-form-highlight: #EEEEEE;
 
 .table-header {
 	display:flex;
-	width:100%;
+	// width:100%;
 	background:#000;
 	padding:($half-spacing-unit * 1.5) 0;
 }
 
 .table-row {
 	display:flex;
-	width:100%;
+	// width:100%;
 	padding:($half-spacing-unit * 1.5) 0;
 	
 	&:nth-of-type(odd) {
@@ -32,15 +32,19 @@ $color-form-highlight: #EEEEEE;
 .table-data, .header__item {
 	flex: 1 1 20%;
 	text-align:center;
+	
 }
 
 .header__item {
 	text-transform:uppercase;
 	color: white;
+	padding:($half-spacing-unit * 1.5) 0;
 }
 
 .filter__link {
-	color:white;
+	// color:white;
+	color: white!important;
+	background-color: transparent!important;
 	text-decoration: none;
 	position:relative;
 	display:inline-block;
@@ -65,4 +69,25 @@ $color-form-highlight: #EEEEEE;
 		content: '(asc)';
 	}
 	
+}
+
+@media (max-width:758px) {
+	.table{
+		overflow-x:scroll!important;	
+	}
+
+}
+@media (max-width: 568px) {
+    .table-header, .table-row {
+        flex-direction: column;
+    }
+    .header__item, .table-data {
+        flex: 1 1 100%;
+        text-align: left;
+        padding: 10px;
+    }
+    .table-data img {
+        width: 100%;
+        height: auto;
+    }
 }
