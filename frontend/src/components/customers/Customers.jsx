@@ -8,9 +8,9 @@ import { useNavigate } from 'react-router-dom'
 
 const Customers = () => {
     const products=useSelector((state)=>state.products.products)
-    console.log(products)
+    // console.log(products)
     const basket=useSelector((state)=>state.basket.basket)
-    console.log(basket)
+    // console.log(basket)
 
     const dispatch=useDispatch()
     const nav=useNavigate()

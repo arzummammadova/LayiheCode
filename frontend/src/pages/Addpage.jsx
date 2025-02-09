@@ -89,7 +89,7 @@ const Addpage = () => {
     //     },
     // });
     const formik = useFormik({
-        initialValues: { name: '', price: '', image: '', description: '', category: '', author: '', genre: '', publishedDate: '' },
+        initialValues: { name: '', price: '', image: '', description: '', category: '', author: '', genre: '', publishedDate: '' ,lang:''},
         validationSchema: schema,
         onSubmit: (values) => {
             if (!values.image) {
@@ -225,7 +225,18 @@ const Addpage = () => {
                             />
 
 
-                            {formik.errors.publishedDate ? <div style={{ color: "red" }}>{formik.errors.ublishedDate}</div> : null}
+                            {formik.errors.publishedDate ? <div style={{ color: "red" }}>{formik.errors.publishedDate}</div> : null}
+                            <input
+                                id="lang"
+                                name="lang"
+                                type="text"
+                                placeholder='add language '
+                                onChange={formik.handleChange}
+                                value={formik.values.lang}
+                            />
+
+
+                            {formik.errors.lang ? <div style={{ color: "red" }}>{formik.errors.lang}</div> : null}
                             <button type="submit" className='mt-4 btn btn-danger'>Submit</button>
                         </form>
 
@@ -255,6 +266,9 @@ const Addpage = () => {
                     <div className="header__item">
                     <a id="name" class="filter__link" href="#">Published Date</a>
                     </div>
+                    <div className="header__item">
+                    <a id="name" class="filter__link" href="#">Lang</a>
+                    </div>
                   
                     <div className="header__item">
                     <a id="name" class="filter__link" href="#">Actions</a>
@@ -275,12 +289,13 @@ const Addpage = () => {
                                             <img src=
                                                 {product.image} alt="" />
                                         </div>
-                                        <div class="table-data">{product.description}</div>
+                                        <div class="table-data">{product.description.slice(0,100)}...</div>
                                         <div class="table-data">${product.price}</div>
-                                        <div class="table-data">${product.category}</div>
-                                        <div class="table-data">${product.genre}</div>
-                                        <div class="table-data">${product.author}</div>
-                                        <div class="table-data">${product.publishedDate}</div>
+                                        <div class="table-data">{product.category}</div>
+                                        <div class="table-data">{product.genre}</div>
+                                        <div class="table-data">{product.author}</div>
+                                        <div class="table-data">{product.publishedDate}</div>
+                                        <div className="table-data">{product.lang}</div>
                                    
                                         <div class="table-data">
                                             <button class='btn btn-danger' onClick={() => removeProduct(product._id)}>

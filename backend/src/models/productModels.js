@@ -34,6 +34,10 @@ const productSchema = new mongoose.Schema({
         type: Date,
         required: true
     },
+    lang:{
+        type:String,
+        required:false,
+    },
     reviews: [
         {
             user: {

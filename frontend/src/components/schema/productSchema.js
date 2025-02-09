@@ -8,7 +8,8 @@ const schema = yup.object().shape({
   category: yup.string().required(),
   author: yup.string().required(),
   genre: yup.string().required(),
-  publishedDate: yup.date().typeError('Düzgün tarix formatı daxil edin').required('Tarix vacibdir')
+  publishedDate: yup.date().typeError('Düzgün tarix formatı daxil edin').required('Tarix vacibdir'),
+  lang:yup.string(),
 
 });
 

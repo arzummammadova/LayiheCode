@@ -1,9 +1,19 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import Title from '../title/Title'
 import './books.scss'
 import pridebook from "../../assets/images/pridebook.png"
 import { Link } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import { fetchProduct } from '../../redux/features/productSlice'
 const Books = () => {
+    const books=useSelector((state)=>state.products.products)||[]
+    const dispatch=useDispatch()
+      useEffect(() => {
+        
+        dispatch(fetchProduct())
+      }, [dispatch]);
+      console.log(books)
+    
     return (
         <div>
             <div className="container">
@@ -28,191 +38,50 @@ const Books = () => {
 
 
                 <div className="row">
-                    <div className="col-lg-4 col-md-6 col-sm-12">
+                    {
+                        books.length>0 ?(
+                            books.slice(0,6).map((book)=>(  <div className="col-lg-4 col-md-6 col-sm-12" id={book._id}>
 
-                        <div className="box">
-                            <div className="box-top row">
-                                <div className="  col-8 box-left">
-                                    <img src={pridebook} alt="" />
-
+                                <div className="box">
+                                    <div className="box-top row">
+                                        <div className="  col-6 box-left">
+                                            <img src={book.image} alt="" />
+        
+                                        </div>
+                                        <div className="col-6 box-right">
+                                            <p className='right-name'>   {book.name}</p>
+                                            <p className="autorname">
+                                                {book.author}
+                                            </p>
+                                            <p className="desc">
+                                                {book.description.slice(0,30)}...
+                                            </p>
+        
+                                            <p className="price">
+                                            {book.price}
+                                            </p>
+        
+        
+                                        </div>
+                                    </div>
+        
+                                    <div className="box-bottom mt-2">
+                                        <button>Add to read +</button>
+                                    </div>
+        
+        
                                 </div>
-                                <div className="col-4 box-right">
-                                    <p>   name:Pride and Prejudice</p>
-                                    <p className="autorname">
-                                        Jane Austen
-                                    </p>
+        
+                            </div>)
 
-                                    <p className="price">
-                                        $ 22.55
-                                    </p>
+                              
+                            )
+                        ):("no product")
+                    }
 
 
-                                </div>
-                            </div>
 
-                            <div className="box-bottom mt-5">
-                                <button>Add to read +</button>
-                            </div>
-
-
-                        </div>
-
-                    </div>
-
-                    <div className="col-lg-4 col-md-6 col-sm-12">
-
-                        <div className="box">
-                            <div className="box-top row">
-                                <div className="  col-8 box-left">
-                                    <img src={pridebook} alt="" />
-
-                                </div>
-                                <div className="col-4 box-right">
-                                    <p>   name:Pride and Prejudice</p>
-                                    <p className="autorname">
-                                        Jane Austen
-                                    </p>
-
-                                    <p className="price">
-                                        $ 22.55
-                                    </p>
-
-
-                                </div>
-                            </div>
-
-                            <div className="box-bottom mt-5">
-                                <button>Add to read +</button>
-                            </div>
-
-
-                        </div>
-
-                    </div>
-
-                    <div className="col-lg-4 col-md-6 col-sm-12">
-
-                        <div className="box">
-                            <div className="box-top row">
-                                <div className="  col-8 box-left">
-                                    <img src={pridebook} alt="" />
-
-                                </div>
-                                <div className="col-4 box-right">
-                                    <p>   name:Pride and Prejudice</p>
-                                    <p className="autorname">
-                                        Jane Austen
-                                    </p>
-
-                                    <p className="price">
-                                        $ 22.55
-                                    </p>
-
-
-                                </div>
-                            </div>
-
-                            <div className="box-bottom mt-5">
-                                <button>Add to read +</button>
-                            </div>
-
-
-                        </div>
-
-                    </div>
-                    
-                    <div className="col-lg-4 col-md-6 col-sm-12">
-
-                        <div className="box">
-                            <div className="box-top row">
-                                <div className="  col-8 box-left">
-                                    <img src={pridebook} alt="" />
-
-                                </div>
-                                <div className="col-4 box-right">
-                                    <p>   name:Pride and Prejudice</p>
-                                    <p className="autorname">
-                                        Jane Austen
-                                    </p>
-
-                                    <p className="price">
-                                        $ 22.55
-                                    </p>
-
-
-                                </div>
-                            </div>
-
-                            <div className="box-bottom mt-5">
-                                <button>Add to read +</button>
-                            </div>
-
-
-                        </div>
-
-                    </div>
-                    
-                    <div className="col-lg-4 col-md-6 col-sm-12">
-
-                        <div className="box">
-                            <div className="box-top row">
-                                <div className="  col-8 box-left">
-                                    <img src={pridebook} alt="" />
-
-                                </div>
-                                <div className="col-4 box-right">
-                                    <p>   name:Pride and Prejudice</p>
-                                    <p className="autorname">
-                                        Jane Austen
-                                    </p>
-
-                                    <p className="price">
-                                        $ 22.55
-                                    </p>
-
-
-                                </div>
-                            </div>
-
-                            <div className="box-bottom mt-5">
-                                <button>Add to read +</button>
-                            </div>
-
-
-                        </div>
-
-                    </div>
-                    
-                    <div className="col-lg-4 col-md-6 col-sm-12">
-
-                        <div className="box">
-                            <div className="box-top row">
-                                <div className="  col-8 box-left">
-                                    <img src={pridebook} alt="" />
-
-                                </div>
-                                <div className="col-4 box-right">
-                                    <p>   name:Pride and Prejudice</p>
-                                    <p className="autorname">
-                                        Jane Austen
-                                    </p>
-
-                                    <p className="price">
-                                        $ 22.55
-                                    </p>
-
-
-                                </div>
-                            </div>
-
-                            <div className="box-bottom mt-5">
-                                <button>Add to read +</button>
-                            </div>
-
-
-                        </div>
-
-                    </div>
+                 
 
                 </div>
             </div>
