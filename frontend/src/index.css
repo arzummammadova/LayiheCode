@@ -123,7 +123,14 @@ img{
   height: 20px;
   font-size: 12px!important;
   
-  
+  background: linear-gradient(to right, #00DC64, #9AE1BC);
  
 }
+}
+
+
+.mainbtn:hover{
+  color:black;
+  transition: 0.3s all;
+  background-color: rgb(196, 192, 192);
 }

@@ -89,11 +89,11 @@ const Addpage = () => {
     //     },
     // });
     const formik = useFormik({
-        initialValues: { name: '', price: '', image: '', description: '' },
+        initialValues: { name: '', price: '', image: '', description: '', category: '', author: '', genre: '', publishedDate: '' },
         validationSchema: schema,
         onSubmit: (values) => {
             if (!values.image) {
-                alert('Şəkil yükləyin!');
+                alert('Şəkil təstiqlə');
                 return;
             }
             dispatch(postProduct(values));
@@ -161,7 +161,7 @@ const Addpage = () => {
                                 type="button"
                                 onClick={handleImageUpload}
                             >
-                                Şəkli Yüklə
+                                Şəkli Təstiqlə
                             </button>
 
                             {imagePreview && (
@@ -181,11 +181,51 @@ const Addpage = () => {
                                 id="description"
                                 name="description"
                                 type="text"
-                                placeholder='decjd'
+                                placeholder='add description'
                                 onChange={formik.handleChange}
                                 value={formik.values.description}
                             />
                             {formik.errors.description ? <div style={{ color: "red" }}>{formik.errors.description}</div> : null}
+                            <input
+                                id="category"
+                                name="category"
+                                type="text"
+                                placeholder='add category'
+                                onChange={formik.handleChange}
+                                value={formik.values.category}
+                            />
+                            {formik.errors.category ? <div style={{ color: "red" }}>{formik.errors.category}</div> : null}
+                            <input
+                                id="author"
+                                name="author"
+                                type="text"
+                                placeholder='add author'
+                                onChange={formik.handleChange}
+                                value={formik.values.author}
+                            />
+
+                            {formik.errors.author ? <div style={{ color: "red" }}>{formik.errors.author}</div> : null}
+                            <input
+                                id="genre"
+                                name="genre"
+                                type="text"
+                                placeholder='add genre'
+                                onChange={formik.handleChange}
+                                value={formik.values.genre}
+                            />
+
+                            {formik.errors.genre ? <div style={{ color: "red" }}>{formik.errors.genre}</div> : null}
+                            <input
+                                id="publishedDate"
+                                name="publishedDate"
+                                type="date"
+                                placeholder='add publishedDate'
+                                onChange={formik.handleChange}
+                                value={formik.values.publishedDate}
+                            />
+
+
+                            {formik.errors.publishedDate ? <div style={{ color: "red" }}>{formik.errors.ublishedDate}</div> : null}
                             <button type="submit" className='mt-4 btn btn-danger'>Submit</button>
                         </form>
 
