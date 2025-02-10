@@ -64,7 +64,7 @@ const AdminUser = () => {
                                 <div className="table-data">{user.lastname}</div>
 
                                 <div className="table-data" style={{ height: "70px" }}>
-                                    <img src={user.image ? user.image : "https://picsum.photos/200"} alt="user" style={{ width: "50px", height: "50px", borderRadius: "50%" }} />
+                                    <img src={user.image ?`http://localhost:5000${user.image}` : "https://picsum.photos/200"} alt="user" style={{ width: "50px", height: "50px", borderRadius: "50%" }} />
                                 </div>
                                 <div className="table-data">{user.email}</div>
 

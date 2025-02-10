@@ -18,13 +18,6 @@ export const fetchProduct= createAsyncThunk(
     },
   )
 
-  // export const postProduct= createAsyncThunk(
-  //   'products/postProduct',
-  //   async (newProduct) => {
-  //     const response = await axios.post("http://localhost:5000/api/books",newProduct)
-  //     return response.data
-  //   },
-  // )
   export const postProduct = createAsyncThunk(
     'products/postProduct',
     async (productData) => {
@@ -33,24 +26,13 @@ export const fetchProduct= createAsyncThunk(
         productData, 
         {
           headers: {
-            'Content-Type': 'application/json', // JSON olaraq göndər
+            'Content-Type': 'application/json',
           },
         }
       );
       return response.data;
     }
   );
-//   export const postProduct = createAsyncThunk(
-//     'products/postProduct',
-//     async (formData) => {
-//       const response = await axios.post("http://localhost:5000/api/books", formData, {
-//         headers: {
-//           'Content-Type': 'multipart/form-data', // Important for file uploads
-//         },
-//       });
-//       return response.data; // Return the created product
-//     }
-// );
 
 
   export const sortPriceHigh= createAsyncThunk(
@@ -70,6 +52,14 @@ export const fetchProduct= createAsyncThunk(
     },
   )
 
+  export const searchProduct = createAsyncThunk(
+   
+    'products/searchBooks',
+  async (query) => {
+    const response = await axios.get(`http://localhost:5000/api/books/search?query=${query}`);
+    return response.data;
+  }
+  );
 
 const initialState = {
   products: [],
@@ -79,6 +69,13 @@ export const productSlice = createSlice({
   name: 'products',
   initialState,
   reducers: {
+    updateProduct: (state, action) => {
+      const index = state.products.findIndex(p => p._id === action.payload._id);
+      if (index !== -1) {
+          state.products[index] = action.payload; 
+      }
+  }
+  
    
   },
   extraReducers: (builder) => {
@@ -100,11 +97,17 @@ export const productSlice = createSlice({
       .addCase(sortPriceLow.fulfilled, (state, action) => {
         state.products=action.payload
       })
+      .addCase(searchProduct.fulfilled, (state, action) => {
+        state.loading = false;
+        state.searchResults = action.payload;
+        localStorage.setItem('searchResults', JSON.stringify(action.payload)); 
+      })
+      
   },
 
  
 })
 
 
-
+export const { updateProduct } = productSlice.actions;
 export default productSlice.reducer

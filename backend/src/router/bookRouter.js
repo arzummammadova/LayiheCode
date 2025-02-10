@@ -1,5 +1,5 @@
 import express from 'express'
-import { deleteBook, getBook, getBookById, postBook, searchBooks, sortPriceHighToLow, sortPriceLowToHigh, sortRatingHighToLow, sortRatingLowToHigh, uploadImage} from '../controller/productControllers.js'
+import { deleteBook, editBook, getBook, getBookById, postBook, searchBooks, sortPriceHighToLow, sortPriceLowToHigh, sortRatingHighToLow, sortRatingLowToHigh, uploadImage} from '../controller/productControllers.js'
 import multer from 'multer';
 import path from 'path'
 const router=express.Router()
@@ -31,6 +31,5 @@ router.get("/sort/price-high-to-low", sortPriceHighToLow);
 router.get("/sort/price-low-to-high", sortPriceLowToHigh);  
 router.get("/sort/rating-low-to-high", sortRatingLowToHigh); 
 router.get("/sort/rating-high-to-low",sortRatingHighToLow)
-
-
+router.put('/:id', editBook);
 export default router

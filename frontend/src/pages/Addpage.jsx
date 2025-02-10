@@ -1,16 +1,17 @@
-import React, { useEffect } from 'react'
-import './table.scss'
-import { useDispatch, useSelector } from 'react-redux'
-import { deleteProduct, fetchProduct, postProduct, sortPriceHigh, sortPriceLow } from '../redux/features/productSlice'
+import React, { useEffect, useState } from 'react';
+import './table.scss';
+import './css/spinner.css'
+import { useDispatch, useSelector } from 'react-redux';
+import { deleteProduct, fetchProduct, postProduct, sortPriceHigh, sortPriceLow } from '../redux/features/productSlice';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import { useFormik } from 'formik';
 import schema from '../components/schema/productSchema';
-import { useState } from 'react';
-import { Formik } from 'formik';
 import { Link } from 'react-router-dom';
+
+
 const style = {
     position: 'absolute',
     top: '50%',
@@ -24,29 +25,37 @@ const style = {
 };
 
 const Addpage = () => {
-    const products = useSelector((state) => state.products.products)
-    const dispatch = useDispatch()
-    const [open, setOpen] = React.useState(false);
-    const handleOpen = () => setOpen(true);
-    const handleClose = () => setOpen(false);
+    const products = useSelector((state) => state.products.products);
+    const dispatch = useDispatch();
 
-
+    const [open, setOpen] = useState(false);
+    const [editMode, setEditMode] = useState(false);
+    const [selectedProductId, setSelectedProductId] = useState(null);
 
     const [selectedFile, setSelectedFile] = useState(null);
     const [imagePreview, setImagePreview] = useState('');
 
-
-
     useEffect(() => {
-
-        dispatch(fetchProduct())
+        dispatch(fetchProduct());
     }, [dispatch]);
 
-    console.log(products)
+    const handleOpen = () => {
+        setEditMode(false);
+        formik.resetForm();
+        setImagePreview('');
+        setOpen(true);
+    };
 
-    const removeProduct = (id) => {
-        dispatch(deleteProduct(id))
-    }
+    const handleEditOpen = (product) => {
+        setEditMode(true);
+        setSelectedProductId(product._id);
+        formik.setValues(product);
+        setImagePreview(product.image);
+        setOpen(true);
+    };
+
+    const handleClose = () => setOpen(false);
+
     const handleImageUpload = async () => {
         if (!selectedFile) return;
 
@@ -59,11 +68,12 @@ const Addpage = () => {
                 body: formData,
             });
             const { imageUrl } = await response.json();
-            formik.setFieldValue('image', imageUrl); 
+            formik.setFieldValue('image', imageUrl);
         } catch (error) {
             console.error('Yükləmə xətası:', error);
         }
     };
+
     const handleFileChange = (e) => {
         const file = e.target.files[0];
         if (file) {
@@ -74,249 +84,142 @@ const Addpage = () => {
         }
     };
 
-    // const formik = useFormik({
-    //     initialValues: {
-    //         name: '',
-    //         price: '',
-    //         image: '',
-    //         description: ''
-    //     },
-    //     validationSchema: schema,
-    //     onSubmit: values => {
-    //         dispatch(postProduct(values))
-    //         handleClose()
-    //         formik.resetForm()
-    //     },
-    // });
     const formik = useFormik({
-        initialValues: { name: '', price: '', image: '', description: '', category: '', author: '', genre: '', publishedDate: '' ,lang:''},
+        initialValues: { name: '', price: '', image: '', description: '', category: '', author: '', genre: '', publishedDate: '', lang: '' },
         validationSchema: schema,
-        onSubmit: (values) => {
+        onSubmit: async (values) => {
             if (!values.image) {
                 alert('Şəkil təstiqlə');
                 return;
             }
-            dispatch(postProduct(values));
+
+            if (editMode) {
+                // Update existing book
+                try {
+                    await fetch(`http://localhost:5000/api/books/${selectedProductId}`, {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(values),
+                    });
+                    alert('Product updated successfully!');
+                } catch (error) {
+                    console.error('Update error:', error);
+                }
+            } else {
+                dispatch(postProduct(values));
+                window.location.reload();
+            }
+
             handleClose();
             formik.resetForm();
             setImagePreview('');
+            dispatch(fetchProduct());
         },
     });
-    const sortlh = () => {
-        dispatch(sortPriceLow())
 
-    }
-    const sorthl = () => {
-        dispatch(sortPriceHigh())
-    }
-
+    const sortlh = () => dispatch(sortPriceLow());
+    const sorthl = () => dispatch(sortPriceHigh());
+    const removeProduct = (id) => dispatch(deleteProduct(id));
 
     return (
         <div>
-            <div class="container">
+            <div className="container">
+                <h1 className="mb-3">Admin Page</h1>
+                <Link to="/user" className="mainbtn mx-4">User</Link>
+                <br /><br /><br />
+                <button onClick={sortlh} className="btnn btn-1 hover-filled-slide-down">
+                    <span>High To Low</span>
+                </button>
+                <button onClick={sorthl} className="btnn btn-1 hover-filled-slide-down">
+                    <span>Low to High</span>
+                </button>
+                <button onClick={handleOpen} className="btnn btn-1 hover-filled-slide-down">
+                    <span>Create</span>
+                </button>
+                <h3>Books: {products.length}</h3>
 
-                <h1>Admin Page</h1>
-                <Link to='/user' className='mainbtn'>User</Link>
-                <button className='btn btn-primary mx-2' onClick={() => { sortlh() }}>High to low</button>
-                <button className='btn btn-primary ml-3' onClick={() => { sorthl() }}>  low to high</button>
-                <button className='btn btn-warning' onClick={handleOpen}>create </button>
-                <Modal
-                    open={open}
-                    onClose={handleClose}
-                    aria-labelledby="modal-modal-title"
-                    aria-describedby="modal-modal-description"
-                >
-                    <Box sx={style}>
-                        <Typography id="modal-modal-title" variant="h6" component="h2">
-                            create new product
-                        </Typography>
-                        <form onSubmit={formik.handleSubmit}>
+                <Modal open={open} onClose={handleClose}>
+                    <Box sx={style} className="modalbox">
+                        <Typography variant="h6">{editMode ? 'EDIT PRODUCT' : 'CREATE NEW PRODUCT'}</Typography>
+                        <form onSubmit={formik.handleSubmit} className="modalform">
+                            <input id="name" name="name" type="text" onChange={formik.handleChange} value={formik.values.name} placeholder="add name" />
+                            {formik.errors.name && <div style={{ color: 'red' }}>{formik.errors.name}</div>}
 
-                            <input
-                                id="name"
-                                name="name"
-                                type="text"
-                                onChange={formik.handleChange}
-                                value={formik.values.name}
-                                placeholder='add name'
-                            />
-                            {formik.errors.name ? <div style={{ color: "red" }}>{formik.errors.name}</div> : null}
+                            <input type="file" onChange={handleFileChange} accept="image/*" className="fileinput" />
+                            <button className="buttonimage" type="button" onClick={handleImageUpload}>Şəkli Təstiqlə</button>
 
-                            {/* <input
-                                id="image"
-                                name="image"
-                                type="text"
-                                onChange={formik.handleChange}
-                                value={formik.values.image}
-                                placeholder='add image url'
-                            />
+                            {imagePreview && <img src={imagePreview} alt="Preview" style={{ width: '100px' }} />}
+                            <input id="price" name="price" type="number" placeholder="add price" onChange={formik.handleChange} value={formik.values.price} />
+                            {formik.errors.price && <div style={{ color: 'red' }}>{formik.errors.price}</div>}
 
-                            {formik.errors.image ? <div style={{ color: "red" }}>{formik.errors.image}</div> : null} */}
-                            <input
-                                type="file"
-                                onChange={handleFileChange}
-                                accept="image/*"
-                            />
-                            <button
-                                type="button"
-                                onClick={handleImageUpload}
-                            >
-                                Şəkli Təstiqlə
-                            </button>
-
-                            {imagePreview && (
-                                <img src={imagePreview} alt="Preview" style={{ width: '100px' }} />
-                            )}
-                            <input
-                                id="price"
-                                name="price"
-                                type="number"
-                                placeholder='add price'
-                                onChange={formik.handleChange}
-                                value={formik.values.price}
-                            />
-                            {formik.errors.price ? <div style={{ color: "red" }}>{formik.errors.price}</div> : null}
-
-                            <input
-                                id="description"
-                                name="description"
-                                type="text"
-                                placeholder='add description'
-                                onChange={formik.handleChange}
-                                value={formik.values.description}
-                            />
-                            {formik.errors.description ? <div style={{ color: "red" }}>{formik.errors.description}</div> : null}
-                            <input
-                                id="category"
-                                name="category"
-                                type="text"
-                                placeholder='add category'
-                                onChange={formik.handleChange}
-                                value={formik.values.category}
-                            />
-                            {formik.errors.category ? <div style={{ color: "red" }}>{formik.errors.category}</div> : null}
-                            <input
-                                id="author"
-                                name="author"
-                                type="text"
-                                placeholder='add author'
-                                onChange={formik.handleChange}
-                                value={formik.values.author}
-                            />
-
-                            {formik.errors.author ? <div style={{ color: "red" }}>{formik.errors.author}</div> : null}
-                            <input
-                                id="genre"
-                                name="genre"
-                                type="text"
-                                placeholder='add genre'
-                                onChange={formik.handleChange}
-                                value={formik.values.genre}
-                            />
-
-                            {formik.errors.genre ? <div style={{ color: "red" }}>{formik.errors.genre}</div> : null}
-                            <input
-                                id="publishedDate"
-                                name="publishedDate"
-                                type="date"
-                                placeholder='add publishedDate'
-                                onChange={formik.handleChange}
-                                value={formik.values.publishedDate}
-                            />
-
-
-                            {formik.errors.publishedDate ? <div style={{ color: "red" }}>{formik.errors.publishedDate}</div> : null}
-                            <input
-                                id="lang"
-                                name="lang"
-                                type="text"
-                                placeholder='add language '
-                                onChange={formik.handleChange}
-                                value={formik.values.lang}
-                            />
-
-
-                            {formik.errors.lang ? <div style={{ color: "red" }}>{formik.errors.lang}</div> : null}
-                            <button type="submit" className='mt-4 btn btn-danger'>Submit</button>
+                            <input id="description" name="description" type="text" placeholder="add description" onChange={formik.handleChange} value={formik.values.description} />
+                            {formik.errors.description && <div style={{ color: 'red' }}>{formik.errors.description}</div>}
+                            <input id="category" name="category" type="text" placeholder="add category" onChange={formik.handleChange} value={formik.values.category} />
+                            {formik.errors.category && <div style={{ color: 'red' }}>{formik.errors.category}</div>}
+                            <input id="author" name="author" type="text" placeholder="add author" onChange={formik.handleChange} value={formik.values.author} />
+                            {formik.errors.author && <div style={{ color: 'red' }}>{formik.errors.author}</div>}
+                            <input id="genre" name="genre" type="text" placeholder="add genre" onChange={formik.handleChange} value={formik.values.genre} />
+                            {formik.errors.genre && <div style={{ color: 'red' }}>{formik.errors.genre}</div>}
+                            <input id="publishedDate" name="publishedDate" type="date" onChange={formik.handleChange} value={formik.values.publishedDate} />
+                            {formik.errors.publishedDate && <div style={{ color: 'red' }}>{formik.errors.publishedDate}</div>}
+                            <input id="lang" name="lang" type="text" placeholder="add language" onChange={formik.handleChange} value={formik.values.lang} />
+                            {formik.errors.lang && <div style={{ color: 'red' }}>{formik.errors.lang}</div>}
+                            
+                            <div className="button-container-3" type="submit">
+                                <span className="mas">{editMode ? 'Update' : 'Create'}</span>
+                                <button type="submit">{editMode ? 'Update' : 'Create'}</button>
+                            </div>
                         </form>
-
                     </Box>
                 </Modal>
 
-                <div class="table">
-                <div className="table-header">
-                    <div className="header__item"><a id="name" class="filter__link" href="#">Book name</a></div>
-                    <div className="header__item"><a id="name" class="filter__link" href="#">Image</a></div>
-                    <div className="header__item">
-                    <a id="name" class="filter__link" href="#">Description</a>
+                <div className="table">
+                    <div className="table-header">
+                        <div className="header__item">Book name</div>
+                        <div className="header__item">Image</div>
+                        <div className="header__item">Description</div>
+                        <div className="header__item">Price</div>
+                        <div className="header__item">Category</div>
+                        <div className="header__item">Genre</div>
+                        <div className="header__item">Author</div>
+                        <div className="header__item">Published Date</div>
+                        <div className="header__item">Lang</div>
+                        <div className="header__item">Actions</div>
                     </div>
-                    <div className="header__item">
-                    <a id="name" class="filter__link" href="#">Price</a>
+                    <div className="table-content">
+                        {products.length > 0 ? (
+                            products.map((product) => (
+                                <div className="table-row" key={product._id}>
+                                    <div className="table-data">{product.name}</div>
+                                    <div className="table-data" style={{ height: "150px" }}>
+                                        <img src={product.image} alt="" />
+                                    </div>
+                                    <div className="table-data">{product.description.slice(0, 100)}...</div>
+                                    <div className="table-data">${product.price}</div>
+                                    <div className="table-data">{product.category}</div>
+                                    <div className="table-data">{product.genre}</div>
+                                    <div className="table-data">{product.author}</div>
+                                    <div className="table-data">{product.publishedDate}</div>
+                                    <div className="table-data">{product.lang}</div>
+                                    <div className="table-data">
+                                        <button className="btn btn-danger mx-1" onClick={() => removeProduct(product._id)}>Delete</button>
+                                        <button className="btn btn-warning mt-1" onClick={() => handleEditOpen(product)}>Edit</button>
+                                    </div>
+                                </div>
+                            ))
+                        ) : (
+                            <div class="lds-facebook">
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                          </div>
+                        )}
                     </div>
-                 
-                    <div className="header__item">
-                    <a id="name" class="filter__link" href="#">Category</a>
-                    </div>
-                    <div className="header__item">
-                    <a id="name" class="filter__link" href="#">Genre</a>
-                    </div>
-                    <div className="header__item">
-                    <a id="name" class="filter__link" href="#">Author</a>
-                    </div>
-                    <div className="header__item">
-                    <a id="name" class="filter__link" href="#">Published Date</a>
-                    </div>
-                    <div className="header__item">
-                    <a id="name" class="filter__link" href="#">Lang</a>
-                    </div>
-                  
-                    <div className="header__item">
-                    <a id="name" class="filter__link" href="#">Actions</a>
-                    </div>
-                 
-
-             
-                </div>
-                    <div class="table-content">
-
-
-                        {
-                            products.length > 0 ? (
-                                products.map((product) =>
-                                    <div class="table-row" key={product._id}>
-                                        <div class="table-data">{product.name}</div>
-                                        <div class="table-data" style={{ height: "150px" }}>
-                                            <img src=
-                                                {product.image} alt="" />
-                                        </div>
-                                        <div class="table-data">{product.description.slice(0,100)}...</div>
-                                        <div class="table-data">${product.price}</div>
-                                        <div class="table-data">{product.category}</div>
-                                        <div class="table-data">{product.genre}</div>
-                                        <div class="table-data">{product.author}</div>
-                                        <div class="table-data">{product.publishedDate}</div>
-                                        <div className="table-data">{product.lang}</div>
-                                   
-                                        <div class="table-data">
-                                            <button class='btn btn-danger' onClick={() => removeProduct(product._id)}>
-                                                delete
-
-                                            </button>
-                                        </div>
-
-
-                                    </div>)
-                            ) : ("no product")
-                        }
-
-
-
-
-                    </div>
+                   
                 </div>
             </div>
         </div>
-    )
+    );
 }
 
-export default Addpage
+export default Addpage;

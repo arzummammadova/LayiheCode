@@ -71,6 +71,37 @@ $color-form-highlight: #EEEEEE;
 	
 }
 
+.modalform{
+	input{
+		width: 100%;
+		border-radius: 10px;
+		border: none;
+		padding: 5px 5px;
+		margin-top:5px;
+	}
+}
+.modalbox{
+	padding: 20px!important;
+	background: #ede574; /* fallback for old browsers */
+	background: -webkit-linear-gradient(to right, #ede574, #e1f5c4); /* Chrome 10-25, Safari 5.1-6 */
+	background: linear-gradient(to right, #ede574, #e1f5c4); 
+     max-height: 100vh;
+	width: 40%!important;
+	border-radius: 30px!important;
+	border: none!important;
+}
+
+
+
+.buttonimage{
+	border: none;
+	padding: 5px 10px;
+	background-color: rgb(99, 148, 25);
+	color: white;
+	width: 30%;
+
+}
+
 @media (max-width:758px) {
 	.table{
 		overflow-x:scroll!important;	

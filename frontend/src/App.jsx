@@ -12,6 +12,7 @@ import AdminUser from './pages/admin/AdminUser';
 import ForgotPassword from './pages/auth/forgotpassword/ForgotPassword';
 import Resetpassword from './pages/auth/resetpassword/Resetpassword';
 import UserSettings from './pages/settings/UserSettings';
+import AllBooks from './pages/all books/AllBooks';
 const router = createBrowserRouter([
   {
     path: '/',
@@ -43,7 +44,11 @@ const router = createBrowserRouter([
         path:'/settings',
         element:<UserSettings/>
       }
-     
+     ,
+     {
+      path:"/all",
+      element:<AllBooks/>
+     }
     ],
   },
   {

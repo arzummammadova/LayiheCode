@@ -12,7 +12,7 @@ const Books = () => {
         
         dispatch(fetchProduct())
       }, [dispatch]);
-      console.log(books)
+    //   console.log(books)
     
     return (
         <div>
@@ -26,7 +26,7 @@ const Books = () => {
                         </div>
 
                         <div className="col-6 " style={{ justifyContent: 'flex-end', display: 'flex' }}>
-                            <Link to='/' className="mainbtn">
+                            <Link to='/all' className="mainbtn">
                                 Explore more
                             </Link>
                         </div>
@@ -49,7 +49,7 @@ const Books = () => {
         
                                         </div>
                                         <div className="col-6 box-right">
-                                            <p className='right-name'>   {book.name}</p>
+                                            <p className='right-name'>   {book.name.slice(0,10)}..</p>
                                             <p className="autorname">
                                                 {book.author}
                                             </p>

@@ -29,6 +29,8 @@ export const getBook = async (req, res) => {
     }
 }
 
+
+
 export const getBookById = async (req, res) => {
     const { id } = req.params;
     try {
@@ -67,6 +69,9 @@ export const searchBooks = async (req, res) => {
     res.status(500).json({ message: 'Kitab axtarışı uğursuz oldu', error: error.message });
   }
 };
+
+
+
 
 
 export const deleteBook = async (req, res) => {
@@ -119,16 +124,6 @@ export const sortRatingHighToLow = async (req, res) => {
 };
 
 
-// export const uploadImage=async(req,res)=>{
-//   try {
-//     res.status(200).json(req.file);
-//     // console.log(req.file, req.body)
-//   } catch (error) {
-//     res.status(500).json({ message: 'Failed to sort upload ', error: error.message });
-//   }
-// }
-
-
 
 export const uploadImage = async (req, res) => {
   try {
@@ -151,4 +146,27 @@ export const uploadImage = async (req, res) => {
   }
 };
 
+
+
+export const editBook = async (req, res) => {
+  try {
+    const { id } = req.params; 
+    const { image, ...bookData } = req.body;
+
+    const existingBook = await book.findById(id);
+    if (!existingBook) {
+      return res.status(404).json({ message: 'Book not found!' });
+    }
+
+    existingBook.set({ ...bookData, image: image || existingBook.image });
+    const updatedBook = await existingBook.save();
+
+    res.status(200).json(updatedBook);
+  } catch (error) {
+    res.status(400).json({ 
+      message: 'Update failed',
+      error: error.message 
+    });
+  }
+}
 
