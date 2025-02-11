@@ -82,9 +82,9 @@ const Navbar = () => {
                   <Link to="/all">All books</Link>
                 </li>
                 <li>
-                  <Link to="/add">My books</Link>
+                  <Link to="/addtoread">My books</Link>
                 </li>
-                {isAdmin && ( // Only show Admin Page link if user is admin
+                {isAdmin && ( 
                   <li>
                     <Link to="/add">Admin Page</Link>
                   </li>

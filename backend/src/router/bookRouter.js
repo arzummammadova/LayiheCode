@@ -9,7 +9,7 @@ const router=express.Router()
 const storage = multer.diskStorage({
     destination: (req, file, cb) => cb(null, './uploads'),
     filename: (req, file, cb) => 
-      cb(null, Date.now() + path.extname(file.originalname)) // Düzəliş edildi
+      cb(null, Date.now() + path.extname(file.originalname)) 
   });
   
   const upload = multer({ 
@@ -32,4 +32,5 @@ router.get("/sort/price-low-to-high", sortPriceLowToHigh);
 router.get("/sort/rating-low-to-high", sortRatingLowToHigh); 
 router.get("/sort/rating-high-to-low",sortRatingHighToLow)
 router.put('/:id', editBook);
+
 export default router

@@ -23,11 +23,11 @@ const Home = () => {
       
       <Recomendation/>
       <Legendary/>
-      <WhyChooseUs/>
+      {/* <WhyChooseUs/> */}
       {/* <Products/> */}
       {/* <CallToAction/> */}
       <About/>
-      <Delivery/>
+      {/* <Delivery/> */}
       {/* <Customers/> */}
     </>
   )

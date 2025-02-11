@@ -11,11 +11,87 @@ import ForgotValidationSchema from "../middleware/validation/ForgotValidationSch
 import ResetValidationSchema from "../middleware/validation/ResetValidation.js";
 import { fileURLToPath } from 'url';
 import path from 'path';
-import fs from 'fs'; // Fayl sistemini idarə etmək üçün
-// import path from 'path';
+import fs from 'fs'; 
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+
+export const getUser=async(req,res)=>{
+  try {
+    const users=await user.find()
+    res.json(users)
+  } catch (error) {
+    res.status(500).json({message:error.message})
+  }
+}
+
+export const addtoread = async (req, res) => {
+  const { userId, bookId } = req.body;
+
+  try {
+    // İstifadəçini tapın və kitabı toRead siyahısına əlavə edin
+    const userToUpdate = await user.findById(userId);
+    if (!userToUpdate) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    if (userToUpdate.toRead.includes(bookId)) {
+      return res.status(500).json({ message: "Book already in to-read list" });
+    }
+
+    userToUpdate.toRead.push(bookId);
+    await userToUpdate.save();
+
+    // toRead sahəsini populate edib cavab qaytarın
+    const updatedUser = await user.findById(userId).populate("toRead");
+    res.status(200).json({ message: "Book added to to-read list", user: updatedUser });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+export const getToReadBooks = async (req, res) => {
+  const { userId } = req.params;
+
+  try {
+    const userData = await user.findById(userId).populate("toRead"); // Kitabları populate edirik
+    if (!userData) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.status(200).json(userData.toRead); // Yalnız kitab siyahısını göndəririk
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+export const deleteAllFromToRead = async (req, res) => {
+  const { userId } = req.body;
+
+  try {
+    // İstifadəçini tapın
+    const userToUpdate = await user.findById(userId);
+    if (!userToUpdate) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // toRead siyahısını boşaldın
+    userToUpdate.toRead = [];
+    await userToUpdate.save();
+
+    // Boş siyahını populate edib qaytarın
+    const updatedUser = await user.findById(userId).populate("toRead");
+    res.status(200).json({ message: "All books removed from to-read list", user: updatedUser });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+
+
+
+
+
 export const deleteProfileImage = async (req, res) => {
   try {
     const userId = req.params.id;
@@ -48,14 +124,8 @@ export const deleteProfileImage = async (req, res) => {
     return res.status(500).json({ message: error.message });
   }
 };
-export const getUser=async(req,res)=>{
-  try {
-    const users=await user.find()
-    res.json(users)
-  } catch (error) {
-    res.status(500).json({message:error.message})
-  }
-}
+
+
 
 
 // export const register = async (req, res) => {

@@ -18,7 +18,7 @@ const AuthorGrid = () => {
                     <div className="row mt-5">
                         <div className="col-6">
                             <div className="title-l">
-                              Məhşur yazıçıların kitablarına bax
+                             Ən yaxşı yazıçını kəşf et 
                             </div>
                         </div>
 

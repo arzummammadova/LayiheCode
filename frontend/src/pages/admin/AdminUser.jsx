@@ -52,6 +52,8 @@ const AdminUser = () => {
                     </div>
                     <div className="header__item">updatedAt
                     </div>
+                    <div className="header__item">add to read
+                    </div>
 
                     {/* <div className="header__item">Action</div> */}
                 </div>
@@ -76,6 +78,8 @@ const AdminUser = () => {
                                 <div className="table-data">{user.isAdmin ? '✅ Yes' : '❌ No'}</div>
                                 <div className="table-data">{user.isLogin ? '✅ Yes' : '❌ No'}</div>
                                 <div className="table-data">{formatDate(user.updatedAt)}</div>
+                                {/* <div className="table-data">{user.toRead}</div> */}
+
 
                              
                             </div>

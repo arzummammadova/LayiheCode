@@ -189,3 +189,7 @@ img{
 .hover-filled-slide-down:hover span {
   color: rgb(28, 31, 30); /* Change text color on hover */
 }
+
+img{
+  cursor: pointer;
+}

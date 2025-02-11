@@ -26,6 +26,7 @@ export const fetchLoginUser = createAsyncThunk(
   'auth/fetchLoginUser',
   async () => {
     const response = await axios("http://localhost:5000/auth");
+
     const users = response.data;
 
    
@@ -34,6 +35,37 @@ export const fetchLoginUser = createAsyncThunk(
   }
 );
 
+export const addtoRead = createAsyncThunk(
+  'auth/addToRead',
+  async ({ userId, bookId }, { rejectWithValue }) => {
+    try {
+     
+      // Kitabı istifadəçinin "toRead" siyahısına əlavə etmək üçün post göndəririk
+      const response = await axios.post('http://localhost:5000/auth/addToRead', {
+        userId,
+        bookId
+      });
+
+      // Serverdən cavab alırıq
+      const user = response.data.user;
+      return user; // Geri qaytarırıq ki, redux store-da saxlanılsın
+    } catch (error) {
+      return rejectWithValue(error.response.data); // Xətaları idarə etmək üçün
+    }
+  }
+);
+
+export const fetchToReadBooks = createAsyncThunk(
+  'auth/fetchToReadBooks',
+  async (userId, { rejectWithValue }) => {
+    try {
+      const response = await axios.get(`http://localhost:5000/auth/${userId}/getaddtoread`);
+      return response.data; // Return the to-read books data to Redux
+    } catch (error) {
+      return rejectWithValue(error.response.data); // Handle error
+    }
+  }
+);
 const authSlice = createSlice({
   name: "auth",
   initialState: {
@@ -41,7 +73,9 @@ const authSlice = createSlice({
     users: null,
     isLoggedIn: false,
     isAdmin: false,
+    toReadBooks: [],
     isLogin: false, 
+      status: 'idle'
   },
   reducers: {
     setUser: (state, action) => {
@@ -76,7 +110,17 @@ const authSlice = createSlice({
         state.isLoggedIn = !!action.payload;
         state.isAdmin = action.payload?.isAdmin || false;
         state.isLogin = !!action.payload;
-      });
+      })
+      .addCase(addtoRead.fulfilled, (state, action) => {
+        state.status = 'succeeded';
+        state.user = action.payload; // Serverdən gələn istifadəçi məlumatını saxlayırıq
+      })
+   
+    
+      .addCase(fetchToReadBooks.fulfilled, (state, action) => {
+        state.toReadBooks = action.payload; // Update the toReadBooks array with the fetched data
+      })
+
   },
 });
 export const { setUser, logoutUser } = authSlice.actions;

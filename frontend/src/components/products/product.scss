@@ -6,4 +6,26 @@
         cursor: pointer;
         color: white;
     }
+  height: 300px;
+}
+@media (max-width:992px) {
+    .card-p{
+        
+        img{
+            height: 200px!important;
+        }
+    }
+
+    
+}
+
+@media (max-width:756px) {
+    .card-p{
+       img{
+          height: 200px!important;
+       }
+      
+    }
+
+    
 }

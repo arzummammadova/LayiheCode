@@ -1,8 +1,8 @@
 .about{
     background-image: url(https://preview.colorlib.com/theme/furnish/images/bg_4.jpg.webp);
     background-size: cover;
-    
-    padding: 12rem 0rem;
+    margin-top: 5rem;
+    padding: 1rem 0rem;
 }
 
 .rightabout{
@@ -33,3 +33,100 @@
     cursor: pointer;
     color: white;
 }
+
+
+
+
+.about {
+ 
+  
+    .row {
+    
+      box-shadow: 0 8px 50px rgba(0, 0, 0, 0.15);
+   
+    padding: 30px;
+      transition: transform 0.3s ease;
+  
+      &:hover {
+        transform: scale(1.02);
+      }
+    }
+  
+   
+  
+    .rightabout {
+      padding: 50px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      color: #333;
+      backdrop-filter: blur(10px);
+  
+      .desc {
+        font-size: 22px;
+        font-weight: bold;
+        color: #00dc64;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+  
+      h2 {
+        font-size: 36px;
+        margin: 15px 0;
+        color: #008f46;
+      }
+  
+      p {
+        font-size: 18px;
+        margin-bottom: 25px;
+      }
+  
+      .contact-form {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+  
+        input, textarea {
+          padding: 15px 20px;
+          border: 2px solid #00dc64;
+          border-radius: 15px;
+          font-size: 16px;
+          outline: none;
+          transition: all 0.3s ease;
+          background: #f9f9f9;
+  
+          &:focus {
+            border-color: #0ab15b;
+            background-color: #e9f9ef;
+            box-shadow: 0 0 10px rgba(0, 220, 100, 0.5);
+          }
+        }
+  
+        textarea {
+          min-height: 150px;
+          resize: vertical;
+        }
+  
+        button {
+          padding: 15px;
+          background: linear-gradient(135deg, #00dc64, #00DC64);
+          color: white;
+          border: none;
+          border-radius: 15px;
+          font-size: 20px;
+          cursor: pointer;
+          transition: background 0.4s ease, transform 0.2s;
+  
+          &:hover {
+            background: linear-gradient(135deg, #00DC64, #00dc64);
+            transform: translateY(-3px);
+            box-shadow: 0 4px 15px rgba(0, 143, 70, 0.6);
+          }
+  
+          &:active {
+            transform: translateY(0);
+          }
+        }
+      }
+    }
+  }

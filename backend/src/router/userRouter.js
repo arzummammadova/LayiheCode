@@ -1,6 +1,6 @@
 import express from "express";
 import multer from 'multer'
-import { deleteProfileImage, forgotPassword, getUser, login, logout, register, resetPassword, updateProfile, uploadImage, verifyEmail } from "../controller/userController.js";
+import { addtoread, deleteAllFromToRead, deleteProfileImage, forgotPassword, getToReadBooks, getUser, login, logout, register, resetPassword, updateProfile, uploadImage, verifyEmail } from "../controller/userController.js";
 import path from 'path'
 
 const userRouter = express.Router();
@@ -33,7 +33,10 @@ userRouter.get("/",getUser);
 userRouter.post("/resetpassword", resetPassword);
 userRouter.delete("/deleteprofileimage/:id", deleteProfileImage);
 // userRouter.put("/editprofile/:id", updateProfile);
-
+userRouter.post('/addToRead',addtoread)
+userRouter.get('/:userId/getaddtoread',getToReadBooks)
+userRouter.delete('/deleterouter',deleteAllFromToRead)
+// router.get('/user/:userId/toRead', getToReadBooks);
 
 
 

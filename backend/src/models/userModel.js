@@ -1,51 +1,5 @@
 import mongoose from "mongoose";
 
-// const userSchema = new mongoose.Schema(
-//   {
-//   image:{
-//     type: String,
-//     required: false,
-//   },
-//     name: {
-//       type: String,
-//       required: true,
-//     },
-//     lastname: {
-//       type: String,
-//       required: true,
-//     }
-// ,    
-//     username: {
-//       type: String,
-//       required: true,
-//       unique: true,
-//     },
-//     email: {
-//       type: String,
-//       required: true,
-//       unique: true,
-//     },
-//     password: {
-//       type: String,
-//       required: true,
-//     },
- 
-//     isLogin:{
-//       type:Boolean,
-//       default:false
-//     },
-//     isAdmin: {
-//       type: Boolean,
-//       default: false,
-//     },
-//     isVerified: {
-//       type: Boolean,
-//       default: false,
-//     },  
-//   },
-//   { collection: "Users", timestamps: true }
-// );
-
 
 
 
@@ -62,6 +16,8 @@ const userSchema = new mongoose.Schema(
     isLogin: { type: Boolean, default: false },
     isAdmin: { type: Boolean, default: false },
     isVerified: { type: Boolean, default: false },
+    toRead: [{ type: mongoose.Schema.Types.ObjectId, ref: "product" }]
+    
   },
   { collection: "Users", timestamps: true }
 );

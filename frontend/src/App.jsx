@@ -14,6 +14,8 @@ import UserSettings from './pages/settings/UserSettings';
 import AllBooks from './pages/all books/AllBooks';
 import Details from './pages/details/Details';
 import Categories from './pages/categories/Categories';
+import Author from './pages/categories/Author';
+import AddToRead from './components/addtoread/AddToRead';
 const router = createBrowserRouter([
   {
     path: '/',
@@ -59,7 +61,14 @@ const router = createBrowserRouter([
       path: "/category/:categoryName",
       element: <Categories />,
     }
-    
+    ,{
+      path:"/author/:authorname",
+      element:<Author/>
+    }
+    ,{
+      path:"/addtoread",
+      element:<AddToRead/>
+    }
     
     ],
   },
