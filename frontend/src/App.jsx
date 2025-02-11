@@ -15,7 +15,7 @@ import AllBooks from './pages/all books/AllBooks';
 import Details from './pages/details/Details';
 import Categories from './pages/categories/Categories';
 import Author from './pages/categories/Author';
-import AddToRead from './components/addtoread/AddToRead';
+import AddToRead from './pages/addtoread/AddToRead';
 const router = createBrowserRouter([
   {
     path: '/',

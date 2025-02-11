@@ -19,8 +19,10 @@ const About = () => {
       <div className="container">
        <div className="about">
         <div className="row">
-          <div className="col-lg-6"></div>
-
+          <div className="col-lg-6">
+          <img src="https://img.freepik.com/free-photo/3d-illustration-girl-library-with-bookshelves_1057-44508.jpg" alt="" />
+          </div>
+{/* https://img.freepik.com/free-vector/girl-with-flying-books-with-magic-glow-sparkles-vector-cartoon-fantasy-illustration-happy-chi_107791-7513.jpg */}
           <div className="col-lg-6 rightabout">
             <p className="desc">Bizimlə əlaqə</p>
             <h2>Bizimlə Əlaqə Saxlayın</h2>

@@ -82,7 +82,7 @@ const Navbar = () => {
                   <Link to="/all">All books</Link>
                 </li>
                 <li>
-                  <Link to="/addtoread">My books</Link>
+                  <Link to="/addtoread">Read later</Link>
                 </li>
                 {isAdmin && ( 
                   <li>

@@ -1,0 +1,32 @@
+.text-add{
+    font-family: Poppins;
+    text-align: center;
+    .name{
+        font-weight: 700;
+        color: black;
+        font-size: 18px;
+    }
+    p{
+        color: grey;
+    }
+}
+
+.addcard{
+    padding: 30px;
+    .image{
+        height: 190px!important;
+
+        
+        img{
+            height: 190px!important;
+            border-radius: 5px;
+        }
+        &:hover{
+            transform: scale(1.12);
+            transition: 0.3s all;
+
+        }
+    }
+}
+
+

@@ -64,29 +64,43 @@ export const getToReadBooks = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
-
 export const deleteAllFromToRead = async (req, res) => {
-  const { userId } = req.body;
+  const { userId } = req.params;  
 
   try {
-    // İstifadəçini tapın
     const userToUpdate = await user.findById(userId);
     if (!userToUpdate) {
       return res.status(404).json({ message: "User not found" });
     }
 
-    // toRead siyahısını boşaldın
     userToUpdate.toRead = [];
     await userToUpdate.save();
 
-    // Boş siyahını populate edib qaytarın
-    const updatedUser = await user.findById(userId).populate("toRead");
-    res.status(200).json({ message: "All books removed from to-read list", user: updatedUser });
+    res.status(200).json({ message: "All books removed from to-read list" });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
 
+
+
+export const deleteFromToRead = async (req, res) => {
+  const { userId, bookId } = req.params;
+
+  try {
+    const User = await user.findById(userId);
+    if (!User) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    User.toRead = User.toRead.filter((book) => book._id.toString() !== bookId);
+    await User.save();
+
+    res.status(200).json({ message: "Book removed from to-read list" });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
 
 
 

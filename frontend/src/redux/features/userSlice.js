@@ -60,12 +60,37 @@ export const fetchToReadBooks = createAsyncThunk(
   async (userId, { rejectWithValue }) => {
     try {
       const response = await axios.get(`http://localhost:5000/auth/${userId}/getaddtoread`);
-      return response.data; // Return the to-read books data to Redux
+      return response.data; 
     } catch (error) {
-      return rejectWithValue(error.response.data); // Handle error
+      return rejectWithValue(error.response.data); 
     }
   }
 );
+
+export const deleteFromToRead = createAsyncThunk(
+  'auth/deleteFromToRead',
+  async ({ userId, bookId }, { rejectWithValue }) => {
+    try {
+      const response = await axios.delete(`http://localhost:5000/auth/${userId}/to-read/${bookId}`);
+      return { bookId, user: response.data.user }; 
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
+export const deleteAllFromToRead = createAsyncThunk(
+  "auth/deleteAllFromToRead",
+  async (userId, { rejectWithValue }) => {
+    try {
+      const response = await axios.delete(`http://localhost:5000/auth/${userId}/to-read`);
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data || "Something went wrong");
+    }
+  }
+);
+
 const authSlice = createSlice({
   name: "auth",
   initialState: {
@@ -120,6 +145,12 @@ const authSlice = createSlice({
       .addCase(fetchToReadBooks.fulfilled, (state, action) => {
         state.toReadBooks = action.payload; // Update the toReadBooks array with the fetched data
       })
+      .addCase(deleteFromToRead.fulfilled, (state, action) => {
+        state.toReadBooks = state.toReadBooks.filter(book => book._id !== action.payload.bookId);
+      })
+      .addCase(deleteAllFromToRead.fulfilled, (state, action) => {
+        state.toReadBooks = [];
+      });
 
   },
 });
