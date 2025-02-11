@@ -1,5 +1,11 @@
 import React from "react";
 import "./legend.scss";
+import au1 from "../../assets/images/au1.jpg";
+import au2 from "../../assets/images/au2.jpg";
+import au3 from "../../assets/images/au3.jpg";
+import au4 from "../../assets/images/au4.jpg";
+import au5 from "../../assets/images/au5.jpg";
+import au6 from "../../assets/images/au6.jpg";
 import jane from "../../assets/images/jane.png";
 import Title from "../title/Title";
 import { Link } from "react-router-dom";
@@ -9,15 +15,15 @@ const AuthorGrid = () => {
   return (
     <div className="container">
           <Title>
-                    <div className="row p-5">
+                    <div className="row mt-5">
                         <div className="col-6">
                             <div className="title-l">
-                              Our recommendation books
+                              Məhşur yazıçıların kitablarına bax
                             </div>
                         </div>
 
                         <div className="col-6" style={{ justifyContent: 'flex-end', display: 'flex' }}>
-                            <Link to='/' className="mainbtn">
+                            <Link to='/all' className="mainbtn">
                                 Explore more
                         </Link>
                         </div>
@@ -27,18 +33,18 @@ const AuthorGrid = () => {
 
                 </Title>
   
-                <div className="row mt-5">
+                <div className="row mt-3 ">
             <div className="col-lg-3 card-p">
-                <img src={jane} alt="" />
-                {/* <button>Add to basket</button> */}
+                <img src={au1} alt="" />
+                <button>William Shakespeare</button>
             </div>
             <div className="col-lg-3 card-p">
-                <img src={jane} alt="" />
-                {/* <button>Add to basket</button> */}
+                <img src={au2} alt="" />
+                <button>Lev Tolstoy</button>
             </div>
             <div className="col-lg-6 card-p">
-                <img src={jane} alt="" />
-                {/* <button style={{width:"100%"}}>Add to basket</button> */}
+                <img src={au3} alt="" />
+                <button style={{width:"100%"}}>Franz Kafka</button>
             </div>
 
             
@@ -46,16 +52,16 @@ const AuthorGrid = () => {
         </div>
         <div className="row mt-5">
             <div className="col-lg-5 card-p">
-                <img src={jane} alt="" />
-                {/* <button>Add to basket</button> */}
+                <img src={au5} alt="" />
+                <button>George Orwell</button>
             </div>
             <div className="col-lg-3 card-p">
-                <img src={jane} alt="" />
-                {/* <button>Add to basket</button> */}
+                <img src={au6} alt="" />
+                <button>Ernest Hemingway</button>
             </div>
             <div className="col-lg-4 card-p">
-                <img src={jane} alt="" />
-                {/* <button style={{width:"100%"}}>Add to basket</button> */}
+                <img src={au4} alt="" />
+                <button style={{width:"100%"}}>Fyodor Dostoyevski </button>
             </div>
             
             

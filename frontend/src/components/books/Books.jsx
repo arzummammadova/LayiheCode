@@ -2,18 +2,21 @@ import React, { useEffect } from 'react'
 import Title from '../title/Title'
 import './books.scss'
 import pridebook from "../../assets/images/pridebook.png"
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchProduct } from '../../redux/features/productSlice'
 const Books = () => {
     const books=useSelector((state)=>state.products.products)||[]
+    const navigate=useNavigate()
     const dispatch=useDispatch()
       useEffect(() => {
         
         dispatch(fetchProduct())
       }, [dispatch]);
     //   console.log(books)
-    
+    const godetails=(id)=>{
+        navigate(`/details/${id}`)
+    }
     return (
         <div>
             <div className="container">
@@ -40,7 +43,7 @@ const Books = () => {
                 <div className="row">
                     {
                         books.length>0 ?(
-                            books.slice(0,6).map((book)=>(  <div className="col-lg-4 col-md-6 col-sm-12" id={book._id}>
+                            books.slice(0,6).map((book)=>(  <div onClick={(e) => {godetails(book._id),e.preventDefault()}} className="col-lg-4 col-md-6 col-sm-12" id={book._id}>
 
                                 <div className="box">
                                     <div className="box-top row">

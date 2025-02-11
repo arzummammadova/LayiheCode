@@ -1,9 +1,14 @@
+#recom{
+  padding: 4rem 0rem ;
+  background-color: #fdf7eb;
+}
+
 .book-list {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 20px;
-    padding: 40px;
-    background-color: #fdf7eb;
+    // padding: 40px;
+ 
     
     .book-item {
       display: flex;
@@ -11,7 +16,7 @@
       gap: 15px;
       background: white;
       padding: 10px;
-      border-radius: 8px;
+      // border-radius: 8px;
       box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
       transition: transform 0.3s ease-in-out;
   
@@ -22,7 +27,7 @@
       .book-image {
         width: 120px;
         height: 160px;
-        border-radius: 5px;
+        // border-radius: 5px;
         object-fit: cover;
       }
   

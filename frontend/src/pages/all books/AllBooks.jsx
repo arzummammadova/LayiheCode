@@ -3,6 +3,7 @@ import './allbook.scss';
 import Card from '../../components/card/Card';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchProduct, searchProduct } from '../../redux/features/productSlice';
+import { useNavigate } from 'react-router-dom';
 
 const genres = [
     'all',
@@ -26,10 +27,15 @@ const AllBooks = () => {
     const [isOpen, setIsOpen] = useState(false);
     const [searchTerm, setSearchTerm] = useState('');
     const [loading, setLoading] = useState(true);
-
+    const navigate=useNavigate();
     useEffect(() => {
         dispatch(fetchProduct()).finally(() => setLoading(false));
+        window.scrollTo(0, 0);
     }, [dispatch]);
+
+    const godetails=(id)=>{
+        navigate(`/details/${id}`)
+    }
 
     useEffect(() => {
         if (searchTerm) {
@@ -42,15 +48,17 @@ const AllBooks = () => {
     const handleSelect = (genre) => {
         setSelectedGenre(genre === 'all' ? 'All Books' : genre);
         setIsOpen(false);
-        setCurrentPage(1); // Reset to the first page when genre changes
+        setCurrentPage(1); 
     };
+
 
     const filteredBooks = books.filter((book) => 
         (selectedGenre === 'All Books' || book.genre === selectedGenre) &&
         book.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
+    console.log(books)
 
-    // Pagination logic
+  
     const totalPages = Math.ceil(filteredBooks.length / booksPerPage);
     const indexOfLastBook = currentPage * booksPerPage;
     const indexOfFirstBook = indexOfLastBook - booksPerPage;
@@ -99,7 +107,11 @@ const AllBooks = () => {
                  
                 ) : (
                     currentBooks.map((book) => (
-                        <Card key={book.id} book={book} />
+                        <Card onClick={() => godetails(book._id)} key={book._id} book={book} />
+
+                      
+                       
+                   
                     ))
                 )}
             </div>

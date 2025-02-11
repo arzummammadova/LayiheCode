@@ -1,21 +1,30 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./recom.scss";
 import { FiHeart } from "react-icons/fi";
-import cat1 from "../../assets/images/cat1.png";
+
 import Title from "../title/Title";
-import { Link } from "react-router-dom";
-const books = [
-  { id: 1, title: "To Kill a Mockingbird", author: "Harper Lee", year: 1960, image:`${cat1}` },
-  { id: 2, title: "1984", author: "George Orwell", year: 1949, image: `${cat1}` },
-  { id: 3, title: "Pride and Prejudice", author: "Jane Austen", year: 1813, image: `${cat1}` },
-  { id: 1, title: "To Kill a Mockingbird", author: "Harper Lee", year: 1960, image:`${cat1}` },
-  { id: 2, title: "1984", author: "George Orwell", year: 1949, image: `${cat1}` },
-  { id: 3, title: "Pride and Prejudice", author: "Jane Austen", year: 1813, image: `${cat1}` },
-];
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchProduct } from "../../redux/features/productSlice";
 
 const Recomendation = () => {
+  const books=useSelector((state)=>state.products.products)||[]
+  const navigate=useNavigate()
+  const dispatch=useDispatch()
+    useEffect(() => {
+      
+      dispatch(fetchProduct())
+      window.scrollTo(0, 0);
+    }, [dispatch]);
+  //   console.log(books)
+  const godetails=(id)=>{
+      navigate(`/details/${id}`)
+  }
   return (
-    <div className="recomendation">
+    
+    <section id="recom">
+      <div className="container">
+        <div className="recomendation ">
            <Title>
                     <div className="row p-1">
                         <div className="col-6">
@@ -25,7 +34,7 @@ const Recomendation = () => {
                         </div>
 
                         <div className="col-6" style={{ justifyContent: 'flex-end', display: 'flex' }}>
-                            <Link to='/' className="mainbtn">
+                            <Link to='/all' className="mainbtn">
                                 Explore more
                             </Link>
                         </div>
@@ -35,21 +44,27 @@ const Recomendation = () => {
 
                 </Title>
 
-      <div className="book-list">
-      {books.map((book) => (
-        <div key={book.id} className="book-item">
-          <img src={book.image} alt={book.title} className="book-image" />
-          <div className="book-info">
-            <div className="book-title">{book.title}</div>
-            <div className="book-author">{book.author}</div>
-            <div className="book-description">A short description her...</div>
-          </div>
-          <FiHeart className="favorite-icon" />
-        </div>
-    
-      ))}
-    </div>   
+      <div className="book-list mt-4" >
+      {books.slice(0, 9).map((book, index) => (
+  <div key={book.id} className="book-item"  onClick={() => godetails(book._id)}>
+    <img src={book.image} alt={book.title} className="book-image" />
+    <div className="count" style={{fontWeight:"bold",fontSize:"16px"}}>
+      {index + 1} 
     </div>
+    <div className="book-info">
+      <div className="book-title">{book.title}</div>
+      <div className="book-author">{book.author}</div>
+      <div className="book-description">A short description here...</div>
+    </div>
+    {/* <FiHeart className="favorite-icon" /> */}
+  </div>
+))}
+
+    </div>   
+    </div> 
+      </div>
+    </section>
+   
    
   );
 };

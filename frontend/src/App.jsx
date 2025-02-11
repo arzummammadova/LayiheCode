@@ -5,7 +5,6 @@ import Home from './pages/Home';
 import Basket from './pages/Basket';
 import NotFoundPage from './pages/NotFoundPage/NotFoundPage';
 import Addpage from './pages/Addpage';
-import Details from './pages/Details';
 import Register from './pages/auth/register/Register';
 import Login from './pages/auth/login/Login';
 import AdminUser from './pages/admin/AdminUser';
@@ -13,6 +12,8 @@ import ForgotPassword from './pages/auth/forgotpassword/ForgotPassword';
 import Resetpassword from './pages/auth/resetpassword/Resetpassword';
 import UserSettings from './pages/settings/UserSettings';
 import AllBooks from './pages/all books/AllBooks';
+import Details from './pages/details/Details';
+import Categories from './pages/categories/Categories';
 const router = createBrowserRouter([
   {
     path: '/',
@@ -49,6 +50,17 @@ const router = createBrowserRouter([
       path:"/all",
       element:<AllBooks/>
      }
+     ,
+     {
+      path: "/details/:id",
+      element: <Details />
+    }
+    ,{
+      path: "/category/:categoryName",
+      element: <Categories />,
+    }
+    
+    
     ],
   },
   {
