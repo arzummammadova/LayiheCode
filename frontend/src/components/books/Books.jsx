@@ -52,8 +52,8 @@ const Books = () => {
             books.slice(0, 6).map((book) => (
               <div
                 onClick={(e) => {
-                    e.preventDefault();
-                //   godetails(book._id);
+                  e.stopPropagation();
+                  godetails(book._id);
                  
                 }}
                 className="col-lg-4 col-md-6 col-sm-12"
@@ -74,7 +74,7 @@ const Books = () => {
                   </div>
 
                   <div className="box-bottom mt-2">
-                    <button onClick={(e) =>{e.preventDefault();handleAddToRead(book._id)} }>Add to read +</button>
+                    <button onClick={(e) =>{ e.stopPropagation();handleAddToRead(book._id)} }>Add to read +</button>
                   </div>
                 </div>
               </div>

@@ -107,7 +107,10 @@ const AllBooks = () => {
                  
                 ) : (
                     currentBooks.map((book) => (
-                        <Card onClick={() => godetails(book._id)} key={book._id} book={book} />
+                        <Card onClick={(e) => {
+                            e.stopPropagation();
+                           
+                            godetails(book._id)}} key={book._id} book={book} />
 
                       
                        

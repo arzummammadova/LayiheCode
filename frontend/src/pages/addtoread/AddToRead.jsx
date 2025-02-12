@@ -46,7 +46,8 @@ const AddToRead = () => {
                 <div className="card addcard">
                   
                   <div className="image">
-                  <MdOutlineDelete onClick={() => handleDeletefrom(userId, book._id)} size={20} />
+                  
+                  <MdOutlineDelete onClick={() => handleDeletefrom(userId, book._id)} className="deleteicon" size={20} />
 
 
                     <img src={book.image} style={{height:"250px"}} alt="" /> 

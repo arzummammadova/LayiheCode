@@ -12,10 +12,16 @@
 }
 
 .addcard{
+    position: relative;
     padding: 30px;
     .image{
         height: 190px!important;
-
+.deleteicon{
+    top: 10px;
+    right: 10px;
+    color: red;
+    position: absolute;
+}
         
         img{
             height: 190px!important;
