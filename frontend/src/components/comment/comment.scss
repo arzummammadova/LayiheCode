@@ -1,0 +1,112 @@
+.comment-section {
+    width: 100%;
+    max-width: 600px;
+    margin: 20px auto;
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  
+    h2 {
+      font-size: 22px;
+      margin-bottom: 15px;
+      text-align: center;
+      color: #333;
+    }
+  
+    .comment-box {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+  
+      input,
+      textarea {
+        width: 100%;
+        padding: 10px;
+        border-radius: 8px;
+        border: 1px solid #ddd;
+        transition: all 0.3s ease-in-out;
+  
+        &:focus {
+          border-color: #4CAF50;
+          box-shadow: 0 0 8px rgba(76, 175, 80, 0.3);
+        }
+      }
+  
+      textarea {
+        resize: none;
+        height: 80px;
+      }
+  
+      button {
+        align-self: flex-end;
+        padding: 8px 16px;
+        border: none;
+        background: #4CAF50;
+        color: white;
+        font-size: 14px;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: 0.3s;
+  
+        &:hover {
+          background: #388E3C;
+        }
+      }
+    }
+  
+    .comment-list {
+      margin-top: 20px;
+      list-style: none;
+      padding: 0;
+  
+      .comment-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+        background: #f9f9f9;
+        padding: 10px;
+        margin-bottom: 10px;
+        border-radius: 6px;
+        box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+        transition: 0.3s ease-in-out;
+  
+        &:hover {
+          transform: translateY(-3px);
+        }
+  
+        .avatar {
+          width: 40px;
+          height: 40px;
+          border-radius: 50%;
+        }
+  
+        .comment-content {
+          flex: 1;
+          display: flex;
+          flex-direction: column;
+  
+          .comment-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 14px;
+            font-weight: bold;
+            color: #333;
+  
+            .date {
+              font-size: 12px;
+              color: #777;
+            }
+          }
+  
+          p {
+            font-size: 14px;
+            color: #444;
+            margin-top: 5px;
+          }
+        }
+      }
+    }
+  }
+  

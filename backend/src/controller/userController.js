@@ -159,6 +159,7 @@ export const addAndRemoveFromFavorites = async (req, res) => {
       await userToUpdate.save();
       return res.status(200).json({ message: "Book added to favorites" });
     }
+    
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

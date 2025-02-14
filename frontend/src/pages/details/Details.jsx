@@ -8,15 +8,18 @@ import { BsHeart, BsHeartFill } from 'react-icons/bs';
 import { LuShare2 } from "react-icons/lu";
 import { FaRegHeart } from 'react-icons/fa';
 import ShareModal from '../../components/modals/share/ShareModal';
-
+import Swal from "sweetalert2";
+import { addtoRead, addtoreaded, deleteFromToRead } from '../../redux/features/userSlice';
+import { ToastContainer ,toast} from 'react-toastify';
+import Comment from '../../components/comment/Comment';
 const Details = () => {
     const dispatch = useDispatch();
     const products = useSelector((state) => state.products.products);
     const { id } = useParams();
     const [selected, setSelected] = useState(null);
     const [loading, setLoading] = useState(true);
-    const [showShareModal, setShowShareModal] = useState(false); // New state for modal visibility
-
+    const [showShareModal, setShowShareModal] = useState(false); 
+  const userId = useSelector((state) => state.auth.user?._id);
     useEffect(() => {
         dispatch(fetchProduct()).finally(() => setLoading(false));
         window.scrollTo(0, 0);
@@ -47,9 +50,41 @@ const Details = () => {
         const year = date.getFullYear();
         return `${month}.${day}.${year}`;
     };
+
+
+    //!funskiyalar
+      const handleAddToRead = (bookId) => {
+            if (!userId) {
+                return Swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    text: "Please log in to add books to your 'to-read' list",
+                    confirmButtonColor: "#ff0000"
+                });
+            }
+            dispatch(addtoRead({ userId, bookId }));
+            Swal.fire({
+                icon: "success",
+                title: "Added!",
+                text: "Successfully added to Read Later!",
+                confirmButtonColor: "#00c851"
+            });
+        };
+  const handleAddToReaded = (userId, bookId) => {
+        if (!userId) {
+            return toast.error("Zəhmət olmasa, oxundu kimi işarələmək üçün daxil olun.");
+        }
+        dispatch(addtoreaded({ userId, bookId })).then(() => {
+            dispatch(deleteFromToRead({ userId, bookId }));
+            toast.success("Kitab oxundu kimi işarələndi!");
+        });
+    };
+    
+    
     return (
         <>
             <section id='detail'>
+                <ToastContainer/>
                 <div className="container">
                     <div className="details">
                         <div className="row detail-top">
@@ -64,13 +99,14 @@ const Details = () => {
                                     <p className="author">{selected.author}</p>
                                 </div>
                                 <div className="detail-actions ">
-                                    <button className="btnn  hover-filled-slide-down btn-style">
+                                    <button  onClick={(e) => { e.stopPropagation(); handleAddToRead(selected._id); }} className="btnn  hover-filled-slide-down btn-style">
                                         <span>Oxumağa əlavə et</span>
                                     </button>
-                                    <button className="btnn  hover-filled-slide-down btn-style">
+                                    <button  onClick={() => handleAddToReaded(userId,selected._id)} className="btnn  hover-filled-slide-down btn-style">
 
                                         <span> Oxumuşam</span>
                                     </button>
+                                
                                     <button className="btnn  hover-filled-slide-down btn-style">
                                         <span> Favorilərə əlavə et <BsHeartFill /></span>
                                     </button>
@@ -98,6 +134,9 @@ const Details = () => {
                                 </p>
                             </div>
                         </div>
+
+
+                     <Comment/>
                     </div>
                 </div>
             </section>

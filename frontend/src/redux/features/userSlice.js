@@ -55,25 +55,7 @@ export const addtoRead = createAsyncThunk(
   }
 );
 
-export const addtoFav = createAsyncThunk(
-  "auth/addtoFav",
-  async ({ userId, bookId }, { rejectWithValue }) => {
-    try {
-      const response = await axios.post("http://localhost:5000/auth/addFavorites", {
-        userId,
-        bookId,
-      });
 
-      if (response.data.message) {
-        return rejectWithValue(response.data.message);
-      }
-
-      return response.data.user; 
-    } catch (error) {
-      return rejectWithValue(error.response?.data?.message || "Xəta baş verdi.");
-    }
-  }
-);
 
 export const addAndRemoveFav = createAsyncThunk(
   "favorites/addAndRemove",
@@ -260,10 +242,7 @@ const authSlice = createSlice({
         state.status = 'succeeded';
         state.user = action.payload; 
       })
-      .addCase(addtoFav.fulfilled, (state, action) => {
-        state.status = 'succeeded';
-        state.user = action.payload;
-      })
+   
     
       .addCase(fetchToReadBooks.fulfilled, (state, action) => {
         state.toReadBooks = action.payload; 
