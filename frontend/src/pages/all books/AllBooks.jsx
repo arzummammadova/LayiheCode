@@ -56,7 +56,7 @@ const AllBooks = () => {
         (selectedGenre === 'All Books' || book.genre === selectedGenre) &&
         book.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
-    console.log(books)
+    // console.log(books)
 
   
     const totalPages = Math.ceil(filteredBooks.length / booksPerPage);

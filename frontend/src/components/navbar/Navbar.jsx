@@ -90,7 +90,7 @@ const Navbar = () => {
                   </li>
                 )}
                 <li>
-                  <Link to="/basket">Basket</Link>
+                  <Link to="/readed">Readed</Link>
                   <sup style={{ color: "red" }}>{count}</sup>
                 </li>
                 <li>
@@ -129,14 +129,14 @@ const Navbar = () => {
                   </Link>
                 </li> */}
                 <li>
-                  <Link to="/">
+                  <Link to="/favorite">
                   <FiHeart />
 
                     {/* <img style={{ width: "20px", height: "20px" }} src={heart} alt="Logo" /> */}
                   </Link>
                 </li>
                 <li>
-                  <Link to="/">
+                  <Link to="/readlater">
                     {/* <img style={{ width: "20px", height: "20px" }} src={bookicon} alt="Logo" /> */}
                     <PiBooksBold />
 

@@ -16,8 +16,10 @@ const userSchema = new mongoose.Schema(
     isLogin: { type: Boolean, default: false },
     isAdmin: { type: Boolean, default: false },
     isVerified: { type: Boolean, default: false },
-    toRead: [{ type: mongoose.Schema.Types.ObjectId, ref: "product" }]
-    
+    toRead: [{ type: mongoose.Schema.Types.ObjectId, ref: "product" }],
+    addFavorites: [{ type: mongoose.Schema.Types.ObjectId, ref: "product" }],
+    addreaded: [{ type: mongoose.Schema.Types.ObjectId, ref: "product" }]
+    , 
   },
   { collection: "Users", timestamps: true }
 );

@@ -8,14 +8,25 @@ const persistbasketConfig = {
   key: 'basket',
   storage,
 }
-
+const authPersistConfig = {
+  key: "auth",
+  storage,
+  whitelist: ["favorites"], 
+};
 const persistedbasketReducer = persistReducer(persistbasketConfig, basketReducer)
+const persistauthReducer=persistReducer(authPersistConfig,authReducer,)
 export const store = configureStore({
   reducer: {
-    auth:authReducer,
+    auth:persistauthReducer,
     products:productsReducer,
     basket:persistedbasketReducer
   },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: {
+        ignoredActions: ['persist/PERSIST', 'persist/REHYDRATE'], // Bu action-ları ignore et
+      },
+    }),
 })
 
 export const persistor = persistStore(store)

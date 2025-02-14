@@ -16,6 +16,8 @@ import Details from './pages/details/Details';
 import Categories from './pages/categories/Categories';
 import Author from './pages/categories/Author';
 import AddToRead from './pages/addtoread/AddToRead';
+import Readed from './pages/favorites/Readed';
+import Favorite from './pages/favorite/Favorite';
 const router = createBrowserRouter([
   {
     path: '/',
@@ -68,6 +70,14 @@ const router = createBrowserRouter([
     ,{
       path:"/addtoread",
       element:<AddToRead/>
+    },
+    {
+      path:"/readed",
+      element:<Readed/>
+    },
+    {
+      path:"/favorite",
+      element:<Favorite/>
     }
     
     ],

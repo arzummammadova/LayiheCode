@@ -25,11 +25,36 @@ export const getUser=async(req,res)=>{
   }
 }
 
+export const addtofavorites=async(req,res)=>{
+
+  const { userId, bookId } = req.body;
+
+  try {
+    const userToUpdate = await user.findById(userId);
+    if (!userToUpdate) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    if (userToUpdate.addFavorites.includes(bookId)) {
+      return res.status(500).json({ message: "Book already in favorites" });
+    }
+
+    userToUpdate.addFavorites.push(bookId);
+    await userToUpdate.save();
+
+ 
+    const updatedUser = await user.findById(userId).populate("addFavorites");
+    res.status(200).json({ message: "Book added to addFavorites", user: updatedUser });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+
+}
+
 export const addtoread = async (req, res) => {
   const { userId, bookId } = req.body;
 
   try {
-    // İstifadəçini tapın və kitabı toRead siyahısına əlavə edin
     const userToUpdate = await user.findById(userId);
     if (!userToUpdate) {
       return res.status(404).json({ message: "User not found" });
@@ -42,7 +67,7 @@ export const addtoread = async (req, res) => {
     userToUpdate.toRead.push(bookId);
     await userToUpdate.save();
 
-    // toRead sahəsini populate edib cavab qaytarın
+ 
     const updatedUser = await user.findById(userId).populate("toRead");
     res.status(200).json({ message: "Book added to to-read list", user: updatedUser });
   } catch (error) {
@@ -54,16 +79,31 @@ export const getToReadBooks = async (req, res) => {
   const { userId } = req.params;
 
   try {
-    const userData = await user.findById(userId).populate("toRead"); // Kitabları populate edirik
+    const userData = await user.findById(userId).populate("toRead");
     if (!userData) {
       return res.status(404).json({ message: "User not found" });
     }
 
-    res.status(200).json(userData.toRead); // Yalnız kitab siyahısını göndəririk
+    res.status(200).json(userData.toRead);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
+
+export const gettofavorites=async(req,res)=>{
+  const { userId } = req.params;
+
+  try {
+    const userData = await user.findById(userId).populate("addFavorites");
+    if (!userData) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.status(200).json(userData.addFavorites);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+}
 export const deleteAllFromToRead = async (req, res) => {
   const { userId } = req.params;  
 
@@ -81,7 +121,48 @@ export const deleteAllFromToRead = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+export const deleteallfromfavorites=async(req,res)=>{
 
+  const { userId } = req.params;  
+
+  try {
+    const userToUpdate = await user.findById(userId);
+    if (!userToUpdate) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    userToUpdate.addFavorites = [];
+    await userToUpdate.save();
+
+    res.status(200).json({ message: "All books removed from to-read favorites" });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+}
+export const addAndRemoveFromFavorites = async (req, res) => {
+  const { userId } = req.params;
+  const { bookId } = req.body;
+
+  try {
+    const userToUpdate = await user.findById(userId);
+    if (!userToUpdate) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    const index = userToUpdate.addFavorites.indexOf(bookId);
+    if (index !== -1) {
+      userToUpdate.addFavorites.splice(index, 1);
+      await userToUpdate.save();
+      return res.status(200).json({ message: "Book removed from favorites" });
+    } else {
+      userToUpdate.addFavorites.push(bookId);
+      await userToUpdate.save();
+      return res.status(200).json({ message: "Book added to favorites" });
+    }
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
 
 
 export const deleteFromToRead = async (req, res) => {
@@ -102,9 +183,102 @@ export const deleteFromToRead = async (req, res) => {
   }
 };
 
+export const deletefromfav=async(req,res)=>{
+  const { userId, bookId } = req.params;
+
+  try {
+    const User = await user.findById(userId);
+    if (!User) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    User.addFavorites = User.addFavorites.filter((book) => book._id.toString() !== bookId);
+    await User.save();
+
+    res.status(200).json({ message: "Book removed from fav" });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+}
+
+//? readed aid olan funksiyalar
+export const addreaded = async (req, res) => {
+  const { userId, bookId } = req.body;
+
+  try {
+    const userToUpdate = await user.findById(userId);
+    if (!userToUpdate) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    if (userToUpdate.addreaded.includes(bookId)) {
+      return res.status(500).json({ message: "Book already in readed book" });
+    }
+
+    userToUpdate.addreaded.push(bookId);
+    await userToUpdate.save();
+
+ 
+    const updatedUser = await user.findById(userId).populate("addreaded");
+    res.status(200).json({ message: "Book added to addreaded", user: updatedUser });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+export const gettoreaded=async(req,res)=>{
+  const { userId } = req.params;
+
+  try {
+    const userData = await user.findById(userId).populate("addreaded");
+    if (!userData) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.status(200).json(userData.addreaded);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+}
 
 
+export const deleteallfromreaded=async(req,res)=>{
 
+  const { userId } = req.params;  
+
+  try {
+    const userToUpdate = await user.findById(userId);
+    if (!userToUpdate) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    userToUpdate.addreaded = [];
+    await userToUpdate.save();
+
+    res.status(200).json({ message: "All books removed from to-read addreaded" });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+}
+
+export const deletefromreaded = async (req, res) => {
+  const { userId, bookId } = req.params;
+
+  try {
+    const User = await user.findById(userId);
+    if (!User) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    User.addreaded= User.addreaded.filter((book) => book._id.toString() !== bookId);
+    await User.save();
+
+    res.status(200).json({ message: "Book removed from addreaded list" });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+//?
 
 export const deleteProfileImage = async (req, res) => {
   try {
@@ -447,6 +621,37 @@ export const verifyEmail = async (req, res) => {
   };
   
 
+
+  // export const login = async (req, res) => {
+  //   try {
+  //     const { username, password } = req.body;
+  
+  //     const { error } = userLoginValidationSchema.validate(req.body);
+  //     if (error) return res.status(400).json({ message: error.details[0].message });
+  
+  //     const existUser = await user.findOne({ username }).populate("favorites"); // Favoritləri əlavə et
+  //     if (!existUser) return res.status(400).json({ message: "User not found" });
+  
+  //     const isMatch = await bcrypt.compare(password, existUser.password);
+  //     if (!isMatch) return res.status(400).json({ message: "Username or Password wrong" });
+  
+  //     await user.findByIdAndUpdate(existUser._id, { isLogin: true });
+  //     generateToken(existUser._id, res);
+  
+  //     return res.status(200).json({
+  //       message: "User logged in successfully",
+  //       user: {
+  //         _id: existUser._id,
+  //         username: existUser.username,
+  //         email: existUser.email,
+  //         favorites: existUser.favorites, // Favoritləri də qaytar
+  //       },
+  //     });
+  //   } catch (error) {
+  //     return res.status(500).json({ message: error.message });
+  //   }
+  // };
+  
 
   export const resetPassword = async (req, res) => {
     console.log();
