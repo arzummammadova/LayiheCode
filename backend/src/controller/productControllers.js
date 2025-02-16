@@ -2,11 +2,139 @@ import book from "../models/productModels.js";
 import path from 'path';
 
 
+export const addReview = async (req, res) => {
+  try {
+      const { productId } = req.params;
+      const { userId, rating, comment } = req.body;
+
+      if (!userId || !rating || !comment) {
+          return res.status(400).json({ message: "Bütün sahələri doldurun!" });
+      }
+
+      const productItem = await book.findById(productId);
+      if (!productItem) {
+          return res.status(404).json({ message: "Məhsul tapılmadı!" });
+      }
+
+      
+      productItem.reviews.push({
+          user: userId,
+          rating,
+          comment,
+          createdAt: new Date()
+      });
+
+      await productItem.save();
+      res.status(201).json({ productItem });
+  } catch (error) {
+      res.status(500).json({ message: "Server xətası", error });
+  }
+};
+export const deleteReview = async (req, res) => {
+  try {
+      const { productId, reviewId } = req.params;
+      const productItem = await book.findById(productId);
+
+      if (!productItem) {
+          return res.status(404).json({ message: "Məhsul tapılmadı!" });
+      }
+
+      const review = productItem.reviews.id(reviewId);
+      if (!review) {
+          return res.status(404).json({ message: "Rəy tapılmadı!" });
+      }
+
+      // İstifadəçi ya rəyi yazan olmalıdır, ya da admin
+      if (review.user.toString() !== req.user._id.toString() && !req.user.isAdmin) {
+          return res.status(403).json({ message: "Bu rəyi silməyə icazəniz yoxdur!" });
+      }
+
+      productItem.reviews = productItem.reviews.filter(r => r._id.toString() !== reviewId);
+      await productItem.save();
+
+      res.status(200).json({ productItem });
+  } catch (error) {
+      res.status(500).json({ message: "Server xətası", error });
+  }
+};
+
+export const updateReview = async (req, res) => {
+  try {
+      const { productId, reviewId } = req.params;
+      const { rating, comment } = req.body;
+
+      console.log("Gələn Product ID:", productId);
+      console.log("Gələn Review ID:", reviewId);
+      console.log("İstifadəçi ID:", req.user._id);
+
+      const productItem = await book.findById(productId);
+      if (!productItem) {
+          return res.status(404).json({ message: "Məhsul tapılmadı!" });
+      }
+
+     
+
+
+      const review = productItem.reviews.id(reviewId);
+      if (!review) {
+          return res.status(404).json({ message: "Rəy tapılmadı!" });
+      }
+
+      console.log("Review User:", review.user);
+      console.log("Review User (String):", review.user.toString());
+      console.log("Logged-in User (String):", req.user._id.toString());
+
+      // Yalnız review-u yazan istifadəçi dəyişə bilər
+      if (review.user.toString() !== req.user._id.toString() && !req.user.isAdmin) {
+          return res.status(403).json({ message: "Bu rəyi redaktə etməyə icazəniz yoxdur!" });
+      }
+
+      if (rating) review.rating = rating;
+      if (comment) review.comment = comment;
+      review.createdAt = new Date();
+
+      await productItem.save();
+      res.status(200).json({ message: "Rəy yeniləndi!", productItem });
+  } catch (error) {
+      console.error("Xəta:", error);
+      res.status(500).json({ message: "Server xətası", error });
+  }
+};
+export const updateOwnReview = async (req, res) => {
+  try {
+      const { productId, reviewId } = req.params;
+      const { rating, comment } = req.body;
+
+      const product = await book.findById(productId);
+      if (!product) return res.status(404).json({ message: "Product not found" });
+
+      const review = product.reviews.id(reviewId);
+      if (!review) return res.status(404).json({ message: "Review not found" });
+
+      // İstifadəçinin öz rəyini yeniləməyə icazə verək
+      if (review.user.toString() !== req.user._id.toString()) {
+          return res.status(403).json({ message: "You can only edit your own reviews" });
+      }
+
+      review.rating = rating || review.rating;
+      review.comment = comment || review.comment;
+      review.updatedAt = Date.now();
+
+      await product.save();
+      res.status(200).json({ message: "Review updated successfully", review });
+  } catch (error) {
+      res.status(500).json({ message: error.message });
+  }
+};
+
+
+
+
+
 export const postBook = async (req, res) => {
   try {
     const { image, ...bookData } = req.body;
 
-    // Validation
     if (!image) throw new Error("Image URL is required!");
 
     const newBook = new book({ ...bookData, image });

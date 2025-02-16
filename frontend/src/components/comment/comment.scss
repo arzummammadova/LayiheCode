@@ -1,112 +1,192 @@
+$primary-bg: #EFEBE6;
+$secondary-bg: #F7F4F1;
+$accent-color: #D4C3B5;
+$text-color: #4A4A4A;
+$border-color: #E5DED8;
+
 .comment-section {
-    width: 100%;
-    max-width: 600px;
-    margin: 20px auto;
-    background: #fff;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-  
-    h2 {
-      font-size: 22px;
-      margin-bottom: 15px;
-      text-align: center;
-      color: #333;
-    }
-  
-    .comment-box {
+  background-color: $primary-bg;
+  padding: 2rem;
+  border-radius: 1rem;
+  max-width: 800px;
+  margin: 2rem auto;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+
+  h2 {
+    color: $text-color;
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+    font-weight: 600;
+  }
+
+  .comment-form {
+    background-color: $secondary-bg;
+    padding: 1.5rem;
+    border-radius: 0.75rem;
+    margin-bottom: 2rem;
+
+    .input-group {
       display: flex;
-      flex-direction: column;
-      gap: 10px;
-  
-      input,
-      textarea {
-        width: 100%;
-        padding: 10px;
-        border-radius: 8px;
-        border: 1px solid #ddd;
-        transition: all 0.3s ease-in-out;
-  
-        &:focus {
-          border-color: #4CAF50;
-          box-shadow: 0 0 8px rgba(76, 175, 80, 0.3);
+      gap: 1rem;
+      margin-bottom: 1rem;
+
+      .avatar-upload {
+        position: relative;
+        width: 48px;
+        height: 48px;
+
+        img {
+          width: 100%;
+          height: 100%;
+          border-radius: 50%;
+          object-fit: cover;
+        }
+
+        .upload-icon {
+          position: absolute;
+          bottom: -4px;
+          right: -4px;
+          background-color: $accent-color;
+          border-radius: 50%;
+          padding: 4px;
+          cursor: pointer;
+          transition: all 0.2s ease;
+
+          &:hover {
+            transform: scale(1.1);
+          }
         }
       }
-  
-      textarea {
-        resize: none;
-        height: 80px;
-      }
-  
-      button {
-        align-self: flex-end;
-        padding: 8px 16px;
-        border: none;
-        background: #4CAF50;
-        color: white;
-        font-size: 14px;
-        border-radius: 6px;
-        cursor: pointer;
-        transition: 0.3s;
-  
-        &:hover {
-          background: #388E3C;
+
+      .comment-input {
+        flex: 1;
+        position: relative;
+
+        textarea {
+          width: 100%;
+          padding: 1rem;
+          padding-right: 3rem;
+          border: 2px solid $border-color;
+          border-radius: 0.5rem;
+          resize: none;
+          min-height: 80px;
+          background-color: white;
+          transition: border-color 0.2s ease;
+
+          &:focus {
+            outline: none;
+            border-color: $accent-color;
+          }
+        }
+
+        .emoji-icon {
+          position: absolute;
+          right: 1rem;
+          bottom: 1rem;
+          color: $text-color;
+          cursor: pointer;
+          transition: color 0.2s ease;
+
+          &:hover {
+            color: darken($accent-color, 10%);
+          }
         }
       }
     }
-  
-    .comment-list {
-      margin-top: 20px;
-      list-style: none;
-      padding: 0;
-  
-      .comment-item {
+
+    .submit-button {
+      background-color: $accent-color;
+      color: white;
+      padding: 0.75rem 1.5rem;
+      border-radius: 0.5rem;
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      float: right;
+
+      &:hover {
+        background-color: darken($accent-color, 10%);
+        transform: translateY(-1px);
+      }
+    }
+  }
+
+  .comments-list {
+    .comment {
+      background-color: white;
+      padding: 1rem;
+      border-radius: 0.75rem;
+      margin-bottom: 1rem;
+      border: 1px solid $border-color;
+
+      .comment-header {
         display: flex;
-        align-items: flex-start;
-        gap: 12px;
-        background: #f9f9f9;
-        padding: 10px;
-        margin-bottom: 10px;
-        border-radius: 6px;
-        box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
-        transition: 0.3s ease-in-out;
-  
-        &:hover {
-          transform: translateY(-3px);
-        }
-  
-        .avatar {
+        align-items: center;
+        gap: 0.75rem;
+        margin-bottom: 0.75rem;
+
+        img {
           width: 40px;
           height: 40px;
           border-radius: 50%;
+          object-fit: cover;
         }
-  
-        .comment-content {
-          flex: 1;
-          display: flex;
-          flex-direction: column;
-  
-          .comment-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 14px;
-            font-weight: bold;
-            color: #333;
-  
-            .date {
-              font-size: 12px;
-              color: #777;
-            }
+
+        .user-info {
+          h4 {
+            font-weight: 600;
+            color: $text-color;
+            margin: 0;
           }
-  
-          p {
-            font-size: 14px;
-            color: #444;
-            margin-top: 5px;
+
+          span {
+            font-size: 0.875rem;
+            color: lighten($text-color, 20%);
+          }
+        }
+      }
+
+      .comment-content {
+        color: $text-color;
+        line-height: 1.5;
+      }
+
+      .comment-actions {
+        display: flex;
+        gap: 1rem;
+        margin-top: 0.75rem;
+
+        button {
+          background: none;
+          border: none;
+          color: lighten($text-color, 20%);
+          display: flex;
+          align-items: center;
+          gap: 0.25rem;
+          cursor: pointer;
+          transition: color 0.2s ease;
+
+          &:hover {
+            color: $accent-color;
           }
         }
       }
     }
   }
-  
+}
+
+
+
+.delete-icon {
+  margin-left: auto; // Push the trash icon to the right
+  cursor: pointer; // Make it clickable
+  color: #ff4d4f; // Red color for the trash icon
+  transition: color 0.2s;
+
+  &:hover {
+    color: #ff7875; // Lighter red on hover
+  }
+}

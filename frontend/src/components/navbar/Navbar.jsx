@@ -20,6 +20,7 @@ import axios from 'axios';
 import { PiSunLight } from "react-icons/pi";
 
 import { useNavigate } from "react-router-dom";
+import api from "../../redux/features/api";
 
 const Navbar = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -30,6 +31,8 @@ const Navbar = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [darkMode, setDarkMode] = useState(false);
+
+  console.log(user)
 
   const toggleMode = () => {
     setDarkMode(!darkMode);
@@ -50,10 +53,11 @@ const Navbar = () => {
 
   const handleLogout = async () => {
     try {
-      const res = await axios.post("http://localhost:5000/auth/logout");
+      const res = await api.post("/auth/logout", {}, { withCredentials: true });
+  
       if (res.status === 200) {
         alert("Logout successful");
-        dispatch(logoutUser());
+        dispatch(logoutUser()); 
         navigate("/");
       }
     } catch (error) {

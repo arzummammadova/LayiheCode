@@ -136,7 +136,7 @@ const Details = () => {
                         </div>
 
 
-                     <Comment/>
+                     <Comment productID = {selected._id}/>
                     </div>
                 </div>
             </section>

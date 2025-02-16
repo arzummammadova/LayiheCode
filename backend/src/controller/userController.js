@@ -392,6 +392,39 @@ export const verifyEmail = async (req, res) => {
       return res.status(400).json({ message: "Token not valid or expired" });
     }
   };
+
+
+
+
+
+// export const verifyEmail = async (req, res) => {
+//   try {
+//     const { token } = req.params;
+//     console.log("Received Token:", token); // 🔥 Tokeni yoxla!
+
+//     if (!token) {
+//       return res.status(400).json({ message: "Token is missing" });
+//     }
+
+//     const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+//     const updatedVerify = await user.findByIdAndUpdate(
+//       decoded.id, // 🛠 Burada `decoded.id` istifadə olunmalıdır!
+//       { isVerified: true }
+//     );
+
+//     if (updatedVerify) {
+//       return res.redirect(`${process.env.CLIENT_LINK}/login`);
+//     }
+//   } catch (error) {
+//     console.error("Error verifying token:", error.message);
+//     return res.status(400).json({ message: "Token not valid or expired" });
+//   }
+// };
+
+
+
+
 // export const verifyEmail = async (req, res) => {
 //   try {
 //     const token = req.cookies.token;
@@ -524,16 +557,24 @@ export const verifyEmail = async (req, res) => {
         lastname,
         password: hashedPassword,
         birthDate,
-        isAdmin: userCount === 0 ? true : false, // İlk user admin olacaq
+        isAdmin: userCount === 0 ? true : false, 
       });
   
       await newUser.save();
   
+      // const token = generateToken(newUser._id, res);
+      // const confirmLink = `${process.env.SERVER_LINK}/auth/verify/${encodeURIComponent(token)}`;
+      // recieveMail(newUser, confirmLink);
       const token = generateToken(newUser._id, res);
+      // console.log("Generated Token:", token); 
+      
       const confirmLink = `${process.env.SERVER_LINK}/auth/verify/${encodeURIComponent(token)}`;
-      recieveMail(newUser, confirmLink);
-  
+      // console.log("Confirm Link:", confirmLink); 
+         recieveMail(newUser, confirmLink);
       return res.status(201).json({ message: "User created successfully", newUser, token });
+    
+  
+    
     } catch (error) {
       return res.status(500).json({ message: error.message });
     }
@@ -599,30 +640,6 @@ export const verifyEmail = async (req, res) => {
   
  
   
-  export const login = async (req, res) => {
-    try {
-      const { username, password } = req.body;
-  
-      const { error } = userLoginValidationSchema.validate(req.body);
-      if (error) return res.status(400).json({ message: error.details[0].message });
-  
-      const existUser = await user.findOne({ username });
-      if (!existUser) return res.status(400).json({ message: "User not found" });
-  
-      const isMatch = await bcrypt.compare(password, existUser.password);
-      if (!isMatch) return res.status(400).json({ message: "Username or Password wrong" });
-  
-      await user.findByIdAndUpdate(existUser._id, { isLogin: true });
-      generateToken(existUser._id, res);
-  
-      return res.status(200).json({ message: "User logged in successfully", existUser });
-    } catch (error) {
-      return res.status(500).json({ message: error.message });
-    }
-  };
-  
-
-
   // export const login = async (req, res) => {
   //   try {
   //     const { username, password } = req.body;
@@ -630,7 +647,7 @@ export const verifyEmail = async (req, res) => {
   //     const { error } = userLoginValidationSchema.validate(req.body);
   //     if (error) return res.status(400).json({ message: error.details[0].message });
   
-  //     const existUser = await user.findOne({ username }).populate("favorites"); // Favoritləri əlavə et
+  //     const existUser = await user.findOne({ username });
   //     if (!existUser) return res.status(400).json({ message: "User not found" });
   
   //     const isMatch = await bcrypt.compare(password, existUser.password);
@@ -639,20 +656,44 @@ export const verifyEmail = async (req, res) => {
   //     await user.findByIdAndUpdate(existUser._id, { isLogin: true });
   //     generateToken(existUser._id, res);
   
-  //     return res.status(200).json({
-  //       message: "User logged in successfully",
-  //       user: {
-  //         _id: existUser._id,
-  //         username: existUser.username,
-  //         email: existUser.email,
-  //         favorites: existUser.favorites, // Favoritləri də qaytar
-  //       },
-  //     });
+  //     return res.status(200).json({ message: "User logged in successfully", existUser });
   //   } catch (error) {
   //     return res.status(500).json({ message: error.message });
   //   }
   // };
   
+
+
+
+
+
+
+  export const login = async (req, res) => {
+    // console.log("Gələn Cookie:", req.cookies.token);
+
+    try {
+        const { username, password } = req.body;
+
+        const { error } = userLoginValidationSchema.validate(req.body);
+        if (error) return res.status(400).json({ message: error.details[0].message });
+
+        const existUser = await user.findOne({ username });
+        if (!existUser) return res.status(400).json({ message: "User not found" });
+
+        const isMatch = await bcrypt.compare(password, existUser.password);
+        if (!isMatch) return res.status(400).json({ message: "Username or Password wrong" });
+
+        await user.findByIdAndUpdate(existUser._id, { isLogin: true });
+
+       const token= generateToken(existUser._id, res);
+       console.log("Generated Token:", token);
+
+        return res.status(200).json({ message: "User logged in successfully",token });
+    } catch (error) {
+        return res.status(500).json({ message: error.message });
+    }
+};
+
 
   export const resetPassword = async (req, res) => {
     console.log();
@@ -790,7 +831,7 @@ export const verifyEmail = async (req, res) => {
     
       loggedInUser.isLogin = false;
       await loggedInUser.save();
-  
+      res.clearCookie("token");
     
       res.status(200).json({ message: "Logout successful", user: loggedInUser });
     } catch (error) {
@@ -798,6 +839,40 @@ export const verifyEmail = async (req, res) => {
       res.status(500).json({ message: "Internal server error" });
     }
   };
+
+
+//   export const logout = async (req, res) => {
+//     try {
+//         const token = req.cookies.token;
+//         if (!token) {
+//             return res.status(400).json({ message: "User is already logged out" });
+//         }
+
+//         const decoded = jwt.verify(token, process.env.JWT_SECRET);
+//         const loggedInUser = await user.findById(decoded.id);
+
+//         if (!loggedInUser) {
+//             return res.status(404).json({ message: "User not found" });
+//         }
+
+//         // isLogin statusunu false edirik
+//         loggedInUser.isLogin = false;
+//         await loggedInUser.save();
+
+//         // Tokeni silmək üçün cookie-i təmizləyirik
+//         res.clearCookie("token", {
+//             httpOnly: true,
+//             secure: process.env.COOKIE_SECURE === "true",
+//             sameSite: process.env.COOKIE_SAMESITE || "strict",
+//         });
+
+//         return res.status(200).json({ message: "Logout successful" });
+//     } catch (error) {
+//         console.error("Error during logout:", error);
+//         return res.status(500).json({ message: "Internal server error" });
+//     }
+// };
+
 
   // export const authenticateUser = async (req, res, next) => {
   //   try {
