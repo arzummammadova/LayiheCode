@@ -191,7 +191,7 @@ export const deletefromReaded = createAsyncThunk(
 const authSlice = createSlice({
   name: "auth",
   initialState: {
-    user: null,
+    user: {},
     users: null,
     isLoggedIn: false,
     isAdmin: false,

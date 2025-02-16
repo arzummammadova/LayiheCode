@@ -2,6 +2,23 @@ import book from "../models/productModels.js";
 import path from 'path';
 
 
+export const getReviews = async (req, res) => {
+  try {
+    const { productId } = req.params;
+    
+    // `user` obyektinin tam məlumatlarını gətirmək üçün `populate()` istifadə edirik
+    const productItem = await book.findById(productId).populate("reviews.user", "name isAdmin isLogin isVerified email image");
+
+    if (!productItem) {
+      return res.status(404).json({ message: "Məhsul tapılmadı!" });
+    }
+
+    res.status(200).json({ reviews: productItem.reviews });
+  } catch (error) {
+    res.status(500).json({ message: "Server xətası", error });
+  }
+};
+
 export const addReview = async (req, res) => {
   try {
       const { productId } = req.params;
@@ -126,6 +143,7 @@ export const updateOwnReview = async (req, res) => {
       res.status(500).json({ message: error.message });
   }
 };
+
 
 
 

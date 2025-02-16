@@ -1,5 +1,5 @@
 import express from 'express'
-import { addReview, deleteBook, deleteReview, editBook, getBook, getBookById, postBook, searchBooks, sortPriceHighToLow, sortPriceLowToHigh, sortRatingHighToLow, sortRatingLowToHigh, updateOwnReview, updateReview, uploadImage} from '../controller/productControllers.js'
+import { addReview, deleteBook, deleteReview, editBook, getBook, getBookById, getReviews, postBook, searchBooks, sortPriceHighToLow, sortPriceLowToHigh, sortRatingHighToLow, sortRatingLowToHigh, updateOwnReview, updateReview, uploadImage} from '../controller/productControllers.js'
 import multer from 'multer';
 import path from 'path'
 import { adminProtect, protect } from '../middleware/auth/authMiddleware.js';
@@ -37,12 +37,12 @@ router.put('/:id', editBook);
 
 
 //? review aid 
-
+router.get("/:productId/reviews",getReviews);
 router.post("/:productId",protect, addReview);
 router.delete("/:productId/:reviewId",protect, deleteReview);
-// router.delete("/admin/:productId/:reviewId", protect, adminProtect, deleteReview);  bu lazim deyile
+
+router.put("/:productId/:reviewId", protect, updateOwnReview);
+// router.delete("/admin/:productId/:reviewId", protect, adminProtect, deleteReview); 
 
 // router.put("/:productId/:reviewId",protect,adminProtect, updateReview);
-router.put("/:productId/:reviewId", protect, updateOwnReview);
-
 export default router
