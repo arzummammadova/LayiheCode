@@ -8,6 +8,12 @@ body {
     overflow-x: hidden;
 }
 
+.discover-btn:hover{
+  background-color: black;
+  color: white;
+  transform: scale(1.04);
+  transition: 1s all;
+}
 
 .hero {
     .row .left {

@@ -98,6 +98,9 @@ img{
  .right-hero{
   display: none;
  }
+ .logo{
+  display: none;
+ }
  .logo a {
   font-size: 16px!important;
 }
@@ -117,10 +120,12 @@ img{
   font-size: 14px!important;
 
 }
-.mainbtn {
+.mainbtn,.whitebtn {
   padding: 0.1rem 1rem;
   height: 20px;
   font-size: 12px!important;
+  border: none;
+  color: white;
   
   background: linear-gradient(to right, #00DC64, #9AE1BC);
  

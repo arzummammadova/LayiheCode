@@ -8,10 +8,8 @@ import { useState } from 'react';
 import axios from 'axios';
 import logochat from '../../assets/images/ReadlyChat.svg'
 import desing from '../../assets/images/Untitled design (1).png'
-// import { BsChatLeftHeartFill } from 'react-icons/bs';
 import { IoCloseSharp, IoExpandOutline } from 'react-icons/io5';
-// import { BsChatLeftHeartFill } from 'react-icons/bs';
-// import { IoCloseSharp } from 'react-icons/io5';
+
 import right from "../../assets/icons/image9.svg"
 const Hero = () => {
     const [isOpen, setIsOpen] = useState(false);
@@ -43,7 +41,7 @@ const Hero = () => {
                 ]);
             }
 
-            setMessage(''); // Input-u təmizləyir
+            setMessage(''); 
         }
     };
     useEffect(() => {
@@ -65,7 +63,7 @@ const Hero = () => {
                                     Your Journey to a World of Stories Starts Here.</p>
                                 {/* <h1 className='headermain'>Furniture Collections</h1> */}
                                 <p className='mt-3'>Browse our vast collection of books, explore new releases, and get your hands on the latest bestsellers. Your next adventure is just a click away!</p>
-                                <button className='btnsh btnflex ' >Discover</button>
+                                <button className='btnsh btnflex discover-btn ' >Discover</button>
                                 {/* <button class="draw-border">Draw Border</button> */}
                                 {/* <div class="button-container-3">
                                     <span class="mas">MASK3</span>

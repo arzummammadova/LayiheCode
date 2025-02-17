@@ -52,6 +52,14 @@
   }
   
   @media (max-width: 992px) {
+    .mode-text{
+      display: none;
+    }
+    .hero .row .right {
+ 
+      width: 70%!important;
+      margin: 0 auto;
+    }
     .hero .row .left .header {
       line-height: 30px!important;
      font-size: 30px!important;}
@@ -207,14 +215,16 @@ body {
 }
 
 }
-
+ul{
+  margin-bottom: 0px;
+}
 
 
 .switch-button {
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 3px 5px;
+  padding: 5px 5px;
   background-color: $primary-light;
   border: none;
   border-radius: 30px;
@@ -245,6 +255,8 @@ body {
     
   // }
 }
+
+
 
 
 

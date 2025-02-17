@@ -11,7 +11,6 @@ import { PiBooksBold } from "react-icons/pi";
 import { BsBasket2Fill } from "react-icons/bs";
 
 import axios from 'axios';
-// import { DayAndNightToggle } from 'react-day-and-night-toggle'
 import { PiSunLight } from "react-icons/pi";
 
 import { useNavigate } from "react-router-dom";
@@ -20,19 +19,21 @@ import api from "../../redux/features/api";
 const Navbar = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
-  const basket = useSelector((state) => state.basket.basket);
-  const { user, isLoggedIn, isAdmin, isLogin } = useSelector((state) => state.auth); 
-  const count = basket.reduce((sum, i) => sum + i.count, 0);
+  const [loading, setLoading] = useState(true);
+  const { user, isLoggedIn, isAdmin, isLogin,readed,toReadBooks } = useSelector((state) => state.auth); 
+  console.log(readed)
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [darkMode, setDarkMode] = useState(false);
 
 
 
+
   useEffect(() => {
-    dispatch(fetchLoginUser());
-    // fetchTheme();
+    dispatch(fetchLoginUser()).then(() => setLoading(false));
   }, [dispatch]);
+  
   useEffect(() => {
     if (user?._id) {
       fetchTheme();
@@ -40,6 +41,7 @@ const Navbar = () => {
   }, [user]); 
   
   console.log(user?._id)
+
 
   const fetchTheme = async () => {
     try {
@@ -76,6 +78,8 @@ const Navbar = () => {
   const toggleProfileDropdown = () => {
     setIsProfileDropdownOpen(!isProfileDropdownOpen);
   };
+  const count = loading ? "..." : readed?.length || 0;
+  const countt = loading ? "..." : toReadBooks?.length || 0;
 
   const handleLogout = async () => {
     try {
@@ -115,6 +119,7 @@ const Navbar = () => {
                 </li>
                 <li>
                   <Link to="/addtoread">Read later</Link>
+                  {/* <sup style={{ color: "red" }}>{countt}</sup> */}
                 </li>
                 {isAdmin && ( 
                   <li>
@@ -123,7 +128,7 @@ const Navbar = () => {
                 )}
                 <li>
                   <Link to="/readed">Readed</Link>
-                  <sup style={{ color: "red" }}>{count}</sup>
+                  {/* <sup style={{ color: "red" }}>{count}</sup> */}
                 </li>
                 <li>
                   <Link to="/">About</Link>
@@ -134,7 +139,7 @@ const Navbar = () => {
               </ul>
             </div>
 
-            <div className={`nav-links actions action-d`}>
+            <div className={`nav-links actions `}>
               <ul>
                 <li>
              
@@ -150,42 +155,37 @@ const Navbar = () => {
                     </div>
 
 
-                    {/* <img style={{ width: "20px", height: "25px" }} src={light} alt="Logo" /> */}
             
 
                 </li>
 
-                {/* <li>
-                  <Link to="/">
-                    <CiSearch size={25} />
-                  </Link>
-                </li> */}
-                <li>
+                  <div className="action-d ">
+                  <li>
                   <Link to="/favorite">
                   <FiHeart />
 
-                    {/* <img style={{ width: "20px", height: "20px" }} src={heart} alt="Logo" /> */}
+                   
                   </Link>
                 </li>
                 <li>
-                  <Link to="/readlater">
-                    {/* <img style={{ width: "20px", height: "20px" }} src={bookicon} alt="Logo" /> */}
+                  <Link to="/addtoread">
                     <PiBooksBold />
 
                   </Link>
                 </li>
-                <li>
+                {/* <li>
                   <Link to="/">
-                    {/* <img style={{ width: "20px", height: "20px" }} src={basketicon} alt="basket" /> */}
                     <BsBasket2Fill />
 
                   </Link>
                   <sup style={{ color: "red" }}>{count}</sup>
-                </li>
+                </li> */}
+                  </div>
+              
               </ul>
             </div>
 
-            {!isLogin ? ( // Use isLogin here
+            {!isLogin ? ( 
               <div className="nav-links actions">
                 <ul>
                   <li>
