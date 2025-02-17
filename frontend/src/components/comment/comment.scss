@@ -1,5 +1,5 @@
 $primary-bg: #EFEBE6;
-$secondary-bg: #F7F4F1;
+$secondary-bg: white;
 $accent-color: #D4C3B5;
 $text-color: #4A4A4A;
 $border-color: #E5DED8;
@@ -8,8 +8,8 @@ $border-color: #E5DED8;
   background-color: $primary-bg;
   padding: 2rem;
   border-radius: 1rem;
-  max-width: 800px;
-  margin: 2rem auto;
+  max-width:100%;
+  margin: 4rem auto;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
 
   h2 {
@@ -21,7 +21,7 @@ $border-color: #E5DED8;
 
   .comment-form {
     background-color: $secondary-bg;
-    padding: 1.5rem;
+    padding: 3.5rem;
     border-radius: 0.75rem;
     margin-bottom: 2rem;
 
@@ -62,6 +62,7 @@ $border-color: #E5DED8;
         flex: 1;
         position: relative;
 
+
         textarea {
           width: 100%;
           padding: 1rem;
@@ -95,7 +96,7 @@ $border-color: #E5DED8;
     }
 
     .submit-button {
-      background-color: $accent-color;
+      background-color: green;
       color: white;
       padding: 0.75rem 1.5rem;
       border-radius: 0.5rem;
@@ -115,9 +116,11 @@ $border-color: #E5DED8;
   }
 
   .comments-list {
+    width: 80%;
+    margin: 0 auto;
     .comment {
       background-color: white;
-      padding: 1rem;
+      padding: 0.5rem 2rem;
       border-radius: 0.75rem;
       margin-bottom: 1rem;
       border: 1px solid $border-color;
@@ -125,6 +128,7 @@ $border-color: #E5DED8;
       .comment-header {
         display: flex;
         align-items: center;
+        justify-content: space-between;
         gap: 0.75rem;
         margin-bottom: 0.75rem;
 
@@ -136,9 +140,12 @@ $border-color: #E5DED8;
         }
 
         .user-info {
+        margin-top: 1rem;
           h4 {
             font-weight: 600;
-            color: $text-color;
+            color: green;
+            font-size: 20px;
+
             margin: 0;
           }
 
@@ -181,16 +188,19 @@ $border-color: #E5DED8;
 
 
 .delete-icon {
-  margin-left: auto; // Push the trash icon to the right
-  cursor: pointer; // Make it clickable
-  color: #ff4d4f; // Red color for the trash icon
+  margin-left: auto; 
+  cursor: pointer;
+  color: #ff4d4f!important; 
   transition: color 0.2s;
 
   &:hover {
-    color: #ff7875; // Lighter red on hover
+    color: #ff7875!important; 
   }
 }
 
+.star-rating{
+  align-items: center;
+}
 
 .edit-button, .delete-button {
   background: none;
@@ -293,6 +303,126 @@ $border-color: #E5DED8;
       &:last-child {
         background: #f44336;
         color: white;
+      }
+    }
+  }
+}
+
+.edit-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background: #fbedeb; // Sizin palitraya uyğun yumşaq fon
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  transition: 0.3s ease-in-out;
+
+  textarea {
+    width: 100%;
+    min-height: 80px;
+    padding: 10px;
+    border: 1px solid #9ae1bc;
+    border-radius: 5px;
+    font-size: 16px;
+    resize: vertical;
+    transition: border 0.3s;
+
+    &:focus {
+      border-color: #00dc64;
+      outline: none;
+      box-shadow: 0 0 5px rgba(0, 220, 100, 0.5);
+    }
+  }
+
+  .rating-section {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 18px;
+    font-weight: bold;
+    color: #00dc64;
+  }
+
+  .edit-buttons {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+
+    button {
+      padding: 8px 16px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: bold;
+      transition: all 0.3s ease-in-out;
+
+      &:first-child {
+        background: #00dc64;
+        color: white;
+
+        &:hover {
+          background: darken(#00dc64, 10%);
+        }
+      }
+
+      &:last-child {
+        background: #fbedeb;
+        color: #d9534f;
+        border: 1px solid #d9534f;
+
+        &:hover {
+          background: #d9534f;
+          color: white;
+        }
+      }
+    }
+  }
+}
+
+.like-dislike-section {
+  display: flex;
+  align-items: flex-end;
+  justify-content: end;
+  gap: 10px;
+  margin-top: 10px;
+
+  button {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #555;
+    font-size: 14px;
+    padding: 5px 10px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+
+    &:hover {
+      background-color: #f0f0f0;
+      color: #000;
+    }
+
+    &:active {
+      transform: scale(0.95);
+    }
+
+    &.liked {
+      color: #1877f2; 
+      &:hover{
+        background-color: #1877f2;
+        color: white;
+      }
+    }
+
+    &.disliked {
+      color: #ff4444; 
+      &:hover{
+        background-color: #d9534f;
+         color: white;
       }
     }
   }

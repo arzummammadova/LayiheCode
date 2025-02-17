@@ -2,18 +2,41 @@ import book from "../models/productModels.js";
 import path from 'path';
 
 
+// export const getReviews = async (req, res) => {
+//   try {
+//     const { productId } = req.params;
+    
+//     // `user` obyektinin tam məlumatlarını gətirmək üçün `populate()` istifadə edirik
+//     const productItem = await book.findById(productId).populate("reviews.user", "name isAdmin isLogin isVerified email image");
+
+//     if (!productItem) {
+//       return res.status(404).json({ message: "Məhsul tapılmadı!" });
+//     }
+
+//     res.status(200).json({ reviews: productItem.reviews });
+//   } catch (error) {
+//     res.status(500).json({ message: "Server xətası", error });
+//   }
+// };
+
+
 export const getReviews = async (req, res) => {
   try {
     const { productId } = req.params;
     
-    // `user` obyektinin tam məlumatlarını gətirmək üçün `populate()` istifadə edirik
-    const productItem = await book.findById(productId).populate("reviews.user", "name isAdmin isLogin isVerified email image");
+    const productItem = await book.findById(productId).populate("reviews.user", "name email image");
 
     if (!productItem) {
       return res.status(404).json({ message: "Məhsul tapılmadı!" });
     }
 
-    res.status(200).json({ reviews: productItem.reviews });
+    const reviewsWithLikeDislikeCount = productItem.reviews.map(review => ({
+      ...review.toObject(),
+      likeCount: review.likes.length,
+      dislikeCount: review.dislikes.length
+    }));
+
+    res.status(200).json({ reviews: reviewsWithLikeDislikeCount });
   } catch (error) {
     res.status(500).json({ message: "Server xətası", error });
   }
@@ -74,6 +97,93 @@ export const deleteReview = async (req, res) => {
       res.status(500).json({ message: "Server xətası", error });
   }
 };
+export const updateOwnReview = async (req, res) => {
+  try {
+      const { productId, reviewId } = req.params;
+      const { rating, comment } = req.body;
+
+      const product = await book.findById(productId);
+      if (!product) return res.status(404).json({ message: "Product not found" });
+
+      const review = product.reviews.id(reviewId);
+      if (!review) return res.status(404).json({ message: "Review not found" });
+
+      // İstifadəçinin öz rəyini yeniləməyə icazə verək
+      if (review.user.toString() !== req.user._id.toString()) {
+          return res.status(403).json({ message: "You can only edit your own reviews" });
+      }
+
+      review.rating = rating || review.rating;
+      review.comment = comment || review.comment;
+      review.updatedAt = Date.now();
+
+      await product.save();
+      res.status(200).json({ message: "Review updated successfully", review });
+  } catch (error) {
+      res.status(500).json({ message: error.message });
+  }
+};
+
+export const likeReview = async (req, res) => {
+  try {
+    const { productId, reviewId } = req.params;
+    const userId = req.user._id;
+
+    const productItem = await book.findById(productId);
+    if (!productItem) return res.status(404).json({ message: "Məhsul tapılmadı!" });
+
+    const review = productItem.reviews.id(reviewId);
+    if (!review) return res.status(404).json({ message: "Rəy tapılmadı!" });
+
+    review.dislikes = review.dislikes.filter(id => id.toString() !== userId.toString());
+
+    if (review.likes.includes(userId)) {
+      review.likes = review.likes.filter(id => id.toString() !== userId.toString());
+    } else {
+      review.likes.push(userId);
+    }
+
+    await productItem.save();
+    res.status(200).json({ message: "Rəyə like əlavə edildi", review });
+  } catch (error) {
+    res.status(500).json({ message: "Server xətası", error });
+  }
+};
+
+export const dislikeReview = async (req, res) => {
+  try {
+    const { productId, reviewId } = req.params;
+    const userId = req.user._id;
+
+    const productItem = await book.findById(productId);
+    if (!productItem) return res.status(404).json({ message: "Məhsul tapılmadı!" });
+
+    const review = productItem.reviews.id(reviewId);
+    if (!review) return res.status(404).json({ message: "Rəy tapılmadı!" });
+
+    review.likes = review.likes.filter(id => id.toString() !== userId.toString());
+
+    if (review.dislikes.includes(userId)) {
+      review.dislikes = review.dislikes.filter(id => id.toString() !== userId.toString());
+    } else {
+      review.dislikes.push(userId);
+    }
+
+    await productItem.save();
+    res.status(200).json({ message: "Rəyə dislike əlavə edildi", review });
+  } catch (error) {
+    res.status(500).json({ message: "Server xətası", error });
+  }
+};
+
+
+
+
+
+
+
+
+
 
 export const updateReview = async (req, res) => {
   try {
@@ -117,32 +227,7 @@ export const updateReview = async (req, res) => {
       res.status(500).json({ message: "Server xətası", error });
   }
 };
-export const updateOwnReview = async (req, res) => {
-  try {
-      const { productId, reviewId } = req.params;
-      const { rating, comment } = req.body;
 
-      const product = await book.findById(productId);
-      if (!product) return res.status(404).json({ message: "Product not found" });
-
-      const review = product.reviews.id(reviewId);
-      if (!review) return res.status(404).json({ message: "Review not found" });
-
-      // İstifadəçinin öz rəyini yeniləməyə icazə verək
-      if (review.user.toString() !== req.user._id.toString()) {
-          return res.status(403).json({ message: "You can only edit your own reviews" });
-      }
-
-      review.rating = rating || review.rating;
-      review.comment = comment || review.comment;
-      review.updatedAt = Date.now();
-
-      await product.save();
-      res.status(200).json({ message: "Review updated successfully", review });
-  } catch (error) {
-      res.status(500).json({ message: error.message });
-  }
-};
 
 
 

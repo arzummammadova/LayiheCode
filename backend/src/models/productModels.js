@@ -72,7 +72,7 @@ import mongoose from "mongoose";
 const reviewSchema = new mongoose.Schema({
     user: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "user",  // Burada `Users` kolleksiyasına referans veririk
+        ref: "user",  
         required: true
     },
    
@@ -86,6 +86,8 @@ const reviewSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    likes: [{ type: mongoose.Schema.Types.ObjectId, ref: "user" }],
+    dislikes: [{ type: mongoose.Schema.Types.ObjectId, ref: "user" }], 
     createdAt: {
         type: Date,
         default: Date.now
@@ -102,7 +104,7 @@ const productSchema = new mongoose.Schema({
     genre: { type: String, required: true },
     publishedDate: { type: Date, required: true },
     lang: { type: String, required: false },
-    reviews: [reviewSchema]  // Ayrı `reviewSchema` yaratdıq ki, daha strukturlaşmış olsun.
+    reviews: [reviewSchema]  
 });
 
 const product = mongoose.model("product", productSchema);

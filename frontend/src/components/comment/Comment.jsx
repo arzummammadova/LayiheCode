@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Smile, Send, Trash, Edit } from 'lucide-react';
+import { Smile, Send, Trash, Edit, ThumbsUp, ThumbsDown } from 'lucide-react';
 import EmojiPicker from 'emoji-picker-react';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
 import Swal from 'sweetalert2';
 import person from "../../assets/icons/profile.svg";
 import './comment.scss';
-
+import { ToastContainer, toast } from 'react-toastify';
 const StarRating = ({ rating, onRatingChange, readonly = false }) => {
   const [hoverRating, setHoverRating] = useState(0);
 
@@ -59,7 +59,6 @@ const Comment = ({ productID }) => {
       console.error('Error fetching comments:', error);
     }
   };
-  // console.log(comments)
 
   const calculateOverallRating = () => {
     if (comments.length === 0) return 0;
@@ -167,19 +166,46 @@ const Comment = ({ productID }) => {
     }
   };
 
+  const handleLike = async (reviewId) => {
+    try {
+      const token = localStorage.getItem("token");
+      await axios.put(
+        `http://localhost:5000/api/books/${productID}/reviews/${reviewId}/like`,
+        {},
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      fetchComments();
+
+      
+    } catch (error) {
+      console.error("Error liking comment:", error);
+    }
+  };
+
+  const handleDislike = async (reviewId) => {
+    try {
+      const token = localStorage.getItem("token");
+      await axios.put(
+        `http://localhost:5000/api/books/${productID}/reviews/${reviewId}/dislike`,
+        {},
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      fetchComments();
+    } catch (error) {
+      console.error("Error disliking comment:", error);
+    }
+  };
+
   useEffect(() => { fetchComments(); }, [productID]);
 
   return (
     <div className="comment-section">
+      <ToastContainer/>
       <h2>Comments</h2>
-
-      <div className="overall-rating">
-        <h3>Overall Rating: {calculateOverallRating()}</h3>
-        <StarRating rating={calculateOverallRating()} readonly />
-      </div>
-
+      <div style={{display:"flex",alignItems:"center",gap:"1rem",fontSize:"1rem"}}>Overall Rating: <StarRating   rating={calculateOverallRating()} readonly /></div>
+     
       {isLoggedIn && (
-        <form className="comment-form" onSubmit={handleSubmit}>
+        <form className="comment-form" style={{backgroundColor:"#F7DAD6",borderRadius:"0px",marginTop:"30px"}} onSubmit={handleSubmit}>
           <div className="input-group">
             <div className="avatar-upload">
               <img src={user?.image ? `http://localhost:5000${user.image}` : person} alt="Your avatar" />
@@ -223,14 +249,26 @@ const Comment = ({ productID }) => {
         {comments.length > 0 ? comments.map((comment) => (
           <div key={comment._id} className="comment">
             <div className="comment-header">
-              <img
+              
+              <div className="user-info">
+                <div style={{justifyContent:"space-around",display:"flex",gap:"30px"}}>
+                <div className="img">
+                 <img
                 src={comment.user?.image ? `http://localhost:5000${comment.user.image}` : person}
                 alt={`${comment.user?.name || "Anonymous"}'s avatar`}
-              />
-              <div className="user-info">
+              />  
+                </div>
+                <div className="info">
+                
                 <h4>{comment.user?.name || "Anonymous"}</h4>
-                <p>{new Date(comment.createdAt).toLocaleDateString()}</p>
-                <StarRating rating={comment.rating} readonly />
+                <p>{comment.user?.email || "Anonymous"}</p>
+                <p>{new Date(comment.createdAt).toLocaleDateString()}   {new Date(comment.createdAt).toLocaleTimeString()}</p>
+           
+
+                </div>  
+                </div>
+                
+            <StarRating rating={comment.rating} readonly />  
               </div>
 
               {(user?._id === comment.user?._id || user?.isAdmin) && (
@@ -240,7 +278,7 @@ const Comment = ({ productID }) => {
                       <Edit size={18} />
                     </button>
                   )}
-                  <button onClick={() => handleDelete(comment._id)}>
+                  <button className='delete-icon' onClick={() => handleDelete(comment._id)}>
                     <Trash size={18} />
                   </button>
                 </div>
@@ -269,6 +307,15 @@ const Comment = ({ productID }) => {
             ) : (
               <p className="comment-content">{comment.comment}</p>
             )}
+
+            <div className="like-dislike-section">
+              <button className='liked' onClick={() => handleLike(comment._id)}>
+                <ThumbsUp size={18} /> {comment.likes?.length || 0}
+              </button>
+              <button className='disliked' onClick={() => handleDislike(comment._id)}>
+                <ThumbsDown size={18} /> {comment.dislikes?.length || 0}
+              </button>
+            </div>
           </div>
         )) : (
           <p>No comments yet. Be the first to comment!</p>
