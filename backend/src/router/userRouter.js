@@ -1,6 +1,6 @@
 import express from "express";
 import multer from 'multer'
-import { addAndRemoveFromFavorites, addreaded, addtofavorites, addtoread, deleteallfromfavorites, deleteallfromreaded, deleteAllFromToRead, deletefromfav, deletefromreaded, deleteFromToRead, deleteProfileImage, forgotPassword, gettofavorites, getToReadBooks, gettoreaded, getUser, login, logout, register, resetPassword, updateProfile, uploadImage, verifyEmail } from "../controller/userController.js";
+import { addAndRemoveFromFavorites, addreaded, addtofavorites, addtoread, changetheme, deleteallfromfavorites, deleteallfromreaded, deleteAllFromToRead, deletefromfav, deletefromreaded, deleteFromToRead, deleteProfileImage, forgotPassword, getTheme, gettofavorites, getToReadBooks, gettoreaded, getUser, login, logout, register, resetPassword, updateProfile, uploadImage, verifyEmail } from "../controller/userController.js";
 import path from 'path'
 
 const userRouter = express.Router();
@@ -45,6 +45,9 @@ userRouter.delete('/:userId/delallfavorites', deleteallfromfavorites)
 userRouter.post('/:userId/favorites', addAndRemoveFromFavorites);
 // 67a870fa98311aa6d2a5aefa
 
+//!theme
+userRouter.put('/theme',changetheme)
+userRouter.get('/theme/:userId', getTheme);
 
 //?readed aid olan router
 userRouter.post('/addreaded',addreaded)

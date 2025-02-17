@@ -43,6 +43,7 @@ const userSchema = new mongoose.Schema(
     isVerified: { type: Boolean, default: false },
     toRead: [{ type: mongoose.Schema.Types.ObjectId, ref: "product" }],
     addFavorites: [{ type: mongoose.Schema.Types.ObjectId, ref: "product" }],
+    theme: { type: String, enum: ["light", "dark"], default: "light" },
     addreaded: [{ type: mongoose.Schema.Types.ObjectId, ref: "product" }],
     reviews: [{ type: mongoose.Schema.Types.ObjectId, ref: "product" }] 
   },

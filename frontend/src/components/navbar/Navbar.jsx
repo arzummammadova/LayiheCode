@@ -2,11 +2,6 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "./navbar.scss";
 import { useDispatch, useSelector } from "react-redux";
-import heart from "../../assets/icons/heart.svg";
-import { CiSearch } from "react-icons/ci";
-import light from "../../assets/icons/light.svg";
-import bookicon from "../../assets/icons/bookicon.svg";
-import basketicon from "../../assets/icons/basket.svg";
 import person from "../../assets/icons/profile.svg";
 import { RxHamburgerMenu } from "react-icons/rx";
 import { fetchLoginUser, logoutUser } from "../../redux/features/userSlice";
@@ -32,17 +27,48 @@ const Navbar = () => {
   const navigate = useNavigate();
   const [darkMode, setDarkMode] = useState(false);
 
-  console.log(user)
 
-  const toggleMode = () => {
-    setDarkMode(!darkMode);
-    document.body.classList.toggle('dark-mode');
-  };
 
   useEffect(() => {
     dispatch(fetchLoginUser());
+    // fetchTheme();
   }, [dispatch]);
+  useEffect(() => {
+    if (user?._id) {
+      fetchTheme();
+    }
+  }, [user]); 
+  
+  console.log(user?._id)
 
+  const fetchTheme = async () => {
+    try {
+   
+      const response = await api.get(`http://localhost:5000/auth/theme/${user?._id}`);
+
+
+      setDarkMode(response.data.theme === 'dark');
+      document.body.classList.toggle('dark-mode', response.data.theme === 'dark');
+    } catch (error) {
+      console.error("Error fetching theme:", error);
+    }
+  };
+  const toggleMode = async () => {
+    const newTheme = !darkMode ? 'dark' : 'light';
+    setDarkMode(!darkMode);
+    document.body.classList.toggle('dark-mode');
+
+    try {
+      await api.put('http://localhost:5000/auth/theme', 
+        { userId: user?._id, theme: newTheme }, 
+        { withCredentials: true }
+      );
+      
+      
+    } catch (error) {
+      console.error("Error updating theme:", error);
+    }
+  };
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
   };
@@ -57,7 +83,9 @@ const Navbar = () => {
   
       if (res.status === 200) {
         alert("Logout successful");
-        dispatch(logoutUser()); 
+        dispatch(logoutUser());
+        setDarkMode(false); 
+        document.body.classList.remove("dark-mode"); 
         navigate("/");
       }
     } catch (error) {
@@ -109,13 +137,13 @@ const Navbar = () => {
             <div className={`nav-links actions action-d`}>
               <ul>
                 <li>
-                  <Link to="/">
+             
 
 
 
 
                     <div className={`toggle-container ${darkMode ? 'dark' : 'light'}`}>
-                      <button onClick={toggleMode} className="switch-button">
+                    <button onClick={toggleMode} className="switch-button">
                         {darkMode ? <GiNightSky className="icon night-icon" /> : <PiSunLight className="icon sun-icon" />}
                         <span className="mode-text">{darkMode ? 'Night' : 'Day'}</span>
                       </button>
@@ -123,7 +151,7 @@ const Navbar = () => {
 
 
                     {/* <img style={{ width: "20px", height: "25px" }} src={light} alt="Logo" /> */}
-                  </Link>
+            
 
                 </li>
 

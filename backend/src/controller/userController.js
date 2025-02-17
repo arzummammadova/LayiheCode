@@ -16,6 +16,43 @@ import fs from 'fs';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+
+
+
+export const changetheme= async (req, res) => {
+  const { userId, theme } = req.body;
+
+  if (!["light", "dark"].includes(theme)) {
+    return res.status(400).json({ message: "Invalid theme selection" });
+  }
+
+  try {
+    const updatedUser = await user.findByIdAndUpdate(
+      userId,
+      { theme },
+      { new: true }
+    );
+    res.json({ message: "Theme updated", theme: updatedUser.theme });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+}
+
+export const getTheme = async (req, res) => {
+  const { userId } = req.params;
+
+  try {
+    const userr = await user.findById(userId);
+    if (!userr) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.json({ theme: userr.theme });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 export const getUser=async(req,res)=>{
   try {
     const users=await user.find()
