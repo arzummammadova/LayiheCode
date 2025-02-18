@@ -1,5 +1,5 @@
 import express from 'express'
-import { addReview, deleteBook, deleteReview, dislikeReview, editBook, getBook, getBookById, getReviews, likeReview, postBook, searchBooks, sortPriceHighToLow, sortPriceLowToHigh, sortRatingHighToLow, sortRatingLowToHigh, updateOwnReview, updateReview, uploadImage} from '../controller/productControllers.js'
+import { addReview, deleteBook, deleteReview, dislikeReview, editBook, filterByCategory, getBook, getBookById, getReviews, likeReview, postBook, searchBooks, sortByLang, sortPriceHighToLow, sortPriceLowToHigh, sortRatingHighToLow, sortRatingLowToHigh, updateOwnReview, updateReview, uploadImage} from '../controller/productControllers.js'
 import multer from 'multer';
 import path from 'path'
 import { adminProtect, protect } from '../middleware/auth/authMiddleware.js';
@@ -33,7 +33,8 @@ router.get("/sort/price-low-to-high", sortPriceLowToHigh);
 router.get("/sort/rating-low-to-high", sortRatingLowToHigh); 
 router.get("/sort/rating-high-to-low",sortRatingHighToLow)
 router.put('/:id', editBook);
-
+router.get("/sort/lang", sortByLang);
+router.get("/filter/category", filterByCategory);
 
 
 //? review aid 

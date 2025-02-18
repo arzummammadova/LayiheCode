@@ -61,6 +61,52 @@ export const fetchProduct= createAsyncThunk(
   }
   );
 
+  export const sortRatingHtL = createAsyncThunk(
+    "books/sortRatingHtL",
+    async (_, { rejectWithValue }) => {
+      try {
+        const response = await axios.get("http://localhost:5000/api/books/sort/rating-high-to-low");
+        return response.data;
+      } catch (error) {
+        return rejectWithValue(error.response.data);
+      }
+    }
+  );
+  export const sortRatingLtH = createAsyncThunk(
+    "books/sortRatingLtH",
+    async (_, { rejectWithValue }) => {
+      try {
+        const response = await axios.get("http://localhost:5000/api/books/sort/rating-low-to-high");
+        return response.data;
+      } catch (error) {
+        return rejectWithValue(error.response.data);
+      }
+    }
+  );
+
+  export const sortByLang = createAsyncThunk(
+    "books/sortByLang",
+    async (order, { rejectWithValue }) => {
+        try {
+            const response = await axios.get(`http://localhost:5000/api/books/sort/lang?order=${order}`);
+            return response.data;
+        } catch (error) {
+            return rejectWithValue(error.response.data);
+        }
+    }
+);
+  
+export const filterByCategory = createAsyncThunk(
+  "books/filterByCategory",
+  async (category, { rejectWithValue }) => {
+      try {
+          const response = await axios.get(`http://localhost:5000/api/books/filter/category?category=${category}`);
+          return response.data;
+      } catch (error) {
+          return rejectWithValue(error.response.data);
+      }
+  }
+);
 const initialState = {
   products: [],
 }
@@ -68,12 +114,14 @@ const initialState = {
 export const productSlice = createSlice({
   name: 'products',
   initialState,
+  searchResults: [],
   reducers: {
     updateProduct: (state, action) => {
       const index = state.products.findIndex(p => p._id === action.payload._id);
       if (index !== -1) {
           state.products[index] = action.payload; 
       }
+      
   }
   
    
@@ -100,8 +148,26 @@ export const productSlice = createSlice({
       .addCase(searchProduct.fulfilled, (state, action) => {
         state.loading = false;
         state.searchResults = action.payload;
-        localStorage.setItem('searchResults', JSON.stringify(action.payload)); 
+        // localStorage.setItem('searchResults', JSON.stringify(action.payload)); 
       })
+    
+    
+      .addCase(sortRatingHtL.fulfilled, (state, action) => {
+        state.loading = false;
+        state.products= action.payload;
+      })
+      .addCase(sortRatingLtH.fulfilled, (state, action) => {
+        // console.log("Sorted Books:", action.payload);
+        state.loading = false;
+        state.products = action.payload;
+      })
+
+      .addCase(sortByLang.fulfilled, (state, action) => {
+        state.products = action.payload;
+    })
+    .addCase(filterByCategory.fulfilled, (state, action) => {
+      state.products = action.payload;
+  });
       
   },
 

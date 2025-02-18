@@ -5,7 +5,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchProduct } from '../../redux/features/productSlice';
 import { addtoRead } from '../../redux/features/userSlice';
-
+import Swal from 'sweetalert2'
 const Books = () => {
   const books = useSelector((state) => state.products.products) || [];
   const userId = useSelector((state) => state.auth.user?._id); 
@@ -22,13 +22,28 @@ const Books = () => {
 
   const handleAddToRead = (bookId) => {
     if (!userId) {
-      // You can show an alert or a redirect to login page if the user is not logged in
-      alert('Please log in to add books to your "to-read" list');
+      Swal.fire({
+        icon: 'warning',
+        title: 'Oops...',
+        text: 'Please log in to add books to your "to-read" list',
+        timer: 3000,
+        timerProgressBar: true,
+        confirmButtonColor: '#00DC64'
+      });
       return;
     }
-    // Dispatch addToRead action with userId and bookId
     dispatch(addtoRead({ userId, bookId }));
-    alert("suscceflly added!")
+    // alert("suscceflly added!")
+    Swal.fire({
+      icon: 'success',
+      title: 'Success!',
+      text: 'Successfully added!',
+      timer: 3000,
+      timerProgressBar: true,
+      confirmButtonColor: '#00DC64'
+    });
+
+
   };
 
   return (
@@ -74,7 +89,7 @@ const Books = () => {
                   </div>
 
                   <div className="box-bottom mt-2">
-                    <button onClick={(e) =>{ e.stopPropagation();handleAddToRead(book._id)} }>Add to read +</button>
+                    <button onClick={(e) =>{ e.stopPropagation();handleAddToRead(book._id)} }>Add to read </button>
                   </div>
                 </div>
               </div>

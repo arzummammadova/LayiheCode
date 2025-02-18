@@ -2,10 +2,10 @@ import React, { useState, useRef, useEffect } from 'react';
 import './caraousel.scss';
 import { FiArrowLeftCircle } from "react-icons/fi";
 import { FiArrowRightCircle } from "react-icons/fi";
-import cat1 from '../../assets/images/cat1.jpg'; // Classics
-import cat2 from '../../assets/images/cat2.jpg'; // Fantasy
-import cat3 from '../../assets/images/cat3.jpg'; // Romance
-import cat4 from '../../assets/images/cat4.jpg'; // Horror
+import cat1 from '../../assets/images/catt1.jpg'; // Classics
+import cat2 from '../../assets/images/cat2.jpeg'; // Fantasy
+import cat3 from '../../assets/images/cat3.jpg.optimal.jpg'; // Romance
+import cat4 from '../../assets/images/cat4.jpeg'; // Horror
 import cat5 from '../../assets/images/cat5.jpg'; // Sci-Fi
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -14,10 +14,11 @@ import Title from '../title/Title';
 
 const categories = [
   { image: cat1, label: 'Classics', route: '/category/classics' },
-  { image: cat2, label: 'Fantasy', route: '/category/fantasy' },
+  { image: cat5, label: 'Fantasy', route: '/category/fantasy' },
   { image: cat3, label: 'Romance', route: '/category/romance' },
-  { image: cat4, label: 'Horror', route: '/category/horror' },
-  { image: cat5, label: 'Sci-Fi', route: '/category/scifi' }
+  { image: cat4, label: 'Sci-Fi', route: '/category/scifi' },
+  { image: cat2, label: 'Horror', route: '/category/horror' },
+
 ];
 
 const Caraousel = () => {

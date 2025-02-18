@@ -22,6 +22,16 @@ export const fetchUser= createAsyncThunk(
   },
 )
 
+export const fetchUsersort = createAsyncThunk(
+  'auth/fetchUsersort',
+  async ({ sortOrder, isAdmin, search }) => {
+    const response = await axios.get(
+      `http://localhost:5000/auth?sort=${sortOrder}&isAdmin=${isAdmin}&search=${search}`
+    );
+    return response.data;
+  }
+);
+
 export const fetchLoginUser = createAsyncThunk(
   'auth/fetchLoginUser',
   async () => {
@@ -227,6 +237,12 @@ const authSlice = createSlice({
         state.isLogin = true; 
       })
       .addCase(fetchUser.fulfilled, (state, action) => {
+        state.users = action.payload;
+        state.isLoggedIn = !!action.payload;
+        state.isAdmin = action.payload?.isAdmin || false;
+        state.isLogin = !!action.payload;
+      })
+      .addCase(fetchUsersort.fulfilled, (state, action) => {
         state.users = action.payload;
         state.isLoggedIn = !!action.payload;
         state.isAdmin = action.payload?.isAdmin || false;

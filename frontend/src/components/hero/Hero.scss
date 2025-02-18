@@ -7,12 +7,19 @@
 body {
     overflow-x: hidden;
 }
-
+.discover-btn a{
+  color: #000000;
+  font-size: 1.2rem;
+}
 .discover-btn:hover{
   background-color: black;
   color: white;
   transform: scale(1.04);
   transition: 1s all;
+  a{
+    color: white;
+    font-size: 1.2rem;
+  }
 }
 
 .hero {

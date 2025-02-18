@@ -32,3 +32,17 @@
 
 
 }
+
+@media (max-width:576px) {
+    .delivary-text {
+    
+        font-size: 18px;
+      
+    }
+    .delivary-count > p{
+        font-size: 25px;
+    }
+    .box-bottom button {
+        margin-top: 1.2rem;
+    }
+}

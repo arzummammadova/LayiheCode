@@ -59,7 +59,7 @@ const AddToRead = () => {
                                             </div>
                                             <div className="text-add">
                                                 <p className="font-bold name mt-3">{book.name}</p>
-                                                <p className="text-gray-600">Author: {book.author.slice(0, 15)}...</p>
+                                                <p className="text-gray-600">{book.author.slice(0, 15)}...</p>
                                                 <div className="mainbtn" onClick={() => handleAddToReaded(userId, book._id)}>Oxudum</div>
                                             </div>
                                         </div>

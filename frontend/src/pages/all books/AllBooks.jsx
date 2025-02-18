@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import './allbook.scss';
 import Card from '../../components/card/Card';
+import { CiSearch } from "react-icons/ci";
+
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchProduct, searchProduct } from '../../redux/features/productSlice';
+import { fetchProduct, searchProduct, sortRatingHtL, sortRatingLtH } from '../../redux/features/productSlice';
 import { useNavigate } from 'react-router-dom';
+import Delivery from '../../components/delivery/Delivery';
 
 const genres = [
     'all',
@@ -27,13 +30,14 @@ const AllBooks = () => {
     const [isOpen, setIsOpen] = useState(false);
     const [searchTerm, setSearchTerm] = useState('');
     const [loading, setLoading] = useState(true);
-    const navigate=useNavigate();
+    const navigate = useNavigate();
+
     useEffect(() => {
         dispatch(fetchProduct()).finally(() => setLoading(false));
         window.scrollTo(0, 0);
     }, [dispatch]);
 
-    const godetails=(id)=>{
+    const godetails = (id) => {
         navigate(`/details/${id}`)
     }
 
@@ -48,26 +52,29 @@ const AllBooks = () => {
     const handleSelect = (genre) => {
         setSelectedGenre(genre === 'all' ? 'All Books' : genre);
         setIsOpen(false);
-        setCurrentPage(1); 
+        setCurrentPage(1);
     };
 
-
-    const filteredBooks = books.filter((book) => 
+    const sortbyratinghl = () => dispatch(sortRatingLtH());
+    const sortbyratinglth = () => dispatch(sortRatingHtL())
+    const filteredBooks = books.filter((book) =>
         (selectedGenre === 'All Books' || book.genre === selectedGenre) &&
         book.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
     // console.log(books)
 
-  
+
     const totalPages = Math.ceil(filteredBooks.length / booksPerPage);
     const indexOfLastBook = currentPage * booksPerPage;
     const indexOfFirstBook = indexOfLastBook - booksPerPage;
     const currentBooks = filteredBooks.slice(indexOfFirstBook, indexOfLastBook);
 
     return (
+        <div className="all_books">
         <div className="container">
             <div className="sorts">
-                <div className="select">
+                <div className="filter-s">
+                  <div className="select">
                     <div
                         className={`select-box ${isOpen ? 'open' : ''}`}
                         onClick={() => setIsOpen(!isOpen)}
@@ -88,33 +95,55 @@ const AllBooks = () => {
                             ))}
                         </ul>
                     )}
+
                 </div>
+            
+                <select onChange={(e) => {
+                    const selectedValue = e.target.value;
+                    if (selectedValue === "lowToHigh") {
+                        sortbyratinghl();
+                    } else if (selectedValue === "highToLow") {
+                        sortbyratinglth(); 
+                    }
+                }}>
+                    <option value="" disabled>Select</option>
+                  
+                    <option value="highToLow">Most Popular</option>
+                    <option value="lowToHigh">Less Popular</option>
+                </select>   
+                </div>
+               
                 <div className="find">
-                    <input 
-                        type="text" 
-                        placeholder='Find book...' 
-                        value={searchTerm} 
-                        onChange={(e) => setSearchTerm(e.target.value)} 
+                    <input
+                        type="text"
+                        placeholder='Find book...'
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
                     />
+                    <CiSearch className='search-i' />
+
                 </div>
+
+              
             </div>
 
             <div className="books-cards">
                 {loading ? (
                     <div className="spin">
-                           <div className="spinner"></div>
+                        <div className="spinner"></div>
                     </div>
-                 
+
                 ) : (
                     currentBooks.map((book) => (
                         <Card onClick={(e) => {
                             e.stopPropagation();
-                           
-                            godetails(book._id)}} key={book._id} book={book} />
 
-                      
-                       
-                   
+                            godetails(book._id)
+                        }} key={book._id} book={book} />
+
+
+
+
                     ))
                 )}
             </div>
@@ -132,7 +161,11 @@ const AllBooks = () => {
                     ))}
                 </div>
             )}
+           
         </div>
+           <Delivery/>      
+        </div>
+      
     );
 };
 

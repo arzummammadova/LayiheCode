@@ -9,12 +9,13 @@ import { GiNightSky } from "react-icons/gi";
 import { FiHeart } from "react-icons/fi";
 import { PiBooksBold } from "react-icons/pi";
 import { BsBasket2Fill } from "react-icons/bs";
-
+import Swal from 'sweetalert2'
 import axios from 'axios';
 import { PiSunLight } from "react-icons/pi";
 
 import { useNavigate } from "react-router-dom";
 import api from "../../redux/features/api";
+import { toast, ToastContainer } from "react-toastify";
 
 const Navbar = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -86,7 +87,14 @@ const Navbar = () => {
       const res = await api.post("/auth/logout", {}, { withCredentials: true });
   
       if (res.status === 200) {
-        alert("Logout successful");
+       Swal.fire({
+            icon: 'success',
+            title: 'Success!',
+            text: 'Successfully logout',
+            timer: 3000,
+            timerProgressBar: true,
+            confirmButtonColor: '#00DC64'
+          });
         dispatch(logoutUser());
         setDarkMode(false); 
         document.body.classList.remove("dark-mode"); 
@@ -94,13 +102,14 @@ const Navbar = () => {
       }
     } catch (error) {
       console.error("Error during logout:", error);
-      alert("An error occurred during logout.");
+      toast.error("An error occurred during logout.");
     }
   };
 
   return (
     <>
       <section id="nav">
+        <ToastContainer/>
         <div className="container">
           <div className="nav">
             <div className="logo">

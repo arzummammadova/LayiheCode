@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import './table.scss';
 import './css/spinner.css'
 import { useDispatch, useSelector } from 'react-redux';
-import { deleteProduct, fetchProduct, postProduct, sortPriceHigh, sortPriceLow } from '../redux/features/productSlice';
+import { deleteProduct, fetchProduct, filterByCategory, postProduct, sortByLang, sortPriceHigh, sortPriceLow, sortRatingHtL, sortRatingLtH } from '../redux/features/productSlice';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
@@ -27,14 +27,17 @@ const style = {
 const Addpage = () => {
     const products = useSelector((state) => state.products.products);
     const dispatch = useDispatch();
-
+    const [comments, setComments] = useState([]);
     const [open, setOpen] = useState(false);
     const [editMode, setEditMode] = useState(false);
     const [selectedProductId, setSelectedProductId] = useState(null);
 
     const [selectedFile, setSelectedFile] = useState(null);
     const [imagePreview, setImagePreview] = useState('');
+    const categories = ["Classics", "Klassik Ədəbiyyat", "Fantasy", "Satire", "Dystopia"]; 
 
+ 
+  
     useEffect(() => {
         dispatch(fetchProduct());
     }, [dispatch]);
@@ -84,6 +87,10 @@ const Addpage = () => {
         }
     };
 
+    const handleFilterByCategory = (event) => {
+        const selectedCategory = event.target.value;
+        dispatch(filterByCategory(selectedCategory));
+    };
     const formik = useFormik({
         initialValues: { name: '', price: '', image: '', description: '', category: '', author: '', genre: '', publishedDate: '', lang: '' },
         validationSchema: schema,
@@ -94,7 +101,6 @@ const Addpage = () => {
             }
 
             if (editMode) {
-                // Update existing book
                 try {
                     await fetch(`http://localhost:5000/api/books/${selectedProductId}`, {
                         method: 'PUT',
@@ -116,10 +122,17 @@ const Addpage = () => {
             dispatch(fetchProduct());
         },
     });
-
+    
+    
+// console.log(products)
     const sortlh = () => dispatch(sortPriceLow());
     const sorthl = () => dispatch(sortPriceHigh());
     const removeProduct = (id) => dispatch(deleteProduct(id));
+    const sortbyratinghl = () => dispatch(sortRatingLtH());
+    const sortbyratinglth=()=>dispatch(sortRatingHtL())
+    const sortByLangAsc = () => dispatch(sortByLang("asc"));
+    const sortByLangDesc = () => dispatch(sortByLang("desc")); 
+  
 
     return (
         <div>
@@ -127,15 +140,38 @@ const Addpage = () => {
                 <h1 className="mb-3">Admin Page</h1>
                 <Link to="/user" className="mainbtn mx-4">User</Link>
                 <br /><br /><br />
+                  <button onClick={handleOpen} style={{backgroundColor:"red"}} className="btnn btn-1 hover-filled-slide-down">
+                    <span>Create</span>
+                </button>
                 <button onClick={sortlh} className="btnn btn-1 hover-filled-slide-down">
                     <span>High To Low</span>
                 </button>
                 <button onClick={sorthl} className="btnn btn-1 hover-filled-slide-down">
                     <span>Low to High</span>
                 </button>
-                <button onClick={handleOpen} className="btnn btn-1 hover-filled-slide-down">
-                    <span>Create</span>
+                <button onClick={sortbyratinghl} className="btnn btn-1 hover-filled-slide-down">
+                    <span>Low to High(by rating)</span>
                 </button>
+                <button onClick={sortbyratinglth} className="btnn btn-1 hover-filled-slide-down">
+                    <span>High to Low(by rating)</span>
+                </button>
+              
+                <button onClick={sortByLangAsc} className="btnn btn-1 hover-filled-slide-down">
+                <span> Sort by Language (A-Z)</span>
+                   </button>
+                <button onClick={sortByLangDesc} className="btnn btn-1 hover-filled-slide-down">
+                <span> Sort by Language (Z-A)</span>
+                 </button>
+                 <div className="select-container">
+    <select onChange={handleFilterByCategory}>
+        <option disabled value="">Select Category</option>
+        {categories.map((category) => (
+            <option key={category} value={category}>
+                {category}
+            </option>
+        ))}
+    </select>
+</div>
                 <h3>Books: {products.length}</h3>
 
                 <Modal open={open} onClose={handleClose}>
@@ -184,6 +220,7 @@ const Addpage = () => {
                         <div className="header__item">Author</div>
                         <div className="header__item">Published Date</div>
                         <div className="header__item">Lang</div>
+                        <div className="header__item">Rating</div>
                         <div className="header__item">Actions</div>
                     </div>
                     <div className="table-content">
@@ -200,7 +237,9 @@ const Addpage = () => {
                                     <div className="table-data">{product.genre}</div>
                                     <div className="table-data">{product.author}</div>
                                     <div className="table-data">{product.publishedDate}</div>
+                                  
                                     <div className="table-data">{product.lang}</div>
+                                    <div className="table-data">{product.averageRating}</div>
                                     <div className="table-data">
                                         <button className="btn btn-danger mx-1" onClick={() => removeProduct(product._id)}>Delete</button>
                                         <button className="btn btn-warning mt-1" onClick={() => handleEditOpen(product)}>Edit</button>

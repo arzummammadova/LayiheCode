@@ -17,6 +17,59 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 
+export const getUser = async (req, res) => {
+  try {
+    const { sort, isAdmin, search } = req.query;
+    let sortOption = {};
+    let filterOption = {};
+
+    if (sort === "asc") {
+      sortOption = { username: 1 };
+    } else if (sort === "desc") {
+      sortOption = { username: -1 };
+    }
+
+    if (isAdmin === "true") {
+      filterOption = { isAdmin: true };
+    } else if (isAdmin === "false") {
+      filterOption = { isAdmin: false };
+    }
+
+    if (search) {
+      filterOption = {
+        ...filterOption,
+        $or: [
+          { username: { $regex: search, $options: "i" } }, 
+          { name: { $regex: search, $options: "i" } },     
+          { lastname: { $regex: search, $options: "i" } }, 
+        ],
+      };
+    }
+
+    const users = await user.find(filterOption).sort(sortOption);
+    res.json(users);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+
+export const deleteUser = async (req, res) => {
+  try {
+    const { id } = req.params; 
+
+    const deletedUser = await user.findByIdAndDelete(id);
+
+    if (!deletedUser) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.json({ message: "User deleted successfully", deletedUser });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 
 
 export const changetheme= async (req, res) => {
@@ -53,14 +106,7 @@ export const getTheme = async (req, res) => {
   }
 };
 
-export const getUser=async(req,res)=>{
-  try {
-    const users=await user.find()
-    res.json(users)
-  } catch (error) {
-    res.status(500).json({message:error.message})
-  }
-}
+
 
 export const addtofavorites=async(req,res)=>{
 
@@ -677,28 +723,6 @@ export const verifyEmail = async (req, res) => {
   
  
   
-  // export const login = async (req, res) => {
-  //   try {
-  //     const { username, password } = req.body;
-  
-  //     const { error } = userLoginValidationSchema.validate(req.body);
-  //     if (error) return res.status(400).json({ message: error.details[0].message });
-  
-  //     const existUser = await user.findOne({ username });
-  //     if (!existUser) return res.status(400).json({ message: "User not found" });
-  
-  //     const isMatch = await bcrypt.compare(password, existUser.password);
-  //     if (!isMatch) return res.status(400).json({ message: "Username or Password wrong" });
-  
-  //     await user.findByIdAndUpdate(existUser._id, { isLogin: true });
-  //     generateToken(existUser._id, res);
-  
-  //     return res.status(200).json({ message: "User logged in successfully", existUser });
-  //   } catch (error) {
-  //     return res.status(500).json({ message: error.message });
-  //   }
-  // };
-  
 
 
 
@@ -776,85 +800,40 @@ export const verifyEmail = async (req, res) => {
     }
   };
   
-
-
-
-
-
-
-
-
-
-
-  // export const login = async (req, res) => {
-  //   const { username, email, password } = req.body;
+ export const isAdminMiddleware = (req, res, next) => {
+    if (!req.user || !req.user.isAdmin) {
+      return res.status(403).json({ message: "Sizin icazəniz yoxdur" });
+    }
+    next();
+  };
   
-  //   const { error } = userLoginValidationSchema.validate(req.body);
   
-  //   if (error) {
-  //     return res.status(400).json({ message: error.details[0].message });
-  //   }
+  export const toggleAdmin = async (req, res) => {
+    try {
+      const { userId } = req.params; // Admin etmək və ya adminlikdən çıxarmaq istədiyimiz user-in ID-sini alırıq
   
-  //   // Check if the input is username or email and query accordingly
-  //   const userQuery = username ? { username: username } : { email: email };
-  //   const existUser = await user.findOne(userQuery);
+      const foundUser = await user.findById(userId);
+      if (!foundUser) {
+        return res.status(404).json({ message: "İstifadəçi tapılmadı" });
+      }
   
-  //   if (!existUser) {
-  //     return res.status(400).json({ message: "User not found" });
-  //   }
+      // isAdmin statusunu dəyişdiririk (true -> false, false -> true)
+      foundUser.isAdmin = !foundUser.isAdmin;
+      await foundUser.save();
   
-  //   // Compare the password
-  //   const isMatch = await bcrypt.compare(password, existUser.password);
-  
-  //   if (!isMatch) {
-  //     return res.status(400).json({ message: "Username or Password is incorrect" });
-  //   }
-  
-  //   // Generate token and send response
-  //   generateToken(existUser._id, res);
-  
-  //   return res.status(200).json({
-  //     message: "User logged in successfully",
-  //     existUser,
-  //   });
-  // };
+      res.status(200).json({ 
+        message: foundUser.isAdmin 
+          ? "İstifadəçi admin edildi" 
+          : "İstifadəçi adminlikdən çıxarıldı",
+        user: foundUser 
+      });
+    } catch (error) {
+      res.status(500).json({ message: "Xəta baş verdi", error });
+    }
+  };
   
 
 
-
-
-
-
-
-  // export const logout = async (req, res) => {
-  //   try {
-  //     // console.log(req.existUser); 
-  
-  //     if (!req.existUser) {
-  //       return res.status(400).json({ message: 'İstifadəçi doğrulama uğursuz oldu' });
-  //     }
-  
-  //     const userId = req.existUser._id;  
-  //     const existUser = await user.findById(userId);
-  
-  //     if (!existUser) {
-  //       return res.status(404).json({ message: "İstifadəçi tapılmadı" });
-  //     }
-  
-  //     await user.findByIdAndUpdate(userId, { isLogin: false });
-  //     res.clearCookie("token");  
-  //     return res.status(200).json({ message: "İstifadəçi uğurla çıxış etdi" });
-  //   } catch (error) {
-  //     return res.status(500).json({ message: error.message });
-  //   }
-  // };
-  
-  // export const logout = (req, res) => {
-  //   res.clearCookie("token");
-  //   return res.status(200).json({ message: "User logged out successfully" });
-
-    
-  // };
 
   export const logout = async (req, res) => {
     try {

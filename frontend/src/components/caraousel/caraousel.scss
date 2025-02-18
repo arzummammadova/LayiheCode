@@ -22,7 +22,7 @@
       top: 50%;
       transform: translateY(-50%);
       font-size: 2rem;
-      color: #fff;
+      color: #fff!important;
       cursor: pointer;
       transition: 0.3s ease;
   
@@ -52,4 +52,10 @@
   }
   .caraousel{
     padding: 3rem 0rem !important;
+    .left-arrow{
+      color: white;
+    }
+    .right-arrow{
+      color: white;
+    }
   }

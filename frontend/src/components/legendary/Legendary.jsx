@@ -35,15 +35,24 @@ const AuthorGrid = () => {
   
                 <div className="row mt-3 ">
             <div className="col-lg-3 card-p">
-                <img src={au1} alt="" />
+              <div className="img">
+                <img src={au1} alt="" />  
+              </div>
+              
                 <button>William Shakespeare</button>
             </div>
             <div className="col-lg-3 card-p">
-                <img src={au2} alt="" />
+                <div className="img">
+                 <img src={au2} alt="" />    
+                </div>
+               
                 <button>Lev Tolstoy</button>
             </div>
             <div className="col-lg-6 card-p">
-                <img src={au3} alt="" />
+                <div className="img">
+                   <img src={au3} alt="" />  
+                </div>
+               
                 <button style={{width:"100%"}}>Franz Kafka</button>
             </div>
 
@@ -52,15 +61,24 @@ const AuthorGrid = () => {
         </div>
         <div className="row mt-5">
             <div className="col-lg-5 card-p">
-                <img src={au5} alt="" />
+                <div className="img">
+                <img src={au5} alt="" />    
+                </div>
+                
                 <button>George Orwell</button>
             </div>
             <div className="col-lg-3 card-p">
-                <img src={au6} alt="" />
+                <div className="img">
+                     <img src={au6} alt="" /> 
+                </div>
+              
                 <button>Ernest Hemingway</button>
             </div>
             <div className="col-lg-4 card-p">
-                <img src={au4} alt="" />
+                <div className="img">
+                  <img src={au4} alt="" />   
+                </div>
+               
                 <button style={{width:"100%"}}>Fyodor Dostoyevski </button>
             </div>
             

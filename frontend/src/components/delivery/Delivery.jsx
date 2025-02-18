@@ -54,12 +54,12 @@ const Delivery = () => {
       <div className="container">
         <div className="delivary">
           <div className="row g-5">
-            <div className="col-6 delivary-text">
+            <div className="col-lg-6 delivary-text">
               <p>
                 At Readly, we deliver top reading experiences, earning high ratings from users and experts alike.
               </p>
             </div>
-            <div className="col-6">
+            <div className="col-lg-6">
               <div className="row">
                 <div className="col-6 delivary-count">
                   <p style={{ textAlign: 'end' }}>{subscribersCount.toLocaleString()}</p>

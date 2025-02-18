@@ -252,13 +252,69 @@ export const postBook = async (req, res) => {
   }
 }
 export const getBook = async (req, res) => {
-    try {
-      const books = await book.find();
-      res.status(200).json(books);
-    } catch (error) {
+  try {
+      const books = await book.find().populate({
+          path: "reviews.user", 
+          select: "name email"
+      });
+
+      const booksWithRatings = books.map((book) => {
+          const totalRatings = book.reviews.reduce((sum, review) => sum + review.rating, 0);
+          const averageRating = book.reviews.length > 0 ? (totalRatings / book.reviews.length).toFixed(1) : 0;
+          return { ...book.toObject(), averageRating };
+      });
+
+      res.status(200).json(booksWithRatings);
+  } catch (error) {
       res.status(500).json({ message: 'Failed to fetch books', error: error.message });
-    }
-}
+  }
+};
+
+
+export const sortByLang = async (req, res) => {
+  try {
+      const { order } = req.query;
+      const sortOrder = order === "desc" ? -1 : 1;
+
+      const books = await book.find().sort({ lang: sortOrder }).populate({
+          path: "reviews.user",
+          select: "name email"
+      });
+
+      const booksWithRatings = books.map((book) => {
+          const totalRatings = book.reviews.reduce((sum, review) => sum + review.rating, 0);
+          const averageRating = book.reviews.length > 0 ? (totalRatings / book.reviews.length).toFixed(1) : 0;
+          return { ...book.toObject(), averageRating };
+      });
+
+      res.status(200).json(booksWithRatings);
+  } catch (error) {
+      res.status(500).json({ message: 'Failed to sort books by language', error: error.message });
+  }
+};
+
+
+export const filterByCategory = async (req, res) => {
+  try {
+      const { category } = req.query; 
+
+      const books = await book.find({ category }).populate({
+          path: "reviews.user",
+          select: "name email"
+      });
+
+      const booksWithRatings = books.map((book) => {
+          const totalRatings = book.reviews.reduce((sum, review) => sum + review.rating, 0);
+          const averageRating = book.reviews.length > 0 ? (totalRatings / book.reviews.length).toFixed(1) : 0;
+          return { ...book.toObject(), averageRating };
+      });
+
+      res.status(200).json(booksWithRatings);
+  } catch (error) {
+      res.status(500).json({ message: 'Failed to filter books by category', error: error.message });
+  }
+};
+
 
 
 
@@ -338,7 +394,15 @@ export const sortPriceLowToHigh = async (req, res) => {
 
 export const sortRatingLowToHigh = async (req, res) => {
   try {
-    const sortedBooks = await book.find().sort({ "ratings.average": 1 });
+    const sortedBooks = await book.aggregate([
+      {
+        $addFields: {
+          averageRating: { $ifNull: [{ $avg: "$reviews.rating" }, 0] }
+        }
+      },
+      { $sort: { averageRating: 1 } } 
+    ]);
+    
     res.status(200).json(sortedBooks);
   } catch (error) {
     res.status(500).json({ message: 'Failed to sort books by rating (Low to High)', error: error.message });
@@ -347,12 +411,21 @@ export const sortRatingLowToHigh = async (req, res) => {
 
 export const sortRatingHighToLow = async (req, res) => {
   try {
-    const sortedBooks = await book.find().sort({ "ratings.average": -1 });
+    const sortedBooks = await book.aggregate([
+      {
+        $addFields: {
+          averageRating: { $ifNull: [{ $avg: "$reviews.rating" }, 0] }
+        }
+      },
+      { $sort: { averageRating: -1 } } 
+    ]);
+
     res.status(200).json(sortedBooks);
   } catch (error) {
     res.status(500).json({ message: 'Failed to sort books by rating (High to Low)', error: error.message });
   }
 };
+
 
 
 
