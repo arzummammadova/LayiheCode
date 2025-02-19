@@ -1,21 +1,28 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addtoreaded, deleteAllFromToRead, deleteFromToRead, fetchToReadBooks } from "../../redux/features/userSlice";
 import './adtoread.scss';
 import { MdOutlineDelete, MdDelete } from "react-icons/md";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 const AddToRead = () => {
     const dispatch = useDispatch();
     const { toReadBooks, user } = useSelector((state) => state.auth) || {}; 
     const userId = user?._id;
-  
+    const [recommendedBooks, setRecommendedBooks] = useState([]);
     useEffect(() => {
         if (userId) {
             dispatch(fetchToReadBooks(userId));
         }
     }, [dispatch, userId]);
+  
+    const navigate = useNavigate();
+
+    const goToDetails = (bookId) => {
+        navigate(`/details/${bookId}`);
+    };
 
     const handleDeleteAll = () => {
         dispatch(deleteAllFromToRead(userId));
@@ -36,6 +43,22 @@ const AddToRead = () => {
             toast.success("Kitab oxundu kimi işarələndi!");
         });
     };
+    const fetchRecommendedBooks = async () => {
+        if (toReadBooks.length === 0) return;
+    
+        const categories = [...new Set(toReadBooks.map((book) => book.category))]; // Unikal kateqoriyalar topla
+        const excludeIds = toReadBooks.map((book) => book._id); // Mövcud oxumaq istənilən kitabların ID-ləri
+    
+        try {
+            const { data } = await axios.post("http://localhost:5000/api/books/recommendations", { categories, excludeIds });
+            setRecommendedBooks(data);
+        } catch (error) {
+            console.error("Tövsiyə olunan kitabları yükləmək mümkün olmadı", error);
+        }
+    };
+    useEffect(() => {
+        fetchRecommendedBooks();
+    }, [toReadBooks]);
     
     return (
         <section>
@@ -70,7 +93,29 @@ const AddToRead = () => {
                         </ul>
                     )}
                 </div>
+                <div className="book-recommendations">
+            <h3 className="section-title">You May Also Like</h3>
+            <div className="book-grid">
+                {recommendedBooks.length === 0 ? (
+                    <p className="no-recommendation">Uyğun tövsiyə tapılmadı.</p>
+                ) : (
+                    recommendedBooks.map((book) => (
+                        <div key={book._id} className="book-item" onClick={() => goToDetails(book._id)}>
+                            <div className="book-card">
+                                <img src={book.image} alt={book.name} className="book-cover" />
+                                <div className="book-info">
+                                    <p className="book-title">{book.name}</p>
+                                    <p className="book-author">{book.author}</p>
+                                </div>
+                            </div>
+                        </div>
+                    ))
+                )}
             </div>
+        </div>
+            </div>
+          
+
         </section>
     );
 };

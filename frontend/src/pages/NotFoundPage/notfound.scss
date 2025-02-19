@@ -1,0 +1,24 @@
+.notfound-container {
+  display: flex;
+  flex-direction: column;
+//   justify-content: center;
+
+  align-items: center;
+//   height: 50vh;
+  margin: 70px auto;
+
+  img{
+    width: 30%;
+    height: 300px;
+  }
+}
+
+.f-text{
+    font-size: 2rem;
+}
+
+.fbtn{
+    
+    background-image: linear-gradient(45deg, #9AE1BC, #00DC64)!important;
+    border-radius: 0px;
+}

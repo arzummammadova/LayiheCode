@@ -3,11 +3,30 @@ import path from 'path';
 
 export const getBooksByGenre = async (req, res) => {
   try {
-      const { genre, excludeId } = req.params; // Get genre and excludeId from params
-      const books = await book.find({ genre: genre, _id: { $ne: excludeId } }); // Exclude the current book
+      const { genre, excludeId } = req.params; 
+      const books = await book.find({ genre: genre, _id: { $ne: excludeId } }); 
       res.status(200).json(books);
   } catch (error) {
       res.status(500).json({ message: error.message });
+  }
+};
+
+export const getRecommendedBooksByCategories = async (req, res) => {
+  try {
+    const { categories, excludeIds } = req.body; 
+
+    if (!categories || categories.length === 0) {
+      return res.status(400).json({ message: "Kateqoriya məlumatı tapılmadı." });
+    }
+
+    const recommendedBooks = await book.find({
+      category: { $in: categories }, 
+      _id: { $nin: excludeIds }
+    }).limit(10);
+
+    res.status(200).json(recommendedBooks);
+  } catch (error) {
+    res.status(500).json({ message: "Tövsiyə olunan kitabları tapmaq mümkün olmadı." });
   }
 };
 

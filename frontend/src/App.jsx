@@ -20,6 +20,7 @@ import AddToRead from './pages/addtoread/AddToRead';
 import Readed from './pages/readed/Readed';
 import Favorite from './pages/favorite/Favorite';
 import ProtectedRoute from './pages/ProtectedRoute/ProtectedRoute';
+import RecomendationPage from './pages/recomendation/RecomendationPage';
 
 const App = () => {
   const isAdmin = useSelector(state => state.auth.isAdmin); 
@@ -39,8 +40,8 @@ const App = () => {
         { path: "/favorite", element: <Favorite /> },
         { path: "/all", element: <AllBooks /> },
         { path: '/settings', element: <UserSettings /> },
+        {path:'recomendation',element:<RecomendationPage/>},
 
-        // **Admin üçün qorunan səhifələr**
         {
           path: '/add',
           element: (

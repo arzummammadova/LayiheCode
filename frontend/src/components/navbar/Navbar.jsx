@@ -127,6 +127,10 @@ const Navbar = () => {
                   <Link to="/all">All books</Link>
                 </li>
                 <li>
+                  <Link to="/recomendation">Recomendation</Link>
+                  {/* <sup style={{ color: "red" }}>{count}</sup> */}
+                </li>
+                <li>
                   <Link to="/addtoread">Read later</Link>
                   {/* <sup style={{ color: "red" }}>{countt}</sup> */}
                 </li>
@@ -139,6 +143,7 @@ const Navbar = () => {
                   <Link to="/readed">Readed</Link>
                   {/* <sup style={{ color: "red" }}>{count}</sup> */}
                 </li>
+             
                 <li>
                   <Link to="/">About</Link>
                 </li>

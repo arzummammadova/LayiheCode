@@ -88,10 +88,16 @@ img{
 }
 
 
+@media (max-width: 756px) {
 
+.image-section img{
+  display: none;
 
-
-
+}
+.register-container{
+  gap: 0rem!important;
+}
+}
 
 
 @media (max-width: 567px) {
@@ -113,6 +119,9 @@ img{
 .nav {
  
   padding: 0.4rem;
+}
+.filter-s {
+  flex-direction: column;
 }
 
 .title-l {

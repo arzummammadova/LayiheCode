@@ -8,7 +8,6 @@ const Recomendationbook = ({ genre, excludeId }) => {
     useEffect(() => {
         const fetchRecommendedBooks = async () => {
             try {
-                // Pass excludeId to the backend
                 const response = await fetch(`http://localhost:5000/api/books/genre/${genre}/${excludeId}`);
                 const data = await response.json();
                 setRecommendedBooks(data);
@@ -20,7 +19,7 @@ const Recomendationbook = ({ genre, excludeId }) => {
         };
 
         fetchRecommendedBooks();
-    }, [genre, excludeId]); // Add excludeId to the dependency array
+    }, [genre, excludeId]); 
 
     if (loading) {
         return <div>Loading...</div>;
