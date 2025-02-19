@@ -12,6 +12,7 @@ import Swal from "sweetalert2";
 import { addtoRead, addtoreaded, deleteFromToRead } from '../../redux/features/userSlice';
 import { ToastContainer ,toast} from 'react-toastify';
 import Comment from '../../components/comment/Comment';
+import Recomendationbook from '../../components/recomendationbooks/Recomendationbook';
 const Details = () => {
     const dispatch = useDispatch();
     const products = useSelector((state) => state.products.products);
@@ -137,6 +138,11 @@ const Details = () => {
 
 
                      <Comment productID = {selected._id}/>
+
+                     <Recomendationbook genre={selected.genre} excludeId={selected._id} />
+                     
+
+
                     </div>
                 </div>
             </section>

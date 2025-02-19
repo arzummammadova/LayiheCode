@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import './table.scss';
-import './css/spinner.css'
+import '../table.scss';
+ import '../css/spinner.css'
 import { useDispatch, useSelector } from 'react-redux';
-import { deleteProduct, fetchProduct, filterByCategory, postProduct, sortByLang, sortPriceHigh, sortPriceLow, sortRatingHtL, sortRatingLtH } from '../redux/features/productSlice';
+import { deleteProduct, fetchProduct, filterByCategory, postProduct, sortByLang, sortPriceHigh, sortPriceLow, sortRatingHtL, sortRatingLtH } from '../../redux/features/productSlice';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import { useFormik } from 'formik';
-import schema from '../components/schema/productSchema';
+import schema from '../../components/schema/productSchema';
 import { Link } from 'react-router-dom';
 
 

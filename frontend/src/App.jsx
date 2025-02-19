@@ -1,10 +1,11 @@
-import React from 'react'
+import React from 'react';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import Layout from './components/layout/Layout';
 import Home from './pages/Home';
 import Basket from './pages/Basket';
 import NotFoundPage from './pages/NotFoundPage/NotFoundPage';
-import Addpage from './pages/Addpage';
+import Addpage from './pages/admin/Addpage';
 import Register from './pages/auth/register/Register';
 import Login from './pages/auth/login/Login';
 import AdminUser from './pages/admin/AdminUser';
@@ -18,94 +19,54 @@ import Author from './pages/categories/Author';
 import AddToRead from './pages/addtoread/AddToRead';
 import Readed from './pages/readed/Readed';
 import Favorite from './pages/favorite/Favorite';
-const router = createBrowserRouter([
-  {
-    path: '/',
-    element: <Layout />,
-    children: [
-      {
-        index: "/",
-        element: <Home />,
-      },
-      {
-        path: '/basket',
-        element: <Basket />,
-      },
-      {
-        path:'/add',
-        element:<Addpage/>
-      }
-      ,
-      {
-        path:'/details/:id',
-        element:<Details/>
-      }
-      ,
-      {
-        path:"/user",
-        element:<AdminUser/>
-      }
-      ,{
-        path:'/settings',
-        element:<UserSettings/>
-      }
-     ,
-     {
-      path:"/all",
-      element:<AllBooks/>
-     }
-     ,
-     {
-      path: "/details/:id",
-      element: <Details />
-    }
-    ,{
-      path: "/category/:categoryName",
-      element: <Categories />,
-    }
-    ,{
-      path:"/author/:authorname",
-      element:<Author/>
-    }
-    ,{
-      path:"/addtoread",
-      element:<AddToRead/>
-    },
-    {
-      path:"/readed",
-      element:<Readed/>
-    },
-    {
-      path:"/favorite",
-      element:<Favorite/>
-    }
-    
-    ],
-  },
-  {
-    path: '*',
-    element: <NotFoundPage/>,
-  },
-  {
-    path:'/register',
-    element:<Register/>
-  },
-  {
-    path:'/login',
-    element:<Login/>
-  }
-  ,
-  {
-    path: "/forgotpassword",
-    element: <ForgotPassword />,
-  },
-  {
-    path: "/resetpassword",
-    element: <Resetpassword />,
-  },
-]);
-const App = () => {
-  return <RouterProvider router={router} />;
-}
+import ProtectedRoute from './pages/ProtectedRoute/ProtectedRoute';
 
-export default App
+const App = () => {
+  const isAdmin = useSelector(state => state.auth.isAdmin); 
+
+  const router = createBrowserRouter([
+    {
+      path: '/',
+      element: <Layout />,
+      children: [
+        { index: true, element: <Home /> },
+        { path: '/basket', element: <Basket /> },
+        { path: '/details/:id', element: <Details /> },
+        { path: "/category/:categoryName", element: <Categories /> },
+        { path: "/author/:authorname", element: <Author /> },
+        { path: "/addtoread", element: <AddToRead /> },
+        { path: "/readed", element: <Readed /> },
+        { path: "/favorite", element: <Favorite /> },
+        { path: "/all", element: <AllBooks /> },
+        { path: '/settings', element: <UserSettings /> },
+
+        // **Admin üçün qorunan səhifələr**
+        {
+          path: '/add',
+          element: (
+            <ProtectedRoute isAdmin={isAdmin}>
+              <Addpage />
+            </ProtectedRoute>
+          ),
+        },
+        {
+          path: '/user',
+          element: (
+            <ProtectedRoute isAdmin={isAdmin}>
+              <AdminUser />
+            </ProtectedRoute>
+          ),
+        },
+      ],
+    },
+    { path: '*', element: <NotFoundPage /> },
+    { path: '/register', element: <Register /> },
+    { path: '/login', element: <Login /> },
+    { path: "/forgotpassword", element: <ForgotPassword /> },
+    { path: "/resetpassword", element: <Resetpassword /> },
+  ]);
+
+  return <RouterProvider router={router} />;
+};
+
+export default App;

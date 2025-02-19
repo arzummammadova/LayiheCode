@@ -1,5 +1,5 @@
 import express from 'express'
-import { addReview, deleteBook, deleteReview, dislikeReview, editBook, filterByCategory, getBook, getBookById, getReviews, likeReview, postBook, searchBooks, sortByLang, sortPriceHighToLow, sortPriceLowToHigh, sortRatingHighToLow, sortRatingLowToHigh, updateOwnReview, updateReview, uploadImage} from '../controller/productControllers.js'
+import { addReview, deleteBook, deleteReview, dislikeReview, editBook, filterByCategory, getBook, getBookById, getBooksByGenre, getReviews, likeReview, postBook, searchBooks, sortByLang, sortPriceHighToLow, sortPriceLowToHigh, sortRatingHighToLow, sortRatingLowToHigh, updateOwnReview, updateReview, uploadImage} from '../controller/productControllers.js'
 import multer from 'multer';
 import path from 'path'
 import { adminProtect, protect } from '../middleware/auth/authMiddleware.js';
@@ -24,6 +24,7 @@ const storage = multer.diskStorage({
 router.post("/upload", upload.single('image'), uploadImage);
 
 router.post("/",postBook)
+router.get('/genre/:genre/:excludeId', getBooksByGenre);
 router.get("/",getBook)
 router.get("/search", searchBooks);
 router.delete("/:id",deleteBook)

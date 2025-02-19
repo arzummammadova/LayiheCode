@@ -1,24 +1,15 @@
 import book from "../models/productModels.js";
 import path from 'path';
 
-
-// export const getReviews = async (req, res) => {
-//   try {
-//     const { productId } = req.params;
-    
-//     // `user` obyektinin tam məlumatlarını gətirmək üçün `populate()` istifadə edirik
-//     const productItem = await book.findById(productId).populate("reviews.user", "name isAdmin isLogin isVerified email image");
-
-//     if (!productItem) {
-//       return res.status(404).json({ message: "Məhsul tapılmadı!" });
-//     }
-
-//     res.status(200).json({ reviews: productItem.reviews });
-//   } catch (error) {
-//     res.status(500).json({ message: "Server xətası", error });
-//   }
-// };
-
+export const getBooksByGenre = async (req, res) => {
+  try {
+      const { genre, excludeId } = req.params; // Get genre and excludeId from params
+      const books = await book.find({ genre: genre, _id: { $ne: excludeId } }); // Exclude the current book
+      res.status(200).json(books);
+  } catch (error) {
+      res.status(500).json({ message: error.message });
+  }
+};
 
 export const getReviews = async (req, res) => {
   try {
