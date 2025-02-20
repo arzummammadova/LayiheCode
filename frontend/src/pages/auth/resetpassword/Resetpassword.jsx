@@ -1,34 +1,34 @@
+import { useParams } from "react-router-dom";
 import { useFormik } from "formik";
-import React from "react";
-
-import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import { resetschema } from "../../../schema/ResetSchema";
+import { toast, ToastContainer } from "react-toastify";
 
 const Resetpassword = () => {
-  const baseUrl = `http://localhost:5000/auth`;
+  const { token } = useParams(); 
   const navigate = useNavigate();
 
-  const submitForm = async (values, actions) => {
+  const submitForm = async (values) => {
     try {
       const { password } = values;
-
       const result = await axios.post(
-        `${baseUrl}/resetpassword`,
-        {
-          password,
-        },
-        { withCredentials: true }
+        `http://localhost:5000/auth/reset-password/${token}`,
+        { password }
       );
-      if (result.status === 200) {
-        alert("Password reset successfully");
-      } else {
-        alert("Password reset failed");
-      }
-      actions.resetForm();
-      navigate("/login");
+
+     
+    if (result.status === 200) {
+      setTimeout(() => {
+        toast.success("Şifrə uğurla yeniləndi!", { autoClose: 2000 });
+      }, 1000); 
+      setTimeout(() => {
+        navigate("/login");
+      }, 3000); 
+    }
     } catch (error) {
-      console.log("Password reset failed:", error);
+      toast.error("Xəta baş verdi, yenidən cəhd edin!");
+      console.log("Xəta baş verdi:", error);
     }
   };
 
@@ -40,49 +40,55 @@ const Resetpassword = () => {
     onSubmit: submitForm,
     validationSchema: resetschema,
   });
+
   return (
-    <div className="container">
+    <div className="register-container">
+      <ToastContainer position="top-right" autoClose={2000} />
+
+      <div className="register-card">
+    
       <form
-        action=""
         className="form"
         onSubmit={(e) => {
           e.preventDefault();
           handleSubmit();
         }}
       >
-        <h3>ResetPassword</h3>
+          <h2 className="title">
+         Reset Your Password Now <span className="logo">Read<span className="highlight">ly</span></span>
+        </h2>
+       
 
         <div className="form-group">
-          <label htmlFor="username">New password</label>
+         
           <div className="text-danger">{errors.password}</div>
+          <label>Enter new Password</label>
           <input
-            placeholder="Enter your new password"
             type="password"
-            id="password"
+             className="input-field"
             name="password"
-            className="form-control"
             onChange={handleChange}
             value={values.password}
           />
         </div>
 
         <div className="form-group">
-          <label htmlFor="username">Confirm new password</label>
+          <label>Confirm Password</label>
           <div className="text-danger">{errors.confirmpassword}</div>
           <input
-            placeholder="Enter your new password again"
             type="password"
-            id="confirmpassword"
             name="confirmpassword"
-            className="form-control"
+            className="input-field"
             onChange={handleChange}
             value={values.confirmpassword}
           />
         </div>
-        <button type="submit" className="btn btn-primary">
+
+        <button type="submit" style={{width:"100%"}} className="signup-button mt-5">
           Reset
         </button>
       </form>
+      </div>
     </div>
   );
 };

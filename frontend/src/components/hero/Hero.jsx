@@ -11,6 +11,7 @@ import desing from '../../assets/images/Untitled design (1).png'
 import { IoCloseSharp, IoExpandOutline } from 'react-icons/io5';
 
 import right from "../../assets/icons/image9.svg"
+import Chat from '../chat/Chat';
 const Hero = () => {
     const [isOpen, setIsOpen] = useState(false);
     const [isFullscreen, setIsFullscreen] = useState(false);
@@ -65,11 +66,7 @@ const Hero = () => {
                                 <p className='mt-3'>Browse our vast collection of books, explore new releases, and get your hands on the latest bestsellers. Your next adventure is just a click away!</p>
                                 <button  className='btnsh btnflex discover-btn ' >
                                     <Link to='/all' >Discover</Link></button>
-                                {/* <button class="draw-border">Draw Border</button> */}
-                                {/* <div class="button-container-3">
-                                    <span class="mas">MASK3</span>
-                                    <button type="button" name="Hover">MASK3</button>
-                                </div> */}
+                              
                             </div>
 
                             <div className="col-lg-6 right right-hero">
@@ -77,13 +74,12 @@ const Hero = () => {
                                 </span> book
                                     <FaRegArrowAltCircleRight />
 
-                                    {/* <img  src={right} alt="" /> */}
                                 </Link>
                                 <figure>
                                     <img src={heroright} alt="auter" />
 
 
-                                    <div className="readlychat" onClick={toggleChat}>
+                                    {/* <div className="readlychat" onClick={toggleChat}>
                                         <BsChatLeftHeartFill size={25} />
                                     </div>
                                     <div className={`chat-modal ${isOpen ? 'open' : ''} ${isFullscreen ? 'fullscreen' : ''}`}>
@@ -143,19 +139,13 @@ const Hero = () => {
                                                 onChange={(e) => setMessage(e.target.value)}
                                                 onKeyDown={(e) => e.key === 'Enter' && handleSend()}
                                             />
-                                            {/* <TextField
-          id="filled-search"
-          label="Search field"
-          type="search"
-          variant="filled"
-        /> */}
+                                          
                                             <button onClick={handleSend}>Göndər</button>
-                                            {/* <Button variant="contained" endIcon={<SendIcon />}>
-                                                Send
-                                            </Button> */}
+                                        
                                         </div>
-                                    </div>
+                                    </div> */}
                                 </figure>
+                                <Chat/>
 
 
 

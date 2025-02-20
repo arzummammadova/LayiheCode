@@ -208,7 +208,6 @@ const authSlice = createSlice({
     toReadBooks: [],
     isLogin: false, 
     status: 'idle',
-   
     favorites: [],
     readed:[],
     error: null,

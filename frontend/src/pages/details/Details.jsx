@@ -13,6 +13,7 @@ import { addtoRead, addtoreaded, deleteFromToRead } from '../../redux/features/u
 import { ToastContainer ,toast} from 'react-toastify';
 import Comment from '../../components/comment/Comment';
 import Recomendationbook from '../../components/recomendationbooks/Recomendationbook';
+import Chat from '../../components/chat/Chat';
 const Details = () => {
     const dispatch = useDispatch();
     const products = useSelector((state) => state.products.products);
@@ -86,6 +87,7 @@ const Details = () => {
         <>
             <section id='detail'>
                 <ToastContainer/>
+                <Chat/>
                 <div className="container">
                     <div className="details">
                         <div className="row detail-top">

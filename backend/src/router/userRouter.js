@@ -30,7 +30,8 @@ userRouter.post("/login", login);
 userRouter.post("/logout", logout);
 userRouter.post("/forgotpassword", forgotPassword);
 userRouter.get("/", getUser);
-userRouter.post("/resetpassword", resetPassword);
+userRouter.post("/reset-password/:token", resetPassword);
+
 userRouter.delete("/deleteprofileimage/:id", deleteProfileImage);
 userRouter.delete("/:id", deleteUser);
 // userRouter.put("/editprofile/:id", updateProfile);

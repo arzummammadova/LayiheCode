@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchfav } from "../../redux/features/userSlice";
+import Chat from "../../components/chat/Chat";
 const Favorite = () => {
   const dispatch = useDispatch();
   const { favorites, user } = useSelector((state) => state.auth) || []; 
@@ -22,6 +23,7 @@ const Favorite = () => {
     <div>
 
         <div className="container">
+          <Chat/>
             <img style={{height:"300px"}} src="https://marketplace.canva.com/EAFRRhzjDms/1/0/1600w/canva-cream-and-brown-illustrated-home-library-book-desktop-wallpaper-ZagR3UtWRxo.jpg" alt="" />
           <h3>Your favorite book is here</h3>  
             {favorites.length > 0 ? (

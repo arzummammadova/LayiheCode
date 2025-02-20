@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import Title from "../../components/title/Title";
 import { sortRatingHtL } from "../../redux/features/productSlice";
 import "./recom.scss"; 
+import Chat from "../../components/chat/Chat";
 
 const RecommendationPage = () => {
     const books = useSelector((state) => state.products.products) || [];
@@ -21,6 +22,7 @@ const RecommendationPage = () => {
 
     return (
         <section className="recommendation-container">
+            <Chat/>
             <div className="container">
                 <Title>
                     <h2 className="recommendation-title">Top 10 Recommended Books</h2>

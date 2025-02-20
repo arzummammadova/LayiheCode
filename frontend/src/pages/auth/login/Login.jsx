@@ -43,7 +43,7 @@ const Login = () => {
       console.log(token)
 
       if (token) {
-        localStorage.setItem("token", token); // Token-i yadda saxla
+        localStorage.setItem("token", token); 
       }
 
       toast.success("Login successful");

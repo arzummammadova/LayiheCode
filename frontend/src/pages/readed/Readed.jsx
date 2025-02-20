@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {  deleteAllFromreaded, deletefromReaded, fetchreaded } from "../../redux/features/userSlice";
 import {toast, ToastContainer } from "react-toastify";
 import { MdOutlineDelete, MdDelete } from "react-icons/md";
+import Chat from "../../components/chat/Chat";
 const Readed = () => {
   const dispatch = useDispatch();
  const {  readed, user } = useSelector((state) => state.auth) || []; 
@@ -29,6 +30,7 @@ const Readed = () => {
     };
   return (
     <div className="container">
+      <Chat/>
       <ToastContainer/>
       <h2>Sənin oxuduğun kitablar</h2>
       {readed.length > 0 ? (

@@ -2,6 +2,7 @@
 import userRegisterValidationSchema from "../middleware/validation/userRegisterValidation.js";
 import bcrypt from "bcrypt";
 import "dotenv/config";
+import nodemailer from "nodemailer";
 import jwt from "jsonwebtoken";
 import user from "../models/userModel.js";
 import { generateToken } from "../utils/generateToken.js";
@@ -590,34 +591,86 @@ export const verifyEmail = async (req, res) => {
   //   return res.status(200).json({ message: "User logged out successfully" });
   // };
 
+  const transporterr = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+      user: process.env.USER_EMAIL,
+      pass: process.env.USER_PASS,
+    },
+  });
   export const forgotPassword = async (req, res) => {
     try {
       const { email } = req.body;
+      const userr = await user.findOne({ email });
   
-      const { error } = ForgotValidationSchema.validate(req.body);
+      if (!userr) return res.status(404).json({ message: "İstifadəçi tapılmadı" });
   
-      if (error) {
-        return res.status(400).json({ message: error.details[0].message });
-      }
+      // Token yarat
+      const resetToken = jwt.sign({ id: userr._id }, process.env.JWT_SECRET, { expiresIn: "15m" });
   
-      const existUser = await user.findOne({ email });
+      // İstifadəçinin "resetToken" dəyərini bazaya yaz
+      userr.resetToken = resetToken;
+      await userr.save();
   
-      if (!existUser) return res.status(404).json({ message: "User not found" });
+      // E-mail HTML məzmunu
+      const resetLink = `${process.env.CLIENT_LINK}/reset-password/${resetToken}`;
+      const htmlContent = `
+        <div style="font-family: Arial, sans-serif; background: linear-gradient(90deg, #00DC64, #9AE1BC); padding: 20px; border-radius: 10px; text-align: center;">
+          <h2 style="color: #ffffff;">Şifrə Sıfırlama</h2>
+          <p style="color: #ffffff;">Şifrənizi yeniləmək üçün aşağıdakı düyməyə klikləyin:</p>
+          <a href="${resetLink}" style="display: inline-block; background-color: #ffffff; color: #00DC64; padding: 12px 20px; font-size: 16px; font-weight: bold; text-decoration: none; border-radius: 5px; margin-top: 10px;">Şifrəni Sıfırla</a>
+          <p style="color: #ffffff; margin-top: 20px;">Əgər siz bu tələbi etməmisinizsə, bu mesajı nəzərə almayın.</p>
+        </div>
+      `;
   
-      generateToken(existUser._id, res, "resetToken");
+      // E-mail göndər
+      const mailOptions = {
+        from: process.env.USER_EMAIL,
+        to: email,
+        subject: "Şifrə sıfırlama",
+        html: htmlContent, // HTML formatında email göndər
+      };
   
-      const resetLink = `${process.env.CLIENT_LINK}/resetpassword`;
+      await transporterr.sendMail(mailOptions);
   
-      recieveMail(existUser, resetLink);
-  
-      return res.status(200).json({ message: "Reset link sent to your email" });
+      res.json({ message: "Şifrə sıfırlama linki e-poçtunuza göndərildi" });
     } catch (error) {
-      return res.status(500).json({ message: error.message });
+      res.status(500).json({ message: "Xəta baş verdi", error: error.message });
     }
   };
   
+  
+  export const resetPassword = async (req, res) => {
+    try {
+      const { password } = req.body; 
+      const { token } = req.params; 
+  
+      if (!token) {
+        return res.status(400).json({ message: "Token tapılmadı" });
+      }
+  
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      const existUser = await user.findById(decoded.id);
+  
+      if (!existUser) {
+        return res.status(400).json({ message: "Token etibarsız və ya vaxtı bitib" });
+      }
+  
+      const hashedPassword = await bcrypt.hash(password, 10);
+      existUser.password = hashedPassword;
+      existUser.resetToken = null; 
+  
+      await existUser.save();
+  
+      return res.status(200).json({ message: "Şifrə uğurla yeniləndi" });
+    } catch (error) {
+      return res.status(500).json({ message: "Xəta baş verdi", error: error.message });
+    }
+  };
+  
+  
 
-
+//?
   export const register = async (req, res) => {
     try {
       const { image, name, username, email, password, lastname , birthDate,bio} = req.body;
@@ -756,49 +809,7 @@ export const verifyEmail = async (req, res) => {
 };
 
 
-  export const resetPassword = async (req, res) => {
-    console.log();
-    console.log(req.body);
-  
-    try {
-      const { password } = req.body;
-  
-      const { error } = ResetValidationSchema.validate({
-        password,
-      });
-  
-      if (error) {
-        return res.status(400).json({ message: error.details[0].message });
-      }
-  
-      const resetToken = req.cookies.resetToken;
-  
-      if (!resetToken) {
-        return res
-          .status(400)
-          .json({ message: "No token found, request new one" });
-      }
-  
-      const decoded = jwt.verify(resetToken, process.env.JWT_SECRET);
-  
-      const existUser = await user.findById(decoded.id);
-  
-      if (!existUser) {
-        return res.status(400).json({ message: "Token not valid or expaired" });
-      }
-      const hashedPassword = await bcrypt.hash(password, 10);
-  
-      existUser.password = hashedPassword;
-  
-      await existUser.save();
-  
-      res.clearCookie("resetToken");
-  
-      return res.status(200).json({ message: "Password reset successfully" });
-    } catch (error) {
-      return res.status(500).json({ message: error.message });
-    }
-  };
+
   
  export const isAdminMiddleware = (req, res, next) => {
     if (!req.user || !req.user.isAdmin) {
@@ -810,14 +821,14 @@ export const verifyEmail = async (req, res) => {
   
   export const toggleAdmin = async (req, res) => {
     try {
-      const { userId } = req.params; // Admin etmək və ya adminlikdən çıxarmaq istədiyimiz user-in ID-sini alırıq
+      const { userId } = req.params; 
   
       const foundUser = await user.findById(userId);
       if (!foundUser) {
         return res.status(404).json({ message: "İstifadəçi tapılmadı" });
       }
   
-      // isAdmin statusunu dəyişdiririk (true -> false, false -> true)
+     
       foundUser.isAdmin = !foundUser.isAdmin;
       await foundUser.save();
   

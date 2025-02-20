@@ -3,7 +3,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import Layout from './components/layout/Layout';
 import Home from './pages/Home';
-import Basket from './pages/Basket';
+// import Basket from './pages/Basket';
 import NotFoundPage from './pages/NotFoundPage/NotFoundPage';
 import Addpage from './pages/admin/Addpage';
 import Register from './pages/auth/register/Register';
@@ -31,7 +31,7 @@ const App = () => {
       element: <Layout />,
       children: [
         { index: true, element: <Home /> },
-        { path: '/basket', element: <Basket /> },
+        // { path: '/basket', element: <Basket /> },
         { path: '/details/:id', element: <Details /> },
         { path: "/category/:categoryName", element: <Categories /> },
         { path: "/author/:authorname", element: <Author /> },
@@ -64,7 +64,7 @@ const App = () => {
     { path: '/register', element: <Register /> },
     { path: '/login', element: <Login /> },
     { path: "/forgotpassword", element: <ForgotPassword /> },
-    { path: "/resetpassword", element: <Resetpassword /> },
+    { path: "/reset-password/:token", element: <Resetpassword /> },
   ]);
 
   return <RouterProvider router={router} />;

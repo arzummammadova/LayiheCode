@@ -7,6 +7,7 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import Chat from "../../components/chat/Chat";
 const AddToRead = () => {
     const dispatch = useDispatch();
     const { toReadBooks, user } = useSelector((state) => state.auth) || {}; 
@@ -63,6 +64,7 @@ const AddToRead = () => {
     return (
         <section>
             <ToastContainer />
+            <Chat/>
             <div className="container addtoread">
                 <img style={{ height: "270px", objectFit: "cover" }} src="https://cdn.dribbble.com/users/2140475/screenshots/15528887/media/6cb693316efc9d7da75e7416621c7101.jpg?resize=1200x900&vertical=center" alt="" />
                 <div className="p-4 bg-gray-50 rounded-xl shadow-md">
