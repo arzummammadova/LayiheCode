@@ -30,11 +30,10 @@ export const getUser = async (req, res) => {
       sortOption = { username: -1 };
     }
 
-    if (isAdmin === "true") {
-      filterOption = { isAdmin: true };
-    } else if (isAdmin === "false") {
-      filterOption = { isAdmin: false };
-    }
+    if (isAdmin && isAdmin !== "all") {
+      filterOption.isAdmin = isAdmin === "true";
+  }
+  
 
     if (search) {
       filterOption = {

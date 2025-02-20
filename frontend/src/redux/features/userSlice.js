@@ -14,13 +14,12 @@ export const registerUser = createAsyncThunk(
   }
 
 );
-export const fetchUser= createAsyncThunk(
-  'auth/fetchUser',
-  async () => {
-    const response = await axios("http://localhost:5000/auth")
-    return response.data
-  },
-)
+export const fetchUser = createAsyncThunk("auth/fetchUser", async ({ sortOrder, isAdmin, search }) => {
+  const response = await fetch(`http://localhost:5000/auth?sort=${sortOrder}&isAdmin=${isAdmin}&search=${search}`);
+  const data = await response.json();
+  return data;
+});
+
 
 export const fetchUsersort = createAsyncThunk(
   'auth/fetchUsersort',
@@ -95,7 +94,19 @@ export const fetchToReadBooks = createAsyncThunk(
 
 
 
+export const checkAuth = createAsyncThunk('auth/checkAuth', async () => {
+  const token = localStorage.getItem('token');
+  if (!token) return { isAdmin: false, isAuthenticated: false };
 
+  const response = await fetch('/api/auth/check', {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+
+  if (!response.ok) return { isAdmin: false, isAuthenticated: false };
+
+  const data = await response.json();
+  return { isAdmin: data.isAdmin, isAuthenticated: true };
+});
 
 
 
@@ -202,7 +213,7 @@ const authSlice = createSlice({
   name: "auth",
   initialState: {
     user: {},
-    users: null,
+    users: [],
     isLoggedIn: false,
     isAdmin: false,
     toReadBooks: [],
@@ -211,10 +222,12 @@ const authSlice = createSlice({
     favorites: [],
     readed:[],
     error: null,
+    isLoading: true,
   },
   reducers: {
     setUser: (state, action) => {
       state.user = action.payload;
+      state.users = action.payload;
       state.isLoggedIn = !!action.payload;
       state.isAdmin = action.payload?.isAdmin || false;
       state.isLogin = !!action.payload; 
@@ -225,6 +238,7 @@ const authSlice = createSlice({
       state.isAdmin = false;
       state.isLogin = false; 
        state.favorites = []; 
+
     },
   },
   extraReducers: (builder) => {
@@ -235,17 +249,29 @@ const authSlice = createSlice({
         state.isAdmin = action.payload?.isAdmin || false;
         state.isLogin = true; 
       })
+      .addCase(fetchUser.pending, (state) => {
+        state.isLoading = true;
+      })
       .addCase(fetchUser.fulfilled, (state, action) => {
-        state.users = action.payload;
+        state.users = action.payload || [];
         state.isLoggedIn = !!action.payload;
         state.isAdmin = action.payload?.isAdmin || false;
         state.isLogin = !!action.payload;
+        state.isLoading = false;
+      })
+      .addCase(fetchUser.rejected, (state) => {
+        state.user = null;
+        state.isLoggedIn = false;
+        state.isAdmin = false;
+        state.isLogin = false;
+        state.isLoading = false;
       })
       .addCase(fetchUsersort.fulfilled, (state, action) => {
         state.users = action.payload;
         state.isLoggedIn = !!action.payload;
         state.isAdmin = action.payload?.isAdmin || false;
         state.isLogin = !!action.payload;
+        state.isLoading = false;
       })
       .addCase(fetchLoginUser.fulfilled, (state, action) => {
         state.user = action.payload;
@@ -307,6 +333,19 @@ const authSlice = createSlice({
       .addCase(addAndRemoveFav.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.payload;
+      })
+      .addCase(checkAuth.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(checkAuth.fulfilled, (state, action) => {
+        state.isAdmin = action.payload.isAdmin;
+        state.isAuthenticated = action.payload.isAuthenticated;
+        state.isLoading = false;
+      })
+      .addCase(checkAuth.rejected, (state) => {
+        state.isAdmin = false;
+        state.isAuthenticated = false;
+        state.isLoading = false;
       });
   },
 });

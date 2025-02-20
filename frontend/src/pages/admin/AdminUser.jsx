@@ -49,7 +49,7 @@ const AdminUser = () => {
             const data = await response.json();
             if (response.ok) {
                 toast.success(data.message);
-                dispatch(fetchUser());
+                dispatch(fetchUsersort());
             } else {
                 toast.error(data.message);
             }

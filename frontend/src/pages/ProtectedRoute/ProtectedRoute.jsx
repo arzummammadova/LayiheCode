@@ -1,17 +1,30 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import why from '../../assets/images/why.jpeg';
-import './protect.scss'
-const ProtectedRoute = ({ isAdmin, children }) => {
+import { useSelector } from "react-redux"; 
+import why from "../../assets/images/why.jpeg";
+import "./protect.scss";
+
+const ProtectedRoute = ({ children }) => {
   const navigate = useNavigate();
+  const user = useSelector((state) => state.auth.user);
+  const isLoading = useSelector((state) => state.auth.isLoading); 
+
+  const isAdmin = !!user && user?.isAdmin === true;  
+
 
   useEffect(() => {
-    if (!isAdmin) {
+    if (!isLoading && user && !isAdmin) {
       setTimeout(() => {
         navigate("/", { replace: true });
-      }, 5000); 
+      }, 5000);
     }
-  }, [isAdmin, navigate]);
+  }, [isAdmin, isLoading, user, navigate]);
+  
+
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
   if (!isAdmin) {
     return (
