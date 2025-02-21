@@ -97,8 +97,9 @@ const Details = () => {
                             <div className="col-lg-8 col-md-8 detail-right-top">
                                 <div className="info">
                                     <p className="name">{selected.name}</p>
-                                    <div className="info">
-                                        <img style={{ width: "27px", height: "30px" }} src={count} alt="" /> 100k+</div>
+                                    {/* <p className="price">Dil:{selected.lang} </p> */}
+                                    {/* <div className="info">
+                                        <img style={{ width: "27px", height: "30px" }} src={count} alt="" /> 100k+</div> */}
                                     <p className="author">{selected.author}</p>
                                 </div>
                                 <div className="detail-actions ">

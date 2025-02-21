@@ -2,26 +2,52 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchUser, fetchUsersort } from '../../redux/features/userSlice';
 import { Link } from 'react-router-dom';
-import Swal from 'sweetalert2'; // sweetalert2 import edilir
+import Swal from 'sweetalert2'; 
 import { MdDelete } from "react-icons/md";
 import { LuInfo } from "react-icons/lu";
 import { MdOutlineDelete } from "react-icons/md";
 import { toast, ToastContainer } from 'react-toastify';
-
+import profile from '../../assets/icons/profile.svg'
 
 const AdminUser = () => {
     const users = useSelector((state) => state.auth.users) || [];
     const dispatch = useDispatch();
-    const [sortOrder, setSortOrder] = useState("asc");
-    const [filterAdmin, setFilterAdmin] = useState("all");
-    const [searchTerm, setSearchTerm] = useState("");
+    const [sortOrder, setSortOrder] = useState(localStorage.getItem('sortOrder') || "asc");
+    const [filterAdmin, setFilterAdmin] = useState(localStorage.getItem('filterAdmin') || "all");
+    const [searchTerm, setSearchTerm] = useState(localStorage.getItem('searchTerm') || "");
+
 
     useEffect(() => {
+        localStorage.setItem('sortOrder', sortOrder);
+        localStorage.setItem('filterAdmin', filterAdmin);
+        localStorage.setItem('searchTerm', searchTerm);
         dispatch(fetchUsersort({ sortOrder, isAdmin: filterAdmin, search: searchTerm }));
     }, [dispatch, sortOrder, filterAdmin, searchTerm]);
 
     const handleFilterChange = (e) => {
-        setFilterAdmin(e.target.value);
+        // setFilterAdmin(e.target.value);
+        const selectedFilter = e.target.value;
+        setFilterAdmin(selectedFilter);
+        let filterMessage = "";
+        switch (selectedFilter) {
+            case "all":
+                filterMessage = "Now showing all users.";
+                break;
+            case "true":
+                filterMessage = "Now showing only admin users.";
+                break;
+            case "false":
+                filterMessage = "Now showing only non-admin users.";
+                break;
+            default:
+                filterMessage = "Filter applied.";
+        }
+        Swal.fire({
+            title: 'Filter Changed!',
+            text: filterMessage,
+            icon: 'info',
+            confirmButtonText: 'OK'
+        });
     };
 
     const formatDate = (dateString) => {
@@ -39,19 +65,39 @@ const AdminUser = () => {
 
     const toggleAdmin = async (userId) => {
         try {
-            const response = await fetch(`http://localhost:5000/auth/make-admin/${userId}`, {
-                method: "PUT",
-                headers: {
-                    "Content-Type": "application/json",
-                },
+            const result = await Swal.fire({
+                title: 'Are you sure?',
+                text: "Do you want to change the admin status of this user?",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, change it!'
             });
-
-            const data = await response.json();
-            if (response.ok) {
-                toast.success(data.message);
-                dispatch(fetchUsersort());
-            } else {
-                toast.error(data.message);
+    
+            if (result.isConfirmed) {
+                const response = await fetch(`http://localhost:5000/auth/make-admin/${userId}`, {
+                    method: "PUT",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                });
+    
+                const data = await response.json();
+                if (response.ok) {
+                    Swal.fire(
+                        'Changed!',
+                        data.message,
+                        'success'
+                    );
+                    dispatch(fetchUser());
+                } else {
+                    Swal.fire(
+                        'Error!',
+                        data.message,
+                        'error'
+                    );
+                }
             }
         } catch (error) {
             console.error("Xəta baş verdi:", error);
@@ -60,16 +106,36 @@ const AdminUser = () => {
 
     const deleteUser = async (userId) => {
         try {
-            const response = await fetch(`http://localhost:5000/auth/${userId}`, {
-                method: "DELETE",
+            const result = await Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
             });
-
-            const data = await response.json();
-            if (response.ok) {
-                toast.success(data.message);
-                dispatch(fetchUsersort({ sortOrder, isAdmin: filterAdmin, search: searchTerm }));
-            } else {
-                toast.error(data.message);
+    
+            if (result.isConfirmed) {
+                const response = await fetch(`http://localhost:5000/auth/${userId}`, {
+                    method: "DELETE",
+                });
+    
+                const data = await response.json();
+                if (response.ok) {
+                    Swal.fire(
+                        'Deleted!',
+                        data.message,
+                        'success'
+                    );
+                    dispatch(fetchUsersort({ sortOrder, isAdmin: filterAdmin, search: searchTerm }));
+                } else {
+                    Swal.fire(
+                        'Error!',
+                        data.message,
+                        'error'
+                    );
+                }
             }
         } catch (error) {
             console.error("Xəta baş verdi:", error);
@@ -77,7 +143,15 @@ const AdminUser = () => {
     };
 
     const toggleSort = () => {
-        setSortOrder((prev) => (prev === "asc" ? "desc" : "asc"));
+        const newSortOrder = sortOrder === "asc" ? "desc" : "asc";
+        setSortOrder(newSortOrder);
+        // setSortOrder((prev) => (prev === "asc" ? "desc" : "asc"));
+        Swal.fire({
+            title: 'Sorting Changed!',
+            text: `Users are now sorted in ${newSortOrder === "asc" ? "ascending (A-Z)" : "descending (Z-A)"} order.`,
+            icon: 'info',
+            confirmButtonText: 'OK'
+        });
     };
 
     const handleSearchChange = (e) => {
@@ -157,9 +231,9 @@ const AdminUser = () => {
                                 <div className="table-data">{user.name}</div>
                                 <div className="table-data">{user.lastname}</div>
                                 <div className="table-data" style={{ height: "70px" }}>
-                                    <img src={user.image ? `http://localhost:5000${user.image}` : "https://picsum.photos/200"} alt="user" style={{ width: "50px", height: "50px", borderRadius: "50%" }} />
+                                    <img src={user.image ? `http://localhost:5000${user.image}` : profile} alt="user" style={{ width: "50px", height: "50px", borderRadius: "50%" }} />
                                 </div>
-                                <div className="table-data">{user.email}</div>
+                                <div className="table-data">{user.email.slice(0,15)}...</div>
                                 <span className="table-data">{formatData(user.birthDate)}</span>
                                 <div className="table-data">{user.bio ? user.bio : 'No thing'}</div>
                                 <div className="table-data">{user.isVerified ? '✅ Yes' : '❌ No'}</div>

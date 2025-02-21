@@ -353,7 +353,7 @@ export const searchBooks = async (req, res) => {
       $and: [
         {
           $or: [
-            { title: { $regex: query, $options: 'i' } },
+            { name: { $regex: query, $options: 'i' } },
             { author: { $regex: query, $options: 'i' } },
           ],
         },

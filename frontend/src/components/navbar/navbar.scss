@@ -161,8 +161,21 @@ $primary-light: #fef08a;
 body {
 
 
-  &.dark-mode {
 
+  &.dark-mode {
+    .detail-info-box{
+      background-color: #0f1b33;
+    }
+    .comment-section {
+      background-color: #0f1b37;
+    }
+    .comment-section .comments-list .comment{
+      background-color: #182848;
+  
+    }
+    .comment-section .comment-form{
+      background-color: #182848!important;
+    }
     background-image: linear-gradient(to right, #000000, #0f0f19, #10131e, #111522, #111827, #10192b, #101a2f, #0f1b33, #0f1b37, #0f1a3b, #111a3f, #141942);
     color: #ffffff;
 
