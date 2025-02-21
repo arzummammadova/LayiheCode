@@ -32,7 +32,7 @@ const App = () => {
   }, [dispatch]);
 
   if (isLoading) {
-    return <div className="loading">Loading...</div>; 
+    return  <div className="spinner " style={{margin:"50vh auto"}}></div>;
   }
 
   const router = createBrowserRouter([
@@ -55,6 +55,7 @@ const App = () => {
           element: (
             <ProtectedRoute isAdmin={isAdmin}>
               <Addpage />
+            
             </ProtectedRoute>
           ),
         },
@@ -62,8 +63,8 @@ const App = () => {
           path: '/user',
           element: (
             <ProtectedRoute isAdmin={isAdmin}>
-              <AdminUser />
-            </ProtectedRoute>
+            <AdminUser />
+          </ProtectedRoute>
           ),
         },
       ],

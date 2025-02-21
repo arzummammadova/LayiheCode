@@ -66,12 +66,12 @@ const Register = () => {
         <h2 className="title">
           Join <span className="logo">Read<span className="highlight">ly</span></span> - Unlock a World of Books!
         </h2>
-        <div className="social-buttons">
+        {/* <div className="social-buttons">
           <button className="google-signin">
             {/* <img src="" alt="" /> */}
-            Login with Google</button>
+            {/* Login with Google</button>
           <button className="google-signin">Login with Google</button>
-        </div>
+        // </div> */} 
 
         <form className='register-form'
           encType="multipart/form-data"

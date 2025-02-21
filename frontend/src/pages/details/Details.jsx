@@ -110,9 +110,9 @@ const Details = () => {
                                         <span> Oxumuşam</span>
                                     </button>
                                 
-                                    <button className="btnn  hover-filled-slide-down btn-style">
+                                    {/* <button className="btnn  hover-filled-slide-down btn-style">
                                         <span> Favorilərə əlavə et <BsHeartFill /></span>
-                                    </button>
+                                    </button> */}
 
                                 </div>
                             </div>
@@ -120,7 +120,7 @@ const Details = () => {
                         <div className="detail-info-box row">
                             <div className="detail-actions">
                                 <LuShare2 size={20} className='share' onClick={() => setShowShareModal(true)} />
-                                <FaRegHeart className='fav' size={20} />
+                                {/* <FaRegHeart className='fav' size={20} /> */}
                             </div>
                             <div className="col-lg-6">
                                 <div className="desc">
