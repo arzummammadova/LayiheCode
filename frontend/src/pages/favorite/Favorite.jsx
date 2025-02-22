@@ -4,6 +4,7 @@ import { deleteallfav, fetchfav, deletefromfav } from "../../redux/features/user
 import Chat from "../../components/chat/Chat";
 import { MdDeleteOutline } from "react-icons/md";
 import Swal from "sweetalert2";
+import { Link } from "react-router-dom";
 
 const Favorite = () => {
   const dispatch = useDispatch();
@@ -82,7 +83,10 @@ const Favorite = () => {
                 <li key={book._id} className="p-4 transition col-lg-3">
                   <div className="card addcard">
                     <div className="image">
-                      <img src={book.image} style={{ height: "250px" }} alt="" />
+                      <Link to={`/details/${book._id}`}>
+                      <img  src={book.image} style={{ height: "250px" }} alt="" />
+                      </Link>
+                     
                     </div>
                     <div className="text-add">
                       <p className="font-bold name mt-3">{book.name}</p>

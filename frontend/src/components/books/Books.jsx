@@ -20,7 +20,8 @@ const Books = () => {
     navigate(`/details/${id}`);
   };
 
-  const handleAddToRead = (bookId) => {
+  
+  const handleAddToRead = async (bookId) => {
     if (!userId) {
       Swal.fire({
         icon: 'warning',
@@ -32,18 +33,23 @@ const Books = () => {
       });
       return;
     }
-    dispatch(addtoRead({ userId, bookId }));
-    // alert("suscceflly added!")
-    Swal.fire({
-      icon: 'success',
-      title: 'Success!',
-      text: 'Successfully added!',
-      timer: 3000,
-      timerProgressBar: true,
-      confirmButtonColor: '#00DC64'
-    });
-
-
+  
+    try {
+      await dispatch(addtoRead({ userId, bookId })).unwrap();
+      Swal.fire({
+        icon: "success",
+        title: "Added!",
+        text: "Successfully added to Read Later (Read Later səhifəsinə əlavə olundu)!",
+        confirmButtonColor: "#00c851",
+      });
+    } catch (error) {
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Already have Read Later page(Artıq Read Later səhifəsində mövcuddur)",
+        confirmButtonColor: "#ff0000",
+      });
+    }
   };
 
   return (

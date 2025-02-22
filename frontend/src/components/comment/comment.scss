@@ -89,7 +89,7 @@ $border-color: #E5DED8;
           transition: color 0.2s ease;
 
           &:hover {
-            color: darken($accent-color, 10%);
+            background-color: rgba(212, 195, 181, 0.9); 
           }
         }
       }
@@ -109,7 +109,8 @@ $border-color: #E5DED8;
       float: right;
 
       &:hover {
-        background-color: darken($accent-color, 10%);
+        background-color: rgba(212, 195, 181, 0.9); 
+
         transform: translateY(-1px);
       }
     }
@@ -151,7 +152,7 @@ $border-color: #E5DED8;
 
           span {
             font-size: 0.875rem;
-            color: lighten($text-color, 20%);
+            // color: lighten($text-color, 20%);
           }
         }
       }
@@ -169,7 +170,7 @@ $border-color: #E5DED8;
         button {
           background: none;
           border: none;
-          color: lighten($text-color, 20%);
+          // color: lighten($text-color, 20%);
           display: flex;
           align-items: center;
           gap: 0.25rem;
@@ -363,7 +364,7 @@ $border-color: #E5DED8;
         color: white;
 
         &:hover {
-          background: darken(#00dc64, 10%);
+          background-color: rgba(212, 195, 181, 0.9); 
         }
       }
 

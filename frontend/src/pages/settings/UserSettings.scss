@@ -54,7 +54,8 @@ $text-color: #333;
         transition: background 0.3s;
 
         &:hover {
-          background: darken($primary-color, 10%);
+          background-color: rgba(212, 195, 181, 0.9); 
+
         }
       }
     }
@@ -157,7 +158,8 @@ $text-color: #333;
         transition: background 0.3s;
 
         &:hover {
-          background: darken($primary-color, 10%);
+          background-color: rgba(212, 195, 181, 0.9); 
+
         }
       }
     }
