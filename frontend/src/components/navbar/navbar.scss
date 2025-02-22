@@ -153,7 +153,9 @@ img{
     background-color: transparent;
   }
 
-
+  .nav-link-d, .action-d{
+   background-color: transparent;
+  }
   $transition: 0.3s ease-in-out;
 $primary-light: #fef08a;
 // $primary-dark: #2d3748;
@@ -176,6 +178,32 @@ body {
     .comment-section .comment-form{
       background-color: #182848!important;
     }
+    .statics-container .books-section .books-list{
+      background-color: #10192b;
+    }
+    .book-list .book-item{
+      background-color: #10192b;
+    }
+    .book-list .book-item .book-info .book-author{
+      color: white;
+    }
+    .nav-link-d, .action-d{
+      background-color: #0f1a3b;
+    }
+    .books-cards .book-card .icon {
+      color: white;
+    }
+    .statics-container h1{
+      color: white;
+    }
+    .statics-container .target-section span{
+      color: white;
+    }
+    .burger {
+      color: white!important;
+      svg {
+      color: white!important;
+    }}
     background-image: linear-gradient(to right, #000000, #0f0f19, #10131e, #111522, #111827, #10192b, #101a2f, #0f1b33, #0f1b37, #0f1a3b, #111a3f, #141942);
     color: #ffffff;
 

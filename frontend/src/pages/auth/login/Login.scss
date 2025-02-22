@@ -1,0 +1,21 @@
+.pass-i {
+    position: relative;
+  }
+  
+
+  
+  
+  .eye {
+    background: none;
+    border: none;
+    cursor: pointer;
+    position: absolute;
+    transition: color 0.3s;
+    top: 25px;
+    right: 20px;
+  
+    &:hover {
+      color: #00DC64;
+    }
+  }
+  

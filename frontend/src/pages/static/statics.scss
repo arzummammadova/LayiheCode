@@ -168,7 +168,9 @@
         flex-direction: column!important;
         gap: 30px;
     }
-    
+    .user-settings .modal-overlay .modal-content {
+        width: 90%;
+    }
   }
 
   .custom-swal-popup {

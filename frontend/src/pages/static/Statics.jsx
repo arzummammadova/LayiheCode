@@ -147,7 +147,7 @@ const Statics = () => {
               strokeLinecap="round"
               style={{ transition: 'stroke-dashoffset 0.5s ease-in-out' }}
             />
-            <text x="50" y="55" textAnchor="middle" fontSize="16" fontWeight="bold" fill="#333">
+            <text x="50" y="55" textAnchor="middle" fontSize="10" fontWeight="bold" fill="#000">
               {progress.toFixed(2)}%
             </text>
           </svg>

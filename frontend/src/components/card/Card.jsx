@@ -114,7 +114,7 @@ const Card = ({ book, onClick }) => {
       <p className="name mt-1">{book.name}</p>
       <div className="author">{book.author}</div>
 
-      {/* Ümumi reytinq */}
+     
       <div className="overall-rating">
         <div className="stars">
           {[...Array(10)].map((_, index) => (
@@ -135,7 +135,7 @@ const Card = ({ book, onClick }) => {
         <span className="rating-value">({overallRating})</span>
       </div>
 
-      {/* Favorit ürək ikonu */}
+  
       {isFavorite ? (
         <IoHeartCircle
           onClick={(e) => {
@@ -155,7 +155,7 @@ const Card = ({ book, onClick }) => {
         />
       )}
 
-      {/* Oxuma siyahısına əlavə et düyməsi */}
+  
       <div
         onClick={(e) => {
           e.stopPropagation();

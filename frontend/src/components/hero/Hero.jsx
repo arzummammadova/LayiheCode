@@ -145,16 +145,19 @@ const Hero = () => {
                                         </div>
                                     </div> */}
                                 </figure>
-                                <Chat/>
+                              
 
 
 
 
                             </div>
                         </div>
+                        <Chat/>
                     </div>
+                
                 </div>    
                 </div>
+            
             
             </section>
 

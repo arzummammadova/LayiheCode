@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import axios from "axios";
 import { useFormik } from "formik";
 import { useDispatch } from "react-redux";
@@ -8,10 +8,14 @@ import { ToastContainer, toast } from "react-toastify";
 import girl from "../../../assets/images/girl.png";
 import "./Login.scss";
 import api from "../../../redux/features/api";
+import { AiOutlineEyeInvisible } from "react-icons/ai";
+import { AiOutlineEye } from "react-icons/ai";
+
 
 const Login = () => {
   const baseUrl = "http://localhost:5000/auth";
   const navigate = useNavigate();
+  const [showPassword, setShowPassword] = useState(false);
 
   // const submitForm = async (values, actions) => {
   //   try {
@@ -103,23 +107,32 @@ const Login = () => {
               value={values.username}
             />
           </div>
-
           <div className="form-group">
-            {errors.password && (
-              <div className="error">
-                <span className="error-icon">❌</span> {errors.password}
-              </div>
-            )}
-            <input
-              type="password"
-              id="password"
-              name="password"
-              placeholder="Add password"
-              className="input-field"
-              onChange={handleChange}
-              value={values.password}
-            />
-          </div>
+         {errors.password && (
+        <div className="error">
+          <span className="error-icon">❌</span> {errors.password}
+        </div>
+      )}
+      <div className="pass-i">
+ <input
+        type={showPassword ? "text" : "password"}
+        id="password"
+        name="password"
+        placeholder="Add password"
+        className="input-field pr-10 "
+        onChange={handleChange}
+        value={values.password}
+      />
+      <button
+        type="button"
+        className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500"
+        onClick={() => setShowPassword(!showPassword)}
+      >
+        {showPassword ? <AiOutlineEyeInvisible className="eye"  size={20} /> : <AiOutlineEye className="eye" size={20} />}
+      </button>
+      </div>
+     
+    </div>
           <span>
             <Link to="/forgotpassword">Forgot password?</Link>
           </span>
