@@ -48,11 +48,11 @@ const Books = () => {
 
   return (
     <div>
-      <div className="container">
+      <div className="container ">
         <Title>
-          <div className="row p-1 mt-4">
+          <div className="row p-1 mt-5">
             <div className="col-6">
-              <div className="title-l d-lg-block">This week's most popular books</div>
+              <div className="title-l d-lg-block">Start getting to know our books</div>
             </div>
             <div className="col-6" style={{ justifyContent: 'flex-end', display: 'flex' }}>
               <Link to="/all" className="mainbtn">

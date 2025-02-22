@@ -47,8 +47,8 @@ const AddToRead = () => {
     const fetchRecommendedBooks = async () => {
         if (toReadBooks.length === 0) return;
     
-        const categories = [...new Set(toReadBooks.map((book) => book.category))]; // Unikal kateqoriyalar topla
-        const excludeIds = toReadBooks.map((book) => book._id); // Mövcud oxumaq istənilən kitabların ID-ləri
+        const categories = [...new Set(toReadBooks.map((book) => book.category))];
+        const excludeIds = toReadBooks.map((book) => book._id);
     
         try {
             const { data } = await axios.post("http://localhost:5000/api/books/recommendations", { categories, excludeIds });
@@ -63,9 +63,10 @@ const AddToRead = () => {
     
     return (
         <section>
-            <ToastContainer />
+        
             <Chat/>
             <div className="container addtoread">
+            <ToastContainer autoClose={3000} />
                 <img style={{ height: "270px", objectFit: "cover" }} src="https://cdn.dribbble.com/users/2140475/screenshots/15528887/media/6cb693316efc9d7da75e7416621c7101.jpg?resize=1200x900&vertical=center" alt="" />
                 <div className="p-4 bg-gray-50 rounded-xl shadow-md">
                     <h2 className="text-2xl font-semibold mb-4">Your To-Read Books</h2>

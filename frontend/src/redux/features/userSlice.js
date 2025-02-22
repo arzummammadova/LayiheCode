@@ -66,17 +66,18 @@ export const addtoRead = createAsyncThunk(
 
 
 
+
 export const addAndRemoveFav = createAsyncThunk(
-  "favorites/addAndRemove",
+  "auth/addAndRemoveFav",
   async ({ userId, bookId }, { rejectWithValue }) => {
     try {
       const response = await axios.post(
         `http://localhost:5000/auth/${userId}/favorites`,
         { bookId }
       );
-      return response.data;
+      return response.data; 
     } catch (error) {
-      return rejectWithValue(error.response?.data || "Something went wrong");
+      return rejectWithValue(error.response.data);
     }
   }
 );
@@ -115,19 +116,17 @@ export const checkAuth = createAsyncThunk('auth/checkAuth', async () => {
 //!add and delete fav
 
 
-export const fetchfav=createAsyncThunk(
-  
+export const fetchfav = createAsyncThunk(
   'auth/fetchfav',
   async (userId, { rejectWithValue }) => {
     try {
       const response = await axios.get(`http://localhost:5000/auth/${userId}/getfavorites`);
-      return response.data; 
+      return response.data;
     } catch (error) {
-      return rejectWithValue(error.response.data); 
+      return rejectWithValue(error.response.data);
     }
   }
-)
-
+);
 export const deleteFromToRead = createAsyncThunk(
   'auth/deleteFromToRead',
   async ({ userId, bookId }, { rejectWithValue }) => {
@@ -290,6 +289,7 @@ const authSlice = createSlice({
       })
       .addCase(fetchfav.fulfilled, (state, action) => {
         state.favorites = action.payload; 
+        // localStorage.setItem('favorites', JSON.stringify(action.payload));
       })
       .addCase(deleteFromToRead.fulfilled, (state, action) => {
         state.toReadBooks = state.toReadBooks.filter(book => book._id !== action.payload.bookId);
@@ -319,16 +319,9 @@ const authSlice = createSlice({
       .addCase(addAndRemoveFav.pending, (state) => {
         state.status = "loading";
       })
+    
       .addCase(addAndRemoveFav.fulfilled, (state, action) => {
-        state.status = "succeeded";
-        // API-dən qaytarılan mesajı istifadə edərək favoriti əlavə və ya çıxarmaq
-        if (action.payload.message.includes("added")) {
-          state.favorites.push(action.meta.arg.bookId);
-        } else {
-          state.favorites = state.favorites.filter(
-            (id) => id !== action.meta.arg.bookId
-          );
-        }
+        state.favorites = action.payload;
       })
       .addCase(addAndRemoveFav.rejected, (state, action) => {
         state.status = "failed";

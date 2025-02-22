@@ -173,20 +173,24 @@ export const getToReadBooks = async (req, res) => {
   }
 };
 
-export const gettofavorites=async(req,res)=>{
+export const gettofavorites = async (req, res) => {
   const { userId } = req.params;
 
   try {
-    const userData = await user.findById(userId).populate("addFavorites");
+    const userData = await user.findById(userId).populate({
+      path: "addFavorites",
+      select: "image author name", // İstədiyiniz sahələri seçin
+    });
+
     if (!userData) {
       return res.status(404).json({ message: "User not found" });
     }
 
-    res.status(200).json(userData.addFavorites);
+    res.status(200).json(userData.addFavorites); // Bütün kitab məlumatlarını qaytar
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
-}
+};
 export const deleteAllFromToRead = async (req, res) => {
   const { userId } = req.params;  
 
@@ -234,20 +238,22 @@ export const addAndRemoveFromFavorites = async (req, res) => {
 
     const index = userToUpdate.addFavorites.indexOf(bookId);
     if (index !== -1) {
-      userToUpdate.addFavorites.splice(index, 1);
-      await userToUpdate.save();
-      return res.status(200).json({ message: "Book removed from favorites" });
+      userToUpdate.addFavorites.splice(index, 1); 
     } else {
-      userToUpdate.addFavorites.push(bookId);
-      await userToUpdate.save();
-      return res.status(200).json({ message: "Book added to favorites" });
+      userToUpdate.addFavorites.push(bookId); 
     }
-    
+    await userToUpdate.save();
+
+   
+    const updatedUser = await user.findById(userId).populate({
+      path: "addFavorites",
+      select: "image author name",
+    });
+    res.status(200).json(updatedUser.addFavorites);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
-
 
 export const deleteFromToRead = async (req, res) => {
   const { userId, bookId } = req.params;

@@ -43,9 +43,11 @@ userRouter.delete('/:userId/to-read/:bookId', deleteFromToRead);
 userRouter.post('/addFavorites',addtofavorites)
 userRouter.get('/:userId/getfavorites',gettofavorites)
 userRouter.delete('/:userId/delallfavorites', deleteallfromfavorites)
+userRouter.delete('/:userId/delfavorites/:bookId', deletefromfav);
 
 userRouter.post('/:userId/favorites', addAndRemoveFromFavorites);
 // 67a870fa98311aa6d2a5aefa
+
 userRouter.put("/make-admin/:userId",  toggleAdmin);
 //!theme
 userRouter.put('/theme',changetheme)
