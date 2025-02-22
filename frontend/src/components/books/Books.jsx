@@ -90,7 +90,7 @@ const Books = () => {
                       <p className="right-name">{book.name.slice(0, 10)}..</p>
                       <p className="autorname">{book.author}</p>
                       <p className="desc">{book.description.slice(0, 30)}...</p>
-                      <p className="price">{book.price}</p>
+                     
                     </div>
                   </div>
 

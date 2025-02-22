@@ -202,7 +202,7 @@ const Navbar = () => {
 
                   <div className="action-d ">
                   <li>
-                  <Link to="/favorite">
+                  <Link to="/favorite" onClick={handleClick}>
                   <FiHeart />
 
                    
@@ -212,7 +212,7 @@ const Navbar = () => {
                 </li>
                
                 <li>
-                  <Link to="/addtoread">
+                  <Link to="/addtoread" onClick={handleClick}>
                     <PiBooksBold />
 
                   </Link>

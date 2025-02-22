@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import '../table.scss';
 import '../css/spinner.css';
 import { useDispatch, useSelector } from 'react-redux';
+import Chat from '../../components/chat/Chat'
 import {
     deleteProduct,
     fetchProduct,
@@ -144,7 +145,7 @@ const Addpage = () => {
             });
             const { imageUrl } = await response.json();
             formik.setFieldValue('image', imageUrl);
-            Swal.fire('Success!', 'Image uploaded successfully.', 'success');
+            // Swal.fire('Success!', 'Image uploaded successfully.', 'success');
         } catch (error) {
             console.error('Yükləmə xətası:', error);
             Swal.fire('Error!', 'Image upload failed.', 'error');
@@ -266,6 +267,8 @@ const Addpage = () => {
         <div>
             <div className="container">
                 <h1 className="mb-3">Admin Page</h1>
+                
+                <Chat/>
                 <Link to="/user" className="mainbtn mx-4">
                     User
                 </Link>
@@ -324,7 +327,7 @@ const Addpage = () => {
                             {formik.errors.name && <div style={{ color: 'red' }}>{formik.errors.name}</div>}
 
                             <input type="file" onChange={handleFileChange} accept="image/*" className="fileinput" />
-                            <button className="buttonimage" type="button" onClick={handleImageUpload}>
+                            <button style={{display:"block"}} className="buttonimage" type="button" onClick={handleImageUpload}>
                                 Şəkli Təstiqlə
                             </button>
 
@@ -352,7 +355,7 @@ const Addpage = () => {
                         </form>
                     </Box>
                 </Modal>
-
+                    
                 {/* Table for displaying products */}
                 <div className="table">
                     <div className="table-header">

@@ -98,12 +98,12 @@ const AddToRead = () => {
                 </div>
                 <div className="book-recommendations">
             <h3 className="section-title">You May Also Like</h3>
-            <div className="book-grid">
+            <div className="book-grid row">
                 {recommendedBooks.length === 0 ? (
                     <p className="no-recommendation">Uyğun tövsiyə tapılmadı.</p>
                 ) : (
                     recommendedBooks.map((book) => (
-                        <div key={book._id} className="book-item" onClick={() => goToDetails(book._id)}>
+                        <div key={book._id} className="book-item col-lg-3" onClick={() => goToDetails(book._id)}>
                             <div className="book-card">
                                 <img src={book.image} alt={book.name} className="book-cover" />
                                 <div className="book-info">
