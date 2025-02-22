@@ -6,7 +6,6 @@ export const protect = async (req, res, next) => {
     try {
         let token = req.headers.authorization || req.cookies.token;
 
-        // console.log("Gələn Tokennnnnnnn:", token);
 
         if (!token) {
             return res.status(401).json({ message: "Token yoxdur, icazəsiz giriş!" });

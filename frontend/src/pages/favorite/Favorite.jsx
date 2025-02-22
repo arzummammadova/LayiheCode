@@ -1,19 +1,68 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchfav } from "../../redux/features/userSlice";
+import { deleteallfav, fetchfav, deletefromfav } from "../../redux/features/userSlice";
 import Chat from "../../components/chat/Chat";
 import { MdDeleteOutline } from "react-icons/md";
+import Swal from "sweetalert2";
 
 const Favorite = () => {
   const dispatch = useDispatch();
-  const { user, favorites } = useSelector((state) => state.auth) || {};
+  const { user } = useSelector((state) => state.auth) || {};
+  const favorites = useSelector((state) => state.auth.favorites) || [];
   const userId = user?._id;
 
   useEffect(() => {
+    // console.log("User:", user);
+    // console.log("Favorites:", favorites);
     if (userId) {
       dispatch(fetchfav(userId));
     }
   }, [dispatch, userId]);
+
+  const handleDeleteAll = () => {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete all!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        dispatch(deleteallfav(userId));
+        Swal.fire(
+          'Deleted!',
+          'All favorites have been deleted.',
+          'success'
+        );
+      }
+    });
+  };
+
+  const handleDeletefromfav = (bookId) => {
+    // console.log("Deleting book with ID:", bookId);
+    // console.log("User ID:", userId);
+
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        dispatch(deletefromfav({ userId, bookId }));
+        Swal.fire(
+          'Deleted!',
+          'The book has been deleted from favorites.',
+          'success'
+        );
+      }
+    });
+  };
 
   return (
     <div>
@@ -32,8 +81,6 @@ const Favorite = () => {
               {favorites.map((book) => (
                 <li key={book._id} className="p-4 transition col-lg-3">
                   <div className="card addcard">
-             
-
                     <div className="image">
                       <img src={book.image} style={{ height: "250px" }} alt="" />
                     </div>
@@ -43,16 +90,20 @@ const Favorite = () => {
                         Author: {book.author?.slice(0, 15)}..
                       </p>
                     </div>
-                    <div style={{color:"red"}} className=" deleteall deleteicon deletefav">
-                      <MdDeleteOutline size={25}/> 
+                    <div
+                      style={{ color: "red" }}
+                      className="deleteall deleteicon deletefav"
+                      onClick={() => handleDeletefromfav(book._id)}
+                    >
+                      <MdDeleteOutline size={25} />
                     </div>
-                   
                   </div>
-              
                 </li>
               ))}
             </div>
-            <div className="btn btn-danger ">Delete all</div>
+            <div className="btn btn-danger" onClick={handleDeleteAll}>
+              Delete all
+            </div>
           </ul>
         ) : (
           <p>No favorite books found.</p>

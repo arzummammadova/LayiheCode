@@ -10,21 +10,41 @@ import {
   FaInstagram,
   FaLink,
 } from 'react-icons/fa';
+import Swal from 'sweetalert2'; // Import SweetAlert2
 
 const ShareModal = ({ onClose }) => {
   const currentUrl = window.location.href;
 
   const copyToClipboard = () => {
-    navigator.clipboard.writeText(currentUrl).then(() => {
-      alert('Link copied to clipboard!');
-    });
+    navigator.clipboard
+      .writeText(currentUrl)
+      .then(() => {
+        // Show SweetAlert2 success message
+        Swal.fire({
+          icon: 'success',
+          title: 'Link copied to clipboard!',
+          showConfirmButton: false,
+          timer: 1500, // Auto-close after 1.5 seconds
+        });
+      })
+      .catch((error) => {
+        // Show SweetAlert2 error message if copying fails
+        Swal.fire({
+          icon: 'error',
+          title: 'Failed to copy link',
+          text: 'Please try again.',
+        });
+        console.error('Failed to copy link:', error);
+      });
   };
 
   return (
     <div className="share-modal-overlay">
       <div className="share-modal">
-        <button className="close-modal" onClick={onClose}>×</button>
-        <h3 className='sharename'>Share this product</h3>
+        <button className="close-modal" onClick={onClose}>
+          ×
+        </button>
+        <h3 className="sharename">Share this product</h3>
         <div className="social-icons">
           <a
             href={`https://www.facebook.com/sharer/sharer.php?u=${currentUrl}`}

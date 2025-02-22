@@ -25,7 +25,7 @@ export const userRegisterValidationSchema = Yup.object({
     )
     .required("Password is required."),
     birthDate: Yup.date()
-  .max(new Date(), "Birth date cannot be in the future.") // Gələcək tarixlərin qarşısı alınır
-  .required("Birth date is required."), // Məcburi sahə kimi qeyd edilir
+  .max(new Date(), "Birth date cannot be in the future.")
+  .required("Birth date is required."), 
 
 });

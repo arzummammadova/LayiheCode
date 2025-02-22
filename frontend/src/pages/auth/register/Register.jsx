@@ -154,7 +154,7 @@ const Register = () => {
           </div>
           <div className="form-group">
             <input
-              type="date" // Tarix üçün input tipi
+              type="date" 
               id="birthDate"
               name="birthDate"
               placeholder="Add birth date"

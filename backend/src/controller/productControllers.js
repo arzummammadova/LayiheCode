@@ -94,7 +94,7 @@ export const deleteReview = async (req, res) => {
           return res.status(404).json({ message: "Rəy tapılmadı!" });
       }
 
-      // İstifadəçi ya rəyi yazan olmalıdır, ya da admin
+     
       if (review.user.toString() !== req.user._id.toString() && !req.user.isAdmin) {
           return res.status(403).json({ message: "Bu rəyi silməyə icazəniz yoxdur!" });
       }
@@ -118,7 +118,7 @@ export const updateOwnReview = async (req, res) => {
       const review = product.reviews.id(reviewId);
       if (!review) return res.status(404).json({ message: "Review not found" });
 
-      // İstifadəçinin öz rəyini yeniləməyə icazə verək
+     
       if (review.user.toString() !== req.user._id.toString()) {
           return res.status(403).json({ message: "You can only edit your own reviews" });
       }
@@ -221,7 +221,7 @@ export const updateReview = async (req, res) => {
       console.log("Review User (String):", review.user.toString());
       console.log("Logged-in User (String):", req.user._id.toString());
 
-      // Yalnız review-u yazan istifadəçi dəyişə bilər
+     
       if (review.user.toString() !== req.user._id.toString() && !req.user.isAdmin) {
           return res.status(403).json({ message: "Bu rəyi redaktə etməyə icazəniz yoxdur!" });
       }
@@ -445,7 +445,7 @@ export const uploadImage = async (req, res) => {
           return res.status(400).json({ message: 'No file uploaded' });
       }
 
-      // Faylın URL-i
+     
       const imageUrl = `/uploads/${req.file.filename}`;
       console.log('Uploaded file:', req.file);
 
@@ -455,7 +455,7 @@ export const uploadImage = async (req, res) => {
         imageUrl: `http://localhost:5000/uploads/${req.file.filename}` 
       });
   } catch (error) {
-      console.error("Error in uploadImage:", error);  // Ətraflı xətanı loglayın
+      console.error("Error in uploadImage:", error);  
       res.status(500).json({ message: 'Failed to upload file', error: error.message });
   }
 };

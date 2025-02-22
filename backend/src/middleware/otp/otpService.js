@@ -9,7 +9,6 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-// OTP yaratmaq
 const generateOTP = () => crypto.randomInt(100000, 999999).toString();
 
 export const sendOTPEmail = async (user) => {

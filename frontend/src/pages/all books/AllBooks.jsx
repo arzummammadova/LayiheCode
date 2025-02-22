@@ -30,7 +30,7 @@ const AllBooks = () => {
     const [selectedGenre, setSelectedGenre] = useState(localStorage.getItem('selectedGenre') || 'All Books');
     const [searchTerm, setSearchTerm] = useState(localStorage.getItem('searchTerm') || '');
     const [currentPage, setCurrentPage] = useState(Number(localStorage.getItem('currentPage')) || 1);
-    const [sortOrder, setSortOrder] = useState(localStorage.getItem('sortOrder') || '');  // Yeni state
+    const [sortOrder, setSortOrder] = useState(localStorage.getItem('sortOrder') || ''); 
     const booksPerPage = 20;
     const [isOpen, setIsOpen] = useState(false);
     const [loading, setLoading] = useState(true);
@@ -38,7 +38,7 @@ const AllBooks = () => {
     useEffect(() => {
         dispatch(fetchProduct()).finally(() => {
             setLoading(false);
-            // Apply sorting after fetching products
+          
             if (sortOrder === "lowToHigh") {
                 dispatch(sortRatingLtH());
             } else if (sortOrder === "highToLow") {
@@ -46,7 +46,7 @@ const AllBooks = () => {
             }
         });
         window.scrollTo(0, 0);
-    }, [dispatch, sortOrder]);  // Add sortOrder to dependency array
+    }, [dispatch, sortOrder]);  
 
     useEffect(() => {
         if (searchTerm) {
@@ -70,7 +70,7 @@ const AllBooks = () => {
 
     useEffect(() => {
         localStorage.setItem('sortOrder', sortOrder);
-    }, [sortOrder]);  // Yeni useEffect
+    }, [sortOrder]);  
 
     const godetails = (id) => {
         navigate(`/details/${id}`)

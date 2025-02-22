@@ -158,7 +158,6 @@ export const productSlice = createSlice({
         state.products= action.payload;
       })
       .addCase(sortRatingLtH.fulfilled, (state, action) => {
-        // console.log("Sorted Books:", action.payload);
         state.loading = false;
         state.products = action.payload;
       })

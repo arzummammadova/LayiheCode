@@ -127,6 +127,31 @@ export const fetchfav = createAsyncThunk(
     }
   }
 );
+
+export const deleteallfav = createAsyncThunk(
+  "auth/deleteallfav",
+  async (userId, { rejectWithValue }) => {
+    try {
+      const response = await axios.delete(`http://localhost:5000/auth/${userId}/delallfavorites`);
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data || "Something went wrong");
+    }
+  }
+);
+export const deletefromfav = createAsyncThunk(
+  'auth/deletefromfav',
+  async ({ userId, bookId }, { rejectWithValue }) => {
+    try {
+      const response = await axios.delete(`http://localhost:5000/auth/${userId}/delfavorites/${bookId}`);
+      return { bookId, user: response.data.user };
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
+
 export const deleteFromToRead = createAsyncThunk(
   'auth/deleteFromToRead',
   async ({ userId, bookId }, { rejectWithValue }) => {
@@ -289,7 +314,7 @@ const authSlice = createSlice({
       })
       .addCase(fetchfav.fulfilled, (state, action) => {
         state.favorites = action.payload; 
-        // localStorage.setItem('favorites', JSON.stringify(action.payload));
+     
       })
       .addCase(deleteFromToRead.fulfilled, (state, action) => {
         state.toReadBooks = state.toReadBooks.filter(book => book._id !== action.payload.bookId);
@@ -327,6 +352,14 @@ const authSlice = createSlice({
         state.status = "failed";
         state.error = action.payload;
       })
+      .addCase(deleteallfav.fulfilled, (state, action) => {
+        state.favorites = [];
+      })
+      .addCase(deletefromfav.fulfilled, (state, action) => {
+        const { userId, bookId } = action.payload;
+        state.favorites = state.favorites.filter(book => book._id !== action.payload.bookId);
+      })
+     
       .addCase(checkAuth.pending, (state) => {
         state.isLoading = true;
       })
