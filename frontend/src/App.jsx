@@ -22,6 +22,7 @@ import Favorite from './pages/favorite/Favorite';
 import ProtectedRoute from './pages/ProtectedRoute/ProtectedRoute';
 import RecomendationPage from './pages/recomendation/RecomendationPage';
 import { checkAuth } from './redux/features/userSlice';
+import Statics from './pages/static/Statics';
 
 const App = () => {
   const dispatch = useDispatch();
@@ -50,6 +51,7 @@ const App = () => {
         { path: '/all', element: <AllBooks /> },
         { path: '/settings', element: <UserSettings /> },
         { path: '/recomendation', element: <RecomendationPage /> },
+        { path: '/statics', element: <Statics /> },
         {
           path: '/add',
           element: (

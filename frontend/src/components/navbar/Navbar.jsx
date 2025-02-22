@@ -12,6 +12,8 @@ import { BsBasket2Fill } from "react-icons/bs";
 import Swal from 'sweetalert2'
 import axios from 'axios';
 import { PiSunLight } from "react-icons/pi";
+import { TbReportAnalytics } from "react-icons/tb";
+
 
 import { useNavigate } from "react-router-dom";
 import api from "../../redux/features/api";
@@ -106,6 +108,26 @@ const Navbar = () => {
     }
   };
 
+
+  const handleClick = (e) => {
+    if (!isLogin) {
+      e.preventDefault(); 
+      Swal.fire({
+        icon: "warning",
+        title: "Giriş tələb olunur!",
+        text: "Bu səhifəyə daxil olmaq üçün əvvəlcə giriş etməlisiniz.",
+        confirmButtonText: "Giriş et",
+        confirmButtonColor: "#00DC64", 
+        customClass: {
+          confirmButton: "custom-swal-button", 
+        },
+      }).then((result) => {
+        if (result.isConfirmed) {
+          navigate("/login"); 
+        }
+      });
+    }
+  };
   return (
     <>
       <section id="nav">
@@ -131,8 +153,9 @@ const Navbar = () => {
                   {/* <sup style={{ color: "red" }}>{count}</sup> */}
                 </li>
                 <li>
-                  <Link to="/addtoread">Read later</Link>
-                  {/* <sup style={{ color: "red" }}>{countt}</sup> */}
+
+                <Link to="/addtoread" onClick={handleClick}>Read later</Link>
+                
                 </li>
                 {isAdmin && ( 
                   <li>
@@ -140,12 +163,12 @@ const Navbar = () => {
                   </li>
                 )}
                 <li>
-                  <Link to="/readed">Readed</Link>
+                  <Link to="/readed" onClick={handleClick}>Readed</Link>
                   {/* <sup style={{ color: "red" }}>{count}</sup> */}
                 </li>
              
                 <li>
-                  <Link to="/">About</Link>
+                  <Link to="/favorite" onClick={handleClick}>Favorites</Link>
                 </li>
                 {/* <li>
                   <Link to="/">Contact Us</Link>
@@ -166,6 +189,10 @@ const Navbar = () => {
                         {darkMode ? <GiNightSky className="icon night-icon" /> : <PiSunLight className="icon sun-icon" />}
                         <span className="mode-text">{darkMode ? 'Night' : 'Day'}</span>
                       </button>
+
+                   
+
+
                     </div>
 
 
@@ -180,20 +207,29 @@ const Navbar = () => {
 
                    
                   </Link>
+
+
                 </li>
+               
                 <li>
                   <Link to="/addtoread">
                     <PiBooksBold />
 
                   </Link>
                 </li>
-                {/* <li>
-                  <Link to="/">
-                    <BsBasket2Fill />
 
-                  </Link>
-                  <sup style={{ color: "red" }}>{count}</sup>
-                </li> */}
+                {
+                  isLogin && (
+                    <li>
+                    <Link to="/statics">
+                    <TbReportAnalytics />
+  
+                    </Link>
+                    {/* <sup style={{ color: "red" }}>{count}</sup> */}
+                  </li>
+                  )
+                }
+              
                   </div>
               
               </ul>
@@ -226,6 +262,9 @@ const Navbar = () => {
                     <ul>
                       <li>
                         <Link to="/settings">Settings</Link>
+                      </li>
+                      <li>
+                        <Link to="/statics">Statics</Link>
                       </li>
                       <li>
                         <button style={{ border: "none" }} onClick={handleLogout}>Logout</button>
