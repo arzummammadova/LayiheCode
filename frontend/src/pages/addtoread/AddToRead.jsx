@@ -77,7 +77,7 @@ const AddToRead = () => {
                             <p style={{ color: "grey" }}>{toReadBooks.length} kitab oxuyacaqsınız</p>
                             <div className="row">
                                 {toReadBooks.map((book) => (
-                                    <li key={book._id} className="p-4 transition col-lg-3">
+                                    <li key={book._id} className="p-4 transition col-lg-3 col-md-4">
                                         <div className="card addcard">
                                             <div className="image">
                                                 <MdOutlineDelete onClick={() => handleDeletefrom(userId, book._id)} className="deleteicon" size={20} />
@@ -103,7 +103,7 @@ const AddToRead = () => {
                     <p className="no-recommendation">Uyğun tövsiyə tapılmadı.</p>
                 ) : (
                     recommendedBooks.map((book) => (
-                        <div key={book._id} className="book-item col-lg-3" onClick={() => goToDetails(book._id)}>
+                        <div key={book._id} className="book-item " onClick={() => goToDetails(book._id)}>
                             <div className="book-card">
                                 <img src={book.image} alt={book.name} className="book-cover" />
                                 <div className="book-info">
