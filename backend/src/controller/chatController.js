@@ -50,7 +50,6 @@ const searchWikipedia = async (query) => {
     }
     return null;
 };
-
 const searchFromMultipleSources = async (query) => {
     const results = [];
 
@@ -68,9 +67,12 @@ const searchFromMultipleSources = async (query) => {
             googleBooksResponse.data.items.forEach((item) => {
                 const bookInfo = item.volumeInfo;
                 results.push({
-                    title: bookInfo.title,
-                    description: bookInfo.description || "Təsvir mövcud deyil.",
-                    link: bookInfo.infoLink,
+                    title: bookInfo.title || "Başlıq mövcud deyil",
+                    description: bookInfo.description && bookInfo.description.trim() !== "" 
+                        ? bookInfo.description 
+                        : "Bu kitab üçün təsvir mövcud deyil.",
+                    link: bookInfo.infoLink || "#",
+                    image: bookInfo.imageLinks?.thumbnail || "https://via.placeholder.com/128x200?text=No+Image",
                     source: "Google Books"
                 });
             });
@@ -87,9 +89,14 @@ const searchFromMultipleSources = async (query) => {
         if (openLibraryResponse.data.docs) {
             openLibraryResponse.data.docs.forEach((doc) => {
                 results.push({
-                    title: doc.title,
-                    description: doc.subtitle || "Təsvir mövcud deyil.",
-                    link: `https://openlibrary.org${doc.key}`,
+                    title: doc.title || "Başlıq mövcud deyil",
+                    description: doc.subtitle && doc.subtitle.trim() !== "" 
+                        ? doc.subtitle 
+                        : "Bu kitab üçün təsvir mövcud deyil.",
+                    link: `https://openlibrary.org${doc.key}` || "#",
+                    image: doc.cover_i 
+                        ? `https://covers.openlibrary.org/b/id/${doc.cover_i}-M.jpg`
+                        : "https://placehold.co/400",
                     source: "Open Library"
                 });
             });
@@ -100,6 +107,7 @@ const searchFromMultipleSources = async (query) => {
 
     return results;
 };
+
 
 export const chat = async (req, res) => {
     const userMessage = req.body.message.toLowerCase();

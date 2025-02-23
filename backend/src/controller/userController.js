@@ -179,14 +179,14 @@ export const gettofavorites = async (req, res) => {
   try {
     const userData = await user.findById(userId).populate({
       path: "addFavorites",
-      select: "image author name", // İstədiyiniz sahələri seçin
+      select: "image author name", 
     });
 
     if (!userData) {
       return res.status(404).json({ message: "User not found" });
     }
 
-    res.status(200).json(userData.addFavorites); // Bütün kitab məlumatlarını qaytar
+    res.status(200).json(userData.addFavorites); 
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -503,14 +503,14 @@ export const verifyEmail = async (req, res) => {
   
       if (!userr) return res.status(404).json({ message: "İstifadəçi tapılmadı" });
   
-      // Token yarat
+     
       const resetToken = jwt.sign({ id: userr._id }, process.env.JWT_SECRET, { expiresIn: "15m" });
   
-      // İstifadəçinin "resetToken" dəyərini bazaya yaz
+     
       userr.resetToken = resetToken;
       await userr.save();
   
-      // E-mail HTML məzmunu
+     
       const resetLink = `${process.env.CLIENT_LINK}/reset-password/${resetToken}`;
       const htmlContent = `
         <div style="font-family: Arial, sans-serif; background: linear-gradient(90deg, #00DC64, #9AE1BC); padding: 20px; border-radius: 10px; text-align: center;">
@@ -521,12 +521,12 @@ export const verifyEmail = async (req, res) => {
         </div>
       `;
   
-      // E-mail göndər
+   
       const mailOptions = {
         from: process.env.USER_EMAIL,
         to: email,
         subject: "Şifrə sıfırlama",
-        html: htmlContent, // HTML formatında email göndər
+        html: htmlContent, 
       };
   
       await transporterr.sendMail(mailOptions);
@@ -657,7 +657,7 @@ export const verifyEmail = async (req, res) => {
             return res.status(400).json({ message: 'No file uploaded' });
         }
   
-        // Faylın URL-i
+     
         const imageUrl = `/uploads/${req.file.filename}`;
         console.log('Uploaded file:', req.file);
   
@@ -667,7 +667,7 @@ export const verifyEmail = async (req, res) => {
           imageUrl: `http://localhost:5000/uploads/${req.file.filename}` 
         });
     } catch (error) {
-        console.error("Error in uploadImage:", error);  // Ətraflı xətanı loglayın
+        console.error("Error in uploadImage:", error);  
         res.status(500).json({ message: 'Failed to upload file', error: error.message });
     }
   };

@@ -302,8 +302,10 @@ body {
     padding: 10px;
     border-radius: 10px 10px 0 10px;
     margin: 5px 0;
-    text-align: right;
-    max-width: 80%;
+    // text-align: right;
+    max-width: 40%!important;
+   
+  
     margin-left: auto;
   }
   
@@ -313,10 +315,10 @@ body {
     padding: 10px;
     border-radius: 10px 10px 10px 0;
     margin: 5px 0;
-    max-width: 95%;
+    max-width: 75%;
     margin-right: auto;
-    word-break: break-word; /* Uzun sözləri qırır */
-    overflow-wrap: break-word; /* Alternativ qırma metodu */
+    word-break: break-word; 
+    overflow-wrap: break-word; 
 }
 
   .chat-content {

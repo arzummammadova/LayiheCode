@@ -32,8 +32,9 @@
             border-radius: 5px;
         }
         &:hover{
-            transform: scale(1.12);
-            transition: 0.3s all;
+            // transform: scale(1.12);
+            // transition: 0.3s all;
+            color: rgb(180, 94, 94);
 
         }
     }

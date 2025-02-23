@@ -55,6 +55,9 @@
     .mode-text{
       display: none;
     }
+    .card-p .img{
+      height: auto;
+    }
     .hero .row .right {
  
       width: 70%!important;
@@ -154,7 +157,7 @@ img{
   }
 
   .nav-link-d, .action-d{
-   background-color: transparent;
+   background-color: white;
   }
   $transition: 0.3s ease-in-out;
 $primary-light: #fef08a;

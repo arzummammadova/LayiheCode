@@ -90,6 +90,22 @@ img{
 
 @media (max-width: 756px) {
 
+  .comment-section .comment-form .input-group{
+    flex-direction: column;
+  }
+  .comment-section .comment-form{
+    padding:0rem  1rem!important;
+  }
+  /* .comment-section .comment-form .submit-button{
+    display: block;
+  } */
+
+  .comment-section{
+    padding: 0.2rem;
+  }
+  .rating-section span{
+    display: none;
+  }
 .image-section img{
   display: none;
 

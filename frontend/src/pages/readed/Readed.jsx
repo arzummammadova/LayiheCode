@@ -4,7 +4,7 @@ import { deleteAllFromreaded, deletefromReaded, fetchreaded } from "../../redux/
 import { MdOutlineDelete, MdDelete } from "react-icons/md";
 import Swal from "sweetalert2";
 import Chat from "../../components/chat/Chat";
-
+import { Link } from "react-router-dom";
 const Readed = () => {
   const dispatch = useDispatch();
   const { readed, user } = useSelector((state) => state.auth) || [];
@@ -83,7 +83,8 @@ const Readed = () => {
                       className="deleteicon"
                       size={20}
                     />
-                    <img src={book.image} style={{ height: "250px" }} alt="" />
+                      <Link to={`/details/${book._id}`}>  <img src={book.image} style={{ height: "250px" }} alt="" /></Link>
+                  
                   </div>
                   <div className="text-add">
                     <p className="font-bold name mt-3">{book.name}</p>

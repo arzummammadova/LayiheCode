@@ -8,6 +8,7 @@ import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Chat from "../../components/chat/Chat";
+import { Link } from "react-router-dom";
 const AddToRead = () => {
     const dispatch = useDispatch();
     const { toReadBooks, user } = useSelector((state) => state.auth) || {}; 
@@ -81,7 +82,9 @@ const AddToRead = () => {
                                         <div className="card addcard">
                                             <div className="image">
                                                 <MdOutlineDelete onClick={() => handleDeletefrom(userId, book._id)} className="deleteicon" size={20} />
+                                                <Link to={`/details/${book._id}`}>
                                                 <img src={book.image} style={{ height: "250px" }} alt="" />
+                                                </Link>
                                             </div>
                                             <div className="text-add">
                                                 <p className="font-bold name mt-3">{book.name}</p>

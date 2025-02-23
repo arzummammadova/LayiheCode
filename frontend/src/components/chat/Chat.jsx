@@ -5,6 +5,7 @@ import desing from '../../assets/images/Untitled design (1).png';
 import { IoCloseSharp, IoExpandOutline } from 'react-icons/io5';
 import { BsChatLeftHeartFill, BsSend } from "react-icons/bs";
 import { TbWorldWww } from "react-icons/tb";
+import { FaAngleDown } from 'react-icons/fa'; 
 import './chat.scss';
 
 const Chat = () => {
@@ -12,11 +13,12 @@ const Chat = () => {
     const [isFullscreen, setIsFullscreen] = useState(false);
     const [message, setMessage] = useState('');
     const [messages, setMessages] = useState([]);
-    const [isSearching, setIsSearching] = useState(false); 
+    const [isSearching, setIsSearching] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
+    const [showAllResults, setShowAllResults] = useState(false); 
     const chatContentRef = useRef(null);
 
     useEffect(() => {
-        
         const savedMessages = localStorage.getItem('chatMessages');
         if (savedMessages) {
             setMessages(JSON.parse(savedMessages));
@@ -24,32 +26,107 @@ const Chat = () => {
     }, []);
 
     useEffect(() => {
-       
         localStorage.setItem('chatMessages', JSON.stringify(messages));
     }, [messages]);
 
     const toggleChat = () => setIsOpen(!isOpen);
     const toggleFullscreen = () => setIsFullscreen(!isFullscreen);
 
+    const searchFromMultipleSources = async (query) => {
+        const results = [];
+
+        try {
+            const googleBooksResponse = await axios.get(
+                `https://www.googleapis.com/books/v1/volumes?q=${query}&maxResults=5`
+            );
+
+            if (googleBooksResponse.data.items) {
+                googleBooksResponse.data.items.forEach((item) => {
+                    const bookInfo = item.volumeInfo;
+                    results.push({
+                        title: bookInfo.title || "Başlıq mövcud deyil",
+                        description: bookInfo.description && bookInfo.description.trim() !== "" 
+                            ? bookInfo.description 
+                            : "Bu kitab üçün təsvir mövcud deyil.",
+                        link: bookInfo.infoLink || "#",
+                        image: bookInfo.imageLinks?.thumbnail || "https://placehold.co/400", 
+                        source: "Google Books"
+                    });
+                });
+            }
+        } catch (error) {
+            console.error('Google Books API-dən məlumat alınarkən xəta baş verdi:', error);
+        }
+
+        try {
+            const openLibraryResponse = await axios.get(
+                `https://openlibrary.org/search.json?q=${query}&limit=5`
+            );
+
+            if (openLibraryResponse.data.docs) {
+                openLibraryResponse.data.docs.forEach((doc) => {
+                    results.push({
+                        title: doc.title || "Başlıq mövcud deyil",
+                        description: doc.subtitle && doc.subtitle.trim() !== "" 
+                            ? doc.subtitle 
+                            : "Bu kitab üçün təsvir mövcud deyil.",
+                        link: `https://openlibrary.org${doc.key}` || "#",
+                        image: doc.cover_i 
+                            ? `https://covers.openlibrary.org/b/id/${doc.cover_i}-M.jpg`
+                            : "https://placehold.co/400", 
+                        source: "Open Library"
+                    });
+                });
+            }
+        } catch (error) {
+            console.error('Open Library API-dən məlumat alınarkən xəta baş verdi:', error);
+        }
+
+        return results;
+    };
+
     const handleSend = async () => {
         if (message.trim() !== '') {
             const userMessage = { text: message, from: 'user' };
             setMessages((prevMessages) => [...prevMessages, userMessage]);
-
+            setMessage('');
+            setIsLoading(true);
+    
             try {
-                const endpoint = isSearching ? 'http://localhost:5000/chat/search' : 'http://localhost:5000/chat';
-                const response = await axios.post(endpoint, { message });
-                const botMessage = { text: response.data.message, from: 'bot' };
-                setMessages((prevMessages) => [...prevMessages, botMessage]);
+                if (isSearching) {
+                    
+                    const searchMessage = { 
+                        text: `Siz"${message}" haqqında axtarış edirsiniz...`, 
+                        from: 'bot' 
+                    };
+                    setMessages((prevMessages) => [...prevMessages, searchMessage]);
+    
+                   
+                    const results = await searchFromMultipleSources(message);
+    
+                 
+                    const botMessage = { 
+                        text: `Budur !Axtarış nəticələri: ${results.length} nəticə tapıldı.`, 
+                        from: 'bot',
+                        type: 'search-results', 
+                        results: results 
+                    };
+                    setMessages((prevMessages) => [...prevMessages, botMessage]);
+                } else {
+                    const endpoint = 'http://localhost:5000/chat';
+                    const response = await axios.post(endpoint, { message });
+                    const botMessage = { text: response.data.message, from: 'bot' };
+                    setMessages((prevMessages) => [...prevMessages, botMessage]);
+                }
             } catch (error) {
                 console.error('Error:', error);
                 setMessages((prevMessages) => [
                     ...prevMessages,
                     { text: 'Xəta baş verdi. 😕', from: 'bot' }
                 ]);
+            } finally {
+                setIsLoading(false);
             }
-
-            setMessage('');
         }
     };
 
@@ -100,10 +177,44 @@ const Chat = () => {
                         </p>
                     </div>
                     {messages.map((msg, index) => (
-                        <p key={index} className={msg.from === 'user' ? 'user-message' : 'bot-message'}>
-                            {msg.text}
-                        </p>
+                        <div key={index}>
+                            {msg.type === 'search-results' ? ( 
+                                <div className="search-results">
+                                    <h5>Axtarış Nəticələri:</h5>
+                                    <div className="results-grid">
+                                        {msg.results.slice(0, showAllResults ? msg.results.length : 2).map((result, idx) => (
+                                            <div key={idx} className="result-card">
+                                                <img src={result.image} alt={result.title} className="result-image" />
+                                                <div className="result-details">
+                                                    <h4>{result.title}</h4>
+                                                    <p>{result.description.slice(0, 50)}...</p>
+                                                    <a href={result.link} target="_blank" rel="noopener noreferrer">
+                                                        Ətraflı məlumat
+                                                    </a>
+                                                    <p><small>Mənbə: {result.source}</small></p>
+                                                </div>
+                                            </div>
+                                        ))}
+                                        {msg.results.length > 2 && (
+                                            <div className="show-more" onClick={() => setShowAllResults(!showAllResults)}>
+                                                <FaAngleDown size={20} />
+                                                <span>{showAllResults ? 'Daha az göstər' : 'Daha çox göstər'}</span>
+                                            </div>
+                                        )}
+                                    </div>
+                                </div>
+                            ) : (
+                                <p className={msg.from === 'user' ? 'user-message' : 'bot-message'}>
+                                    {msg.text}
+                                </p>
+                            )}
+                        </div>
                     ))}
+                    {isLoading && (
+                        <p className="bot-message">
+                            <span className="loading-text">ReadlyChat düşünür...</span>
+                        </p>
+                    )}
                 </div>
 
                 <div className="chat-input-container">

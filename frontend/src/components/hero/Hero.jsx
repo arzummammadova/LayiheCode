@@ -70,7 +70,7 @@ const Hero = () => {
                             </div>
 
                             <div className="col-lg-6 right right-hero">
-                                <Link to='/all' className='popular-p'>watch today’s <span className='green'> popular
+                                <Link to='/all' className='popular-p'>watch ours’s <span className='green'> popular
                                 </span> book
                                     <FaRegArrowAltCircleRight />
 
